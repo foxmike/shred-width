@@ -9,9 +9,9 @@
       "task_id": "c.2",
       "title": "MeterTap - audio-thread Pearson correlation one-pole, lock-free AbstractFifo pair push, atomic rho",
       "phase": "C",
-      "status": "planned",
+      "status": "completed",
       "backend": "codex_cli",
-      "last_run": null,
+      "last_run": "2026-07-27T18:03:44.556243",
       "notes": ""
     }
   ],
@@ -105,6 +105,15 @@
       "reviewer_status": "approved",
       "verifier_status": "passed",
       "timestamp": "2026-07-27T18:00:40.670524"
+    },
+    {
+      "run_id": "dd265da7-ae1a-4098-b37d-a8d94dd4177a",
+      "task_id": "c.2",
+      "backend": "codex_cli",
+      "status": "ok",
+      "reviewer_status": "approved",
+      "verifier_status": "passed",
+      "timestamp": "2026-07-27T18:03:44.556370"
     }
   ],
   "operator_overrides": {},
