@@ -1,17 +1,17 @@
 {
   "project_name": "shred-width",
-  "plan_version": "task-b.3",
+  "plan_version": "task-b.4",
   "active_phase": "B",
   "default_backend": "codex_cli",
   "routing_mode": "manual",
   "tasks": [
     {
-      "task_id": "b.3",
-      "title": "MonoSafetyCrossover - LR2 shared-LP design, inverted HP polarity, LR4 build option, block-rate coefficient recompute",
+      "task_id": "b.4",
+      "title": "WidthProcessor - M/S width, mono-lows-preserved reconstruction",
       "phase": "B",
-      "status": "completed",
-      "backend": "codex_cli",
-      "last_run": "2026-07-27T17:41:14.712566",
+      "status": "planned",
+      "backend": "pi_cli",
+      "last_run": null,
       "notes": ""
     }
   ],
