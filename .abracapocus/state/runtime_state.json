@@ -9,9 +9,9 @@
       "task_id": "e.5",
       "title": "Verification checklist and user manual docs (nominal latency, monoSource, automation caveats, LV2 host notes)",
       "phase": "E",
-      "status": "planned",
+      "status": "completed",
       "backend": "pi_cli",
-      "last_run": null,
+      "last_run": "2026-07-27T18:55:45.895789",
       "notes": ""
     }
   ],
@@ -195,6 +195,15 @@
       "reviewer_status": "approved",
       "verifier_status": "passed",
       "timestamp": "2026-07-27T18:39:10.476658"
+    },
+    {
+      "run_id": "8e3572e2-551a-41ae-9ea1-b3423434b166",
+      "task_id": "e.5",
+      "backend": "pi_cli",
+      "status": "ok",
+      "reviewer_status": "approved",
+      "verifier_status": "passed",
+      "timestamp": "2026-07-27T18:55:45.895964"
     }
   ],
   "operator_overrides": {},
