@@ -1,17 +1,17 @@
 {
   "project_name": "shred-width",
-  "plan_version": "task-c.4",
-  "active_phase": "C",
+  "plan_version": "task-d.1",
+  "active_phase": "D",
   "default_backend": "codex_cli",
   "routing_mode": "manual",
   "tasks": [
     {
-      "task_id": "c.4",
-      "title": "Engine integration tests - determinism/null, bypass, Mix=0 passthrough, mono-lows invariant, latency report",
-      "phase": "C",
-      "status": "completed",
-      "backend": "pi_cli",
-      "last_run": "2026-07-27T18:16:11.549631",
+      "task_id": "d.1",
+      "title": "CustomLookAndFeel (corrected drawPopupMenuItem signature) and RotarySlider",
+      "phase": "D",
+      "status": "planned",
+      "backend": "antigravity_cli",
+      "last_run": null,
       "notes": ""
     }
   ],
@@ -137,6 +137,6 @@
   "operator_overrides": {},
   "completed_phases": [],
   "remaining_phases": [
-    "C"
+    "D"
   ]
 }
