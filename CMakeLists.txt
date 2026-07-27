@@ -80,6 +80,8 @@ target_sources(ShredWidth
         Source/DSP/PitchShifter.cpp
         Source/DSP/MonoSafetyCrossover.cpp
         Source/DSP/WidthProcessor.cpp
+        Source/DSP/MeterTap.cpp
+        Source/DSP/ShredWidthEngine.cpp
 )
 
 target_compile_definitions(ShredWidth
@@ -113,10 +115,13 @@ enable_testing()
 add_executable(ShredWidthTests
     tests/TestMain.cpp
     tests/DSPPrimitiveTests.cpp
+    tests/EngineTests.cpp
     Source/DSP/DelayLineFrac.cpp
     Source/DSP/PitchShifter.cpp
     Source/DSP/MonoSafetyCrossover.cpp
     Source/DSP/WidthProcessor.cpp
+    Source/DSP/MeterTap.cpp
+    Source/DSP/ShredWidthEngine.cpp
 )
 
 target_compile_definitions(ShredWidthTests PRIVATE

@@ -29,7 +29,7 @@ ShredWidthAudioProcessor::ShredWidthAudioProcessor()
   apvts.state.setProperty(parameterLayoutVersionProperty,
                           ShredWidth::ParameterIDs::parameterLayoutVersion,
                           nullptr);
-  setLatencySamples(studioLatencySamples);
+  updateReportedLatencyFromParameter();
 }
 
 juce::AudioProcessorValueTreeState::ParameterLayout
@@ -77,34 +77,22 @@ void ShredWidthAudioProcessor::prepareToPlay(double sampleRate,
   preparedSampleRate = sampleRate;
   preparedMaxBlockSize = juce::jmax(0, samplesPerBlock);
 
-  pitchCircularBuffers.setSize(
-      2, studioPitchBufferLength + pitchInterpolationGuard, false, false, true);
+  engine.prepare(sampleRate, samplesPerBlock);
 
-  constexpr double maximumDelaySeconds = 0.05;
-  const auto delayCapacity =
-      static_cast<int>(
-          std::ceil(maximumDelaySeconds * juce::jmax(0.0, sampleRate))) +
-      pitchInterpolationGuard;
-  delayLineBuffers.setSize(2, delayCapacity, false, false, true);
+  // Initialize lastLatencyMode and set initial latency on the processor
+  const float rawLatencyMode = apvts.getRawParameterValue(ShredWidth::ParameterIDs::latencyMode)->load(std::memory_order_relaxed);
+  const auto currentLatencyMode = rawLatencyMode >= 0.5f ? ShredWidthEngine::LatencyMode::Live : ShredWidthEngine::LatencyMode::Studio;
+  lastLatencyMode = currentLatencyMode;
+  engine.setLatencyMode(currentLatencyMode);
+  setLatencySamples(engine.getReportedLatencySamples());
 
-  dryAlignmentBuffer.setSize(2, dryAlignmentCapacity, false, false, true);
-  meterFifoBuffer.setSize(2, meterFifoCapacity, false, false, true);
-
-  pitchCircularBuffers.clear();
-  delayLineBuffers.clear();
-  dryAlignmentBuffer.clear();
-  meterFifoBuffer.clear();
-  meterFifo.reset();
-
-  updateReportedLatencyFromParameter();
+  outTrimSmoothed.reset(sampleRate, 0.02);
+  const float initialDb = apvts.getRawParameterValue(ShredWidth::ParameterIDs::outTrim)->load(std::memory_order_relaxed);
+  outTrimSmoothed.setCurrentAndTargetValue(juce::Decibels::decibelsToGain(initialDb));
 }
 
 void ShredWidthAudioProcessor::releaseResources() {
-  pitchCircularBuffers.clear();
-  delayLineBuffers.clear();
-  dryAlignmentBuffer.clear();
-  meterFifoBuffer.clear();
-  meterFifo.reset();
+  engine.reset();
 }
 
 bool ShredWidthAudioProcessor::isBusesLayoutSupported(
@@ -120,15 +108,85 @@ bool ShredWidthAudioProcessor::isBusesLayoutSupported(
 void ShredWidthAudioProcessor::processBlock(juce::AudioBuffer<float> &buffer,
                                             juce::MidiBuffer &midiMessages) {
   juce::ScopedNoDenormals noDenormals;
-  juce::ignoreUnused(midiMessages, preparedSampleRate, preparedMaxBlockSize);
+  juce::ignoreUnused(midiMessages);
 
   const auto inputChannels = getTotalNumInputChannels();
   const auto outputChannels = getTotalNumOutputChannels();
+  const auto numSamples = buffer.getNumSamples();
 
+  // Clear extra output channels
   for (auto channel = inputChannels; channel < outputChannels; ++channel)
-    buffer.clear(channel, 0, buffer.getNumSamples());
+    buffer.clear(channel, 0, numSamples);
 
-  // DSP is intentionally introduced by later phase-owned engine classes.
+  if (numSamples == 0)
+    return;
+
+  // Handle latencyMode change
+  const float rawLatencyMode = apvts.getRawParameterValue(ShredWidth::ParameterIDs::latencyMode)->load(std::memory_order_relaxed);
+  const auto currentLatencyMode = rawLatencyMode >= 0.5f ? ShredWidthEngine::LatencyMode::Live : ShredWidthEngine::LatencyMode::Studio;
+  if (currentLatencyMode != lastLatencyMode) {
+      lastLatencyMode = currentLatencyMode;
+      engine.setLatencyMode(currentLatencyMode);
+      setLatencySamples(engine.getReportedLatencySamples());
+      updateHostDisplay();
+  }
+
+  // Update all other parameters on the engine
+  const float detuneVal = apvts.getRawParameterValue(ShredWidth::ParameterIDs::detuneAmount)->load(std::memory_order_relaxed);
+  engine.setDetuneCents(detuneVal);
+
+  const float delayLVal = apvts.getRawParameterValue(ShredWidth::ParameterIDs::delayL)->load(std::memory_order_relaxed);
+  const float delayRVal = apvts.getRawParameterValue(ShredWidth::ParameterIDs::delayR)->load(std::memory_order_relaxed);
+  engine.setDelayMsL(delayLVal);
+  engine.setDelayMsR(delayRVal);
+
+  const float xoverVal = apvts.getRawParameterValue(ShredWidth::ParameterIDs::monoXover)->load(std::memory_order_relaxed);
+  engine.setCrossoverHz(xoverVal);
+
+  const float widthVal = apvts.getRawParameterValue(ShredWidth::ParameterIDs::width)->load(std::memory_order_relaxed);
+  engine.setWidthPercent(widthVal);
+
+  const float mixVal = apvts.getRawParameterValue(ShredWidth::ParameterIDs::mix)->load(std::memory_order_relaxed);
+  engine.setMix(mixVal * 0.01f);
+
+  const float rawMonoSource = apvts.getRawParameterValue(ShredWidth::ParameterIDs::monoSource)->load(std::memory_order_relaxed);
+  const auto currentMonoSource = rawMonoSource >= 0.5f ? ShredWidthEngine::MonoSource::Left : ShredWidthEngine::MonoSource::Sum;
+  engine.setMonoSource(currentMonoSource);
+
+  const float outTrimVal = apvts.getRawParameterValue(ShredWidth::ParameterIDs::outTrim)->load(std::memory_order_relaxed);
+  outTrimSmoothed.setTargetValue(juce::Decibels::decibelsToGain(outTrimVal));
+
+  // Handle Bypass
+  const auto bypassed = apvts.getRawParameterValue(ShredWidth::ParameterIDs::bypass)->load(std::memory_order_relaxed) >= 0.5f;
+  if (bypassed) {
+      if (inputChannels == 1 && outputChannels >= 2) {
+          buffer.copyFrom(1, 0, buffer.getReadPointer(0), numSamples);
+      }
+      for (auto channel = inputChannels; channel < outputChannels; ++channel) {
+          if (channel != 1 || inputChannels != 1) {
+              buffer.clear(channel, 0, numSamples);
+          }
+      }
+      return;
+  }
+
+  // Call ShredWidthEngine to process the block
+  engine.processBlock(buffer, inputChannels);
+
+  // Apply outTrim (smoothed, per-sample)
+  if (outTrimSmoothed.isSmoothing()) {
+      for (int sample = 0; sample < numSamples; ++sample) {
+          const float gain = outTrimSmoothed.getNextValue();
+          for (int channel = 0; channel < outputChannels; ++channel) {
+              buffer.setSample(channel, sample, buffer.getSample(channel, sample) * gain);
+          }
+      }
+  } else {
+      const float gain = outTrimSmoothed.getCurrentValue();
+      if (std::abs(gain - 1.0f) > 1.0e-5f) {
+          buffer.applyGain(gain);
+      }
+  }
 }
 
 void ShredWidthAudioProcessor::updateReportedLatencyFromParameter() {
@@ -137,7 +195,10 @@ void ShredWidthAudioProcessor::updateReportedLatencyFromParameter() {
   const auto liveMode = latencyMode != nullptr &&
                         latencyMode->load(std::memory_order_relaxed) >= 0.5f;
 
-  setLatencySamples(liveMode ? liveLatencySamples : studioLatencySamples);
+  const auto mode = liveMode ? ShredWidthEngine::LatencyMode::Live : ShredWidthEngine::LatencyMode::Studio;
+  lastLatencyMode = mode;
+  engine.setLatencyMode(mode);
+  setLatencySamples(engine.getReportedLatencySamples());
 }
 
 juce::AudioProcessorEditor *ShredWidthAudioProcessor::createEditor() {

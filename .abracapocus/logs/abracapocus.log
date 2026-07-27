@@ -21,3 +21,5 @@
 2026-07-27 14:00:40 | INFO | abracapocus.backends.codex_cli | backend=codex_cli retry_count=0
 2026-07-27 14:00:41 | INFO | abracapocus | run=3e1c6e1a-b972-4702-926c-334be4c8e9c0 phases=1 verification=passed
 2026-07-27 14:03:43 | INFO | abracapocus.backends.codex_cli | backend=codex_cli retry_count=0
+2026-07-27 14:03:44 | INFO | abracapocus | run=dd265da7-ae1a-4098-b37d-a8d94dd4177a phases=1 verification=passed
+2026-07-27 14:06:12 | INFO | abracapocus.backends.antigravity_cli | backend=antigravity_cli retry_count=0
