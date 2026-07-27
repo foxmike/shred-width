@@ -9,9 +9,9 @@
       "task_id": "e.1",
       "title": "Factory preset XML assets (Tight Lead, Wide Lead, Huge Solo, Mono-Safe Subtle, Live Tracking)",
       "phase": "E",
-      "status": "planned",
+      "status": "completed",
       "backend": "pi_cli",
-      "last_run": null,
+      "last_run": "2026-07-27T18:27:48.682828",
       "notes": ""
     }
   ],
@@ -168,6 +168,15 @@
       "reviewer_status": "approved",
       "verifier_status": "passed",
       "timestamp": "2026-07-27T18:25:20.453081"
+    },
+    {
+      "run_id": "fcff264f-560c-498d-9f0c-d3c795b62840",
+      "task_id": "e.1",
+      "backend": "pi_cli",
+      "status": "ok",
+      "reviewer_status": "approved",
+      "verifier_status": "passed",
+      "timestamp": "2026-07-27T18:27:48.682966"
     }
   ],
   "operator_overrides": {},
