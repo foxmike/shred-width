@@ -644,5 +644,66 @@
       "version": "task-c.2",
       "created_at": "2026-07-27T18:00:41.302047"
     }
+  },
+  {
+    "created_at": "2026-07-27T18:06:17.469201",
+    "project_name": "shred-width",
+    "goal": "Phase-C fan-in and sole owner of Source/PluginProcessor.* and CMakeLists.txt. Wire ShredWidthEngine into the thin processor spine; register new sources for plugin and tests.\n\nBefore editing, inspect:\n- Source/PluginProcessor.h/.cpp from phases A\u2013B (APVTS, prepareToPlay allocation hooks, bus layout, processBlock stub)\n- Source/ParameterIDs.h (detuneAmount, delayL/R, monoXover, width, mix, latencyMode, outTrim, bypass, monoSource)\n- Source/DSP/ShredWidthEngine.h public API from c.1 and MeterTap accessors\n- CMakeLists.txt source lists / test target from phase B\n- .abracapocus/ShredWidth_Build_Spec.md \u00a7\u00a74.9, 6, 7, 9.3\u20139.4, 13\n- risk_notes: this task is sole Processor/CMakeLists owner; setLatencySamples = L/2; updateHostDisplay on mode switch\n\nImplement:\n1. PluginProcessor owns ShredWidthEngine (member). prepareToPlay calls engine.prepare(sampleRate, samplesPerBlock) and sets initial latency from latencyMode (Studio 1024 / Live 256).\n2. processBlock:\n   - juce::ScopedNoDenormals at top\n   - if bypass: pass input\u2192output (still honor channel layout / clear extras) without wet path, or true-bypass policy consistent with later tests\n   - read smoothed parameters: crossover / coeffs dirty at block rate; width, mix, detune drift per sample (or engine-internal smoothers fed block targets); delayL/R, monoSource, outTrim as specified\n   - apply monoSource Sum|Left; map detuneAmount to +cents / \u2212cents; width 0\u2013200% \u2192 [0,2]; mix 0\u2013100% \u2192 [0,1]\n   - call engine.process on the AudioBuffer\n   - ensure final output pairs reach MeterTap (via engine) and optional outTrim dB at end\n   - on latencyMode change: engine.setLatencyMode; setLatencySamples(engine.getReportedLatencySamples()); updateHostDisplay()\n3. Expose engine/MeterTap read accessors needed later by the editor (correlation atomic load / FIFO drain hooks) without UI code here.\n4. CMakeLists.txt only in this phase task:\n   - Add Source/DSP/MeterTap.cpp and Source/DSP/ShredWidthEngine.cpp to the ShredWidth plugin target\n   - Add tests/EngineTests.cpp to the existing test executable and keep add_test\n   - Do not remove VST3/CLAP/LV2/Standalone, unpin JUCE, or drop prior DSP sources\n\nDo not implement GUI meters, do not author EngineTests bodies (c.4), do not rewrite DSP primitives.",
+    "plan_template": {
+      "project_name": "shred-width",
+      "summary": "Task run: PluginProcessor processBlock wiring - ScopedNoDenormals, smoothed reads, latency reporting, meter push, CMakeLists",
+      "phases": [
+        {
+          "name": "C",
+          "objective": "Phase-C fan-in and sole owner of Source/PluginProcessor.* and CMakeLists.txt. Wire ShredWidthEngine into the thin processor spine; register new sources for plugin and tests.\n\nBefore editing, inspect:\n- Source/PluginProcessor.h/.cpp from phases A\u2013B (APVTS, prepareToPlay allocation hooks, bus layout, processBlock stub)\n- Source/ParameterIDs.h (detuneAmount, delayL/R, monoXover, width, mix, latencyMode, outTrim, bypass, monoSource)\n- Source/DSP/ShredWidthEngine.h public API from c.1 and MeterTap accessors\n- CMakeLists.txt source lists / test target from phase B\n- .abracapocus/ShredWidth_Build_Spec.md \u00a7\u00a74.9, 6, 7, 9.3\u20139.4, 13\n- risk_notes: this task is sole Processor/CMakeLists owner; setLatencySamples = L/2; updateHostDisplay on mode switch\n\nImplement:\n1. PluginProcessor owns ShredWidthEngine (member). prepareToPlay calls engine.prepare(sampleRate, samplesPerBlock) and sets initial latency from latencyMode (Studio 1024 / Live 256).\n2. processBlock:\n   - juce::ScopedNoDenormals at top\n   - if bypass: pass input\u2192output (still honor channel layout / clear extras) without wet path, or true-bypass policy consistent with later tests\n   - read smoothed parameters: crossover / coeffs dirty at block rate; width, mix, detune drift per sample (or engine-internal smoothers fed block targets); delayL/R, monoSource, outTrim as specified\n   - apply monoSource Sum|Left; map detuneAmount to +cents / \u2212cents; width 0\u2013200% \u2192 [0,2]; mix 0\u2013100% \u2192 [0,1]\n   - call engine.process on the AudioBuffer\n   - ensure final output pairs reach MeterTap (via engine) and optional outTrim dB at end\n   - on latencyMode change: engine.setLatencyMode; setLatencySamples(engine.getReportedLatencySamples()); updateHostDisplay()\n3. Expose engine/MeterTap read accessors needed later by the editor (correlation atomic load / FIFO drain hooks) without UI code here.\n4. CMakeLists.txt only in this phase task:\n   - Add Source/DSP/MeterTap.cpp and Source/DSP/ShredWidthEngine.cpp to the ShredWidth plugin target\n   - Add tests/EngineTests.cpp to the existing test executable and keep add_test\n   - Do not remove VST3/CLAP/LV2/Standalone, unpin JUCE, or drop prior DSP sources\n\nDo not implement GUI meters, do not author EngineTests bodies (c.4), do not rewrite DSP primitives.",
+          "status": "completed",
+          "tasks": [
+            {
+              "task": {
+                "task_id": "c.3",
+                "title": "PluginProcessor processBlock wiring - ScopedNoDenormals, smoothed reads, latency reporting, meter push, CMakeLists",
+                "description": "Phase-C fan-in and sole owner of Source/PluginProcessor.* and CMakeLists.txt. Wire ShredWidthEngine into the thin processor spine; register new sources for plugin and tests.\n\nBefore editing, inspect:\n- Source/PluginProcessor.h/.cpp from phases A\u2013B (APVTS, prepareToPlay allocation hooks, bus layout, processBlock stub)\n- Source/ParameterIDs.h (detuneAmount, delayL/R, monoXover, width, mix, latencyMode, outTrim, bypass, monoSource)\n- Source/DSP/ShredWidthEngine.h public API from c.1 and MeterTap accessors\n- CMakeLists.txt source lists / test target from phase B\n- .abracapocus/ShredWidth_Build_Spec.md \u00a7\u00a74.9, 6, 7, 9.3\u20139.4, 13\n- risk_notes: this task is sole Processor/CMakeLists owner; setLatencySamples = L/2; updateHostDisplay on mode switch\n\nImplement:\n1. PluginProcessor owns ShredWidthEngine (member). prepareToPlay calls engine.prepare(sampleRate, samplesPerBlock) and sets initial latency from latencyMode (Studio 1024 / Live 256).\n2. processBlock:\n   - juce::ScopedNoDenormals at top\n   - if bypass: pass input\u2192output (still honor channel layout / clear extras) without wet path, or true-bypass policy consistent with later tests\n   - read smoothed parameters: crossover / coeffs dirty at block rate; width, mix, detune drift per sample (or engine-internal smoothers fed block targets); delayL/R, monoSource, outTrim as specified\n   - apply monoSource Sum|Left; map detuneAmount to +cents / \u2212cents; width 0\u2013200% \u2192 [0,2]; mix 0\u2013100% \u2192 [0,1]\n   - call engine.process on the AudioBuffer\n   - ensure final output pairs reach MeterTap (via engine) and optional outTrim dB at end\n   - on latencyMode change: engine.setLatencyMode; setLatencySamples(engine.getReportedLatencySamples()); updateHostDisplay()\n3. Expose engine/MeterTap read accessors needed later by the editor (correlation atomic load / FIFO drain hooks) without UI code here.\n4. CMakeLists.txt only in this phase task:\n   - Add Source/DSP/MeterTap.cpp and Source/DSP/ShredWidthEngine.cpp to the ShredWidth plugin target\n   - Add tests/EngineTests.cpp to the existing test executable and keep add_test\n   - Do not remove VST3/CLAP/LV2/Standalone, unpin JUCE, or drop prior DSP sources\n\nDo not implement GUI meters, do not author EngineTests bodies (c.4), do not rewrite DSP primitives.",
+                "phase": "C",
+                "dependencies": [
+                  "c.1"
+                ],
+                "exclusivity_category": null,
+                "max_in_category": null,
+                "status": "completed",
+                "acceptance_criteria": [
+                  "Source/PluginProcessor.cpp processBlock begins with juce::ScopedNoDenormals",
+                  "PluginProcessor owns/uses ShredWidthEngine and feeds smoothed APVTS parameters into the engine",
+                  "setLatencySamples reports L/2 for the active latencyMode and updateHostDisplay is called on mode switch",
+                  "Final output pairs are pushed to MeterTap (via engine path) on the audio thread",
+                  "CMakeLists.txt registers Source/DSP/MeterTap.cpp and Source/DSP/ShredWidthEngine.cpp on the plugin target",
+                  "CMakeLists.txt registers tests/EngineTests.cpp on the test executable / add_test path",
+                  "bypass and outTrim parameters are honored in the process path",
+                  "No file outside the task's allowed_write_paths is created or modified"
+                ],
+                "created_at": "2026-07-27T18:03:44.709497",
+                "selected_backend": "antigravity_cli",
+                "model": null,
+                "task_timeout_seconds": 1200.0,
+                "verification_profile": "focused",
+                "verification_commands": [],
+                "allowed_write_paths": [
+                  "Source/PluginProcessor.h",
+                  "Source/PluginProcessor.cpp",
+                  "CMakeLists.txt"
+                ],
+                "forbidden_patterns_override": null
+              },
+              "dependencies": [],
+              "status": "completed"
+            }
+          ],
+          "completed": true,
+          "completed_at": "2026-07-27T18:06:17.378693",
+          "human_checkpoint": null
+        }
+      ],
+      "version": "task-c.3",
+      "created_at": "2026-07-27T18:03:44.779673"
+    }
   }
 ]

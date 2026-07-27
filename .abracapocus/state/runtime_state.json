@@ -1,17 +1,17 @@
 {
   "project_name": "shred-width",
-  "plan_version": "task-c.3",
+  "plan_version": "task-c.4",
   "active_phase": "C",
   "default_backend": "codex_cli",
   "routing_mode": "manual",
   "tasks": [
     {
-      "task_id": "c.3",
-      "title": "PluginProcessor processBlock wiring - ScopedNoDenormals, smoothed reads, latency reporting, meter push, CMakeLists",
+      "task_id": "c.4",
+      "title": "Engine integration tests - determinism/null, bypass, Mix=0 passthrough, mono-lows invariant, latency report",
       "phase": "C",
-      "status": "completed",
-      "backend": "antigravity_cli",
-      "last_run": "2026-07-27T18:06:17.403805",
+      "status": "planned",
+      "backend": "pi_cli",
+      "last_run": null,
       "notes": ""
     }
   ],
