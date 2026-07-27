@@ -1,17 +1,17 @@
 {
   "project_name": "shred-width",
-  "plan_version": "task-a.1",
+  "plan_version": "task-a.2",
   "active_phase": "A",
   "default_backend": "codex_cli",
   "routing_mode": "manual",
   "tasks": [
     {
-      "task_id": "a.1",
-      "title": "CMakeLists.txt, CMakePresets.json, build_all.sh (CLion-bundled cmake), JUCE submodule pinned to aural-maximizer-pro tag",
+      "task_id": "a.2",
+      "title": "ParameterIDs.h v1 inventory, APVTS layout with skews, bus layout (mono/stereo in -> stereo out), PluginProcessor spine with prepareToPlay allocation and PDC hooks",
       "phase": "A",
-      "status": "completed",
+      "status": "planned",
       "backend": "codex_cli",
-      "last_run": "2026-07-27T17:12:34.363612",
+      "last_run": null,
       "notes": ""
     }
   ],
