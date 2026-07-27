@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ShredWidth 1.0 - Mono-Safe Subtle
+
+  Detune ±4, Delay 8/11 ms, Xover 250 Hz, Width 70%, Mix 25%.
+  Studio latency, Sum mono source.
+  Correlation stays high (ρ > 0.6) even when folded to mono.
+-->
+<ShredWidthState parameterLayoutVersion="1">
+    <detuneAmount value="4.0"/>
+    <delayL value="8.0"/>
+    <delayR value="11.0"/>
+    <monoXover value="250.0"/>
+    <width value="70.0"/>
+    <mix value="25.0"/>
+    <latencyMode value="0"/>
+    <outTrim value="0.0"/>
+    <bypass value="0"/>
+    <monoSource value="0"/>
+</ShredWidthState>

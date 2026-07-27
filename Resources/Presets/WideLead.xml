@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ShredWidth 1.0 - Wide Lead (default-ish)
+
+  Detune ±7, Delay 12.5/18 ms, Xover 180 Hz, Width 100%, Mix 40%.
+  Studio latency, Sum mono source.
+-->
+<ShredWidthState parameterLayoutVersion="1">
+    <detuneAmount value="7.0"/>
+    <delayL value="12.5"/>
+    <delayR value="18.0"/>
+    <monoXover value="180.0"/>
+    <width value="100.0"/>
+    <mix value="40.0"/>
+    <latencyMode value="0"/>
+    <outTrim value="0.0"/>
+    <bypass value="0"/>
+    <monoSource value="0"/>
+</ShredWidthState>

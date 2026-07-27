@@ -1,17 +1,17 @@
 {
   "project_name": "shred-width",
-  "plan_version": "task-d.4",
-  "active_phase": "D",
+  "plan_version": "task-e.1",
+  "active_phase": "E",
   "default_backend": "codex_cli",
   "routing_mode": "manual",
   "tasks": [
     {
-      "task_id": "d.4",
-      "title": "PluginEditor full layout - header, control columns, metering column, APVTS attachments, timer, resize, CMakeLists",
-      "phase": "D",
-      "status": "completed",
-      "backend": "antigravity_cli",
-      "last_run": "2026-07-27T18:25:20.452904",
+      "task_id": "e.1",
+      "title": "Factory preset XML assets (Tight Lead, Wide Lead, Huge Solo, Mono-Safe Subtle, Live Tracking)",
+      "phase": "E",
+      "status": "planned",
+      "backend": "pi_cli",
+      "last_run": null,
       "notes": ""
     }
   ],
@@ -173,6 +173,6 @@
   "operator_overrides": {},
   "completed_phases": [],
   "remaining_phases": [
-    "D"
+    "E"
   ]
 }

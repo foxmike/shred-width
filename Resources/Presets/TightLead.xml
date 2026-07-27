@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ShredWidth 1.0 - Tight Lead
+
+  Detune ±5, Delay 10/14 ms, Xover 200 Hz, Width 90%, Mix 30%.
+  Studio latency, Sum mono source.
+
+  APVTS state fragment loadable via StateManager::restoreComparisonState
+  (direct APVTS state tree path).  parameterLayoutVersion must match
+  ShredWidth::ParameterIDs::parameterLayoutVersion (== 1) for schema
+  acceptance.
+-->
+<ShredWidthState parameterLayoutVersion="1">
+    <detuneAmount value="5.0"/>
+    <delayL value="10.0"/>
+    <delayR value="14.0"/>
+    <monoXover value="200.0"/>
+    <width value="90.0"/>
+    <mix value="30.0"/>
+    <latencyMode value="0"/>
+    <outTrim value="0.0"/>
+    <bypass value="0"/>
+    <monoSource value="0"/>
+</ShredWidthState>

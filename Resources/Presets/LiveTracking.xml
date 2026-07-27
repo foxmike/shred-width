@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ShredWidth 1.0 - Live Tracking
+
+  Live latency mode, Detune ±6, Delay 10/13 ms, Xover 200 Hz, Width 90%, Mix 35%.
+  Sum mono source.
+
+  latencyMode=1 == Live (choice index 1 in the ShredWidthAPVTS layout:
+  choices = { "Studio", "Live" }).
+-->
+<ShredWidthState parameterLayoutVersion="1">
+    <detuneAmount value="6.0"/>
+    <delayL value="10.0"/>
+    <delayR value="13.0"/>
+    <monoXover value="200.0"/>
+    <width value="90.0"/>
+    <mix value="35.0"/>
+    <latencyMode value="1"/>
+    <outTrim value="0.0"/>
+    <bypass value="0"/>
+    <monoSource value="0"/>
+</ShredWidthState>
