@@ -9,9 +9,9 @@
       "task_id": "b.3",
       "title": "MonoSafetyCrossover - LR2 shared-LP design, inverted HP polarity, LR4 build option, block-rate coefficient recompute",
       "phase": "B",
-      "status": "planned",
+      "status": "completed",
       "backend": "codex_cli",
-      "last_run": null,
+      "last_run": "2026-07-27T17:41:14.712566",
       "notes": ""
     }
   ],
@@ -69,6 +69,15 @@
       "reviewer_status": "approved",
       "verifier_status": "passed",
       "timestamp": "2026-07-27T17:38:13.579087"
+    },
+    {
+      "run_id": "3c266726-1ab4-446b-a352-8ce871d831e3",
+      "task_id": "b.3",
+      "backend": "codex_cli",
+      "status": "ok",
+      "reviewer_status": "approved",
+      "verifier_status": "passed",
+      "timestamp": "2026-07-27T17:41:14.712691"
     }
   ],
   "operator_overrides": {},
