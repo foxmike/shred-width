@@ -9,9 +9,9 @@
       "task_id": "b.4",
       "title": "WidthProcessor - M/S width, mono-lows-preserved reconstruction",
       "phase": "B",
-      "status": "planned",
+      "status": "completed",
       "backend": "pi_cli",
-      "last_run": null,
+      "last_run": "2026-07-27T17:45:19.253366",
       "notes": ""
     }
   ],
@@ -78,6 +78,15 @@
       "reviewer_status": "approved",
       "verifier_status": "passed",
       "timestamp": "2026-07-27T17:41:14.712691"
+    },
+    {
+      "run_id": "b4de8545-c322-4095-a054-796ad87fff56",
+      "task_id": "b.4",
+      "backend": "pi_cli",
+      "status": "ok",
+      "reviewer_status": "approved",
+      "verifier_status": "passed",
+      "timestamp": "2026-07-27T17:45:19.253510"
     }
   ],
   "operator_overrides": {},
