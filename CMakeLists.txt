@@ -82,6 +82,10 @@ target_sources(ShredWidth
         Source/DSP/WidthProcessor.cpp
         Source/DSP/MeterTap.cpp
         Source/DSP/ShredWidthEngine.cpp
+        Source/GUI/CustomLookAndFeel.cpp
+        Source/GUI/RotarySlider.cpp
+        Source/GUI/GoniometerComponent.cpp
+        Source/GUI/CorrelationMeter.cpp
 )
 
 target_compile_definitions(ShredWidth

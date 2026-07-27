@@ -879,5 +879,63 @@
       "version": "task-d.2",
       "created_at": "2026-07-27T18:18:54.573094"
     }
+  },
+  {
+    "created_at": "2026-07-27T18:23:15.305294",
+    "project_name": "shred-width",
+    "goal": "Wave-2 correlation meter component. Independent of GoniometerComponent; depends on d.1 only for shared colours/style.\n\nSTRICT FILE SCOPE: Create or modify ONLY the files listed in this task's allowed_write_paths.\n\nBefore editing, inspect:\n- .abracapocus/ShredWidth_Build_Spec.md \u00a79.3 (correlation display colours, peak-toward-\u22121 flash)\n- Source/DSP/MeterTap.h getCorrelation / atomic \u03c1 read API from phase C\n- Source/GUI/CustomLookAndFeel.* from d.1\n\nImplement Source/GUI/CorrelationMeter.h/.cpp as a juce::Component:\n1. UI-thread only: read smoothed \u03c1 from MeterTap (std::atomic<float> load) or a float source pointer set by the editor. Never write the audio-thread estimator.\n2. Horizontal bar meter spanning \u22121\u2026+1, geometric center at 0.\n3. Colour bands (fill from 0 toward current \u03c1):\n   - green for +1 \u2026 +0.3\n   - yellow for +0.3 \u2026 \u22120.3\n   - red for < \u22120.3 (mono-cancellation warning)\n4. Held peak-toward-\u22121 indicator: when \u03c1 dips low (toward \u22121 / through red band), flash or hold a peak marker that decays slowly so brief mono-collapse danger is visible.\n5. Labels or tick marks at \u22121, 0, +1 optional but recommended; paint allocation-light.\n\nDo not implement Goniometer, PluginEditor layout, or CMakeLists.",
+    "plan_template": {
+      "project_name": "shred-width",
+      "summary": "Task run: CorrelationMeter - atomic rho read, colored bar, mono-cancellation flash",
+      "phases": [
+        {
+          "name": "D",
+          "objective": "Wave-2 correlation meter component. Independent of GoniometerComponent; depends on d.1 only for shared colours/style.\n\nSTRICT FILE SCOPE: Create or modify ONLY the files listed in this task's allowed_write_paths.\n\nBefore editing, inspect:\n- .abracapocus/ShredWidth_Build_Spec.md \u00a79.3 (correlation display colours, peak-toward-\u22121 flash)\n- Source/DSP/MeterTap.h getCorrelation / atomic \u03c1 read API from phase C\n- Source/GUI/CustomLookAndFeel.* from d.1\n\nImplement Source/GUI/CorrelationMeter.h/.cpp as a juce::Component:\n1. UI-thread only: read smoothed \u03c1 from MeterTap (std::atomic<float> load) or a float source pointer set by the editor. Never write the audio-thread estimator.\n2. Horizontal bar meter spanning \u22121\u2026+1, geometric center at 0.\n3. Colour bands (fill from 0 toward current \u03c1):\n   - green for +1 \u2026 +0.3\n   - yellow for +0.3 \u2026 \u22120.3\n   - red for < \u22120.3 (mono-cancellation warning)\n4. Held peak-toward-\u22121 indicator: when \u03c1 dips low (toward \u22121 / through red band), flash or hold a peak marker that decays slowly so brief mono-collapse danger is visible.\n5. Labels or tick marks at \u22121, 0, +1 optional but recommended; paint allocation-light.\n\nDo not implement Goniometer, PluginEditor layout, or CMakeLists.",
+          "status": "completed",
+          "tasks": [
+            {
+              "task": {
+                "task_id": "d.3",
+                "title": "CorrelationMeter - atomic rho read, colored bar, mono-cancellation flash",
+                "description": "Wave-2 correlation meter component. Independent of GoniometerComponent; depends on d.1 only for shared colours/style.\n\nSTRICT FILE SCOPE: Create or modify ONLY the files listed in this task's allowed_write_paths.\n\nBefore editing, inspect:\n- .abracapocus/ShredWidth_Build_Spec.md \u00a79.3 (correlation display colours, peak-toward-\u22121 flash)\n- Source/DSP/MeterTap.h getCorrelation / atomic \u03c1 read API from phase C\n- Source/GUI/CustomLookAndFeel.* from d.1\n\nImplement Source/GUI/CorrelationMeter.h/.cpp as a juce::Component:\n1. UI-thread only: read smoothed \u03c1 from MeterTap (std::atomic<float> load) or a float source pointer set by the editor. Never write the audio-thread estimator.\n2. Horizontal bar meter spanning \u22121\u2026+1, geometric center at 0.\n3. Colour bands (fill from 0 toward current \u03c1):\n   - green for +1 \u2026 +0.3\n   - yellow for +0.3 \u2026 \u22120.3\n   - red for < \u22120.3 (mono-cancellation warning)\n4. Held peak-toward-\u22121 indicator: when \u03c1 dips low (toward \u22121 / through red band), flash or hold a peak marker that decays slowly so brief mono-collapse danger is visible.\n5. Labels or tick marks at \u22121, 0, +1 optional but recommended; paint allocation-light.\n\nDo not implement Goniometer, PluginEditor layout, or CMakeLists.",
+                "phase": "D",
+                "dependencies": [
+                  "d.1"
+                ],
+                "exclusivity_category": null,
+                "max_in_category": null,
+                "status": "completed",
+                "acceptance_criteria": [
+                  "Source/GUI/CorrelationMeter.h and Source/GUI/CorrelationMeter.cpp exist",
+                  "CorrelationMeter reads smoothed rho via atomic/float source (MeterTap getCorrelation or equivalent) on the UI path only",
+                  "Horizontal bar is centered at 0 over the range -1..+1",
+                  "Bar colours: green +1..+0.3, yellow +0.3..-0.3, red <-0.3",
+                  "Held peak-toward--1 flash/indicator present for mono-cancellation warning",
+                  "No file outside the task's allowed_write_paths is created or modified"
+                ],
+                "created_at": "2026-07-27T18:21:25.591212",
+                "selected_backend": "antigravity_cli",
+                "model": null,
+                "task_timeout_seconds": 900.0,
+                "verification_profile": "focused",
+                "verification_commands": [],
+                "allowed_write_paths": [
+                  "Source/GUI/CorrelationMeter.h",
+                  "Source/GUI/CorrelationMeter.cpp"
+                ],
+                "forbidden_patterns_override": null
+              },
+              "dependencies": [],
+              "status": "completed"
+            }
+          ],
+          "completed": true,
+          "completed_at": "2026-07-27T18:23:15.205442",
+          "human_checkpoint": null
+        }
+      ],
+      "version": "task-d.3",
+      "created_at": "2026-07-27T18:21:25.666613"
+    }
   }
 ]
