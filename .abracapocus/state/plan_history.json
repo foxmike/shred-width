@@ -467,5 +467,67 @@
       "version": "task-b.4",
       "created_at": "2026-07-27T17:41:14.917824"
     }
+  },
+  {
+    "created_at": "2026-07-27T17:54:16.391235",
+    "project_name": "shred-width",
+    "goal": "Sole phase-B owner of CMakeLists.txt, tests/TestMain.cpp, and tests/DSPPrimitiveTests.cpp. Register DSP sources and a console test target; prove DSP primitive invariants without running full plugin hosts.\n\nBefore editing, inspect:\n- Source/DSP/* produced by b.1\u2013b.4 (public APIs: DelayLineFrac, PitchShifter, MonoSafetyCrossover, WidthProcessor)\n- CMakeLists.txt from phase A (juce_add_plugin ShredWidth, SHREDWIDTH_XOVER_ORDER, source lists)\n- .abracapocus/ShredWidth_Build_Spec.md \u00a7\u00a74.2\u20134.5, 4.7 and test intent in \u00a713 if present\n- Sibling plugin test harnesses under /home/mike/dev/mike/music/plugins/ if useful for JUCE console app + Catch2/minimal assert style\n\nImplement:\n1. tests/TestMain.cpp \u2014 minimal test runner main (Catch2 if already available via JUCE/sibling pattern; otherwise a tiny assert harness that returns non-zero on failure). Prefer self-contained asserts if Catch2 is not already wired \u2014 do not add network FetchContent if avoidable; mirror phase-A vegan CMake style.\n2. tests/DSPPrimitiveTests.cpp \u2014 focused checks:\n   a. DelayLineFrac: after prepare@48k, setDelayMs known integer-ish delay, impulse-in produces peak near expected sample index (tolerance for Lagrange).\n   b. PitchShifter: at deltaC=0, Hann weights / dual-head path maintains ~unity gain on a steady sine or DC-free tone (mean power ratio ~1 within tolerance); document that w_A+w_B==1 is enforced. Prefer a unit-level check of crossfade weights or gain on coherent input.\n   c. MonoSafetyCrossover: with HP input == LP input (same x), reconstructed lp + hp (\u00b1 inverted polarity as designed) is approximately flat (no deep notch at fc) for a swept or multi-tone stimulus; cutoff dirty flag path callable.\n   d. WidthProcessor mono-lows invariant: feed identical L and R (pure mid / shared-LP-like) across width in {0,1,2}; S path leaves L'==R' and centered. Also width=1 identity on a case with L!=R.\n3. CMakeLists.txt (only this task edits it in phase B):\n   - Add Source/DSP/*.cpp to the ShredWidth plugin target sources.\n   - Ensure SHREDWIDTH_XOVER_ORDER compile definition default 2 remains available to DSP headers.\n   - Add ShredWidthTests (or similarly named) console executable linking required JUCE modules + DSP sources needed for tests; add_test so ctest can run it later in phase e.\n   - Do not remove VST3/CLAP/LV2/Standalone or unpin JUCE.\n\nDo not implement ShredWidthEngine or edit PluginProcessor/PluginEditor beyond what CMake source lists already reference.",
+    "plan_template": {
+      "project_name": "shred-width",
+      "summary": "Task run: TestMain harness and DSP primitive tests - delay, crossover reconstruction, width mono-lows invariant, unity-gain crossfade, CMakeLists registration",
+      "phases": [
+        {
+          "name": "B",
+          "objective": "Sole phase-B owner of CMakeLists.txt, tests/TestMain.cpp, and tests/DSPPrimitiveTests.cpp. Register DSP sources and a console test target; prove DSP primitive invariants without running full plugin hosts.\n\nBefore editing, inspect:\n- Source/DSP/* produced by b.1\u2013b.4 (public APIs: DelayLineFrac, PitchShifter, MonoSafetyCrossover, WidthProcessor)\n- CMakeLists.txt from phase A (juce_add_plugin ShredWidth, SHREDWIDTH_XOVER_ORDER, source lists)\n- .abracapocus/ShredWidth_Build_Spec.md \u00a7\u00a74.2\u20134.5, 4.7 and test intent in \u00a713 if present\n- Sibling plugin test harnesses under /home/mike/dev/mike/music/plugins/ if useful for JUCE console app + Catch2/minimal assert style\n\nImplement:\n1. tests/TestMain.cpp \u2014 minimal test runner main (Catch2 if already available via JUCE/sibling pattern; otherwise a tiny assert harness that returns non-zero on failure). Prefer self-contained asserts if Catch2 is not already wired \u2014 do not add network FetchContent if avoidable; mirror phase-A vegan CMake style.\n2. tests/DSPPrimitiveTests.cpp \u2014 focused checks:\n   a. DelayLineFrac: after prepare@48k, setDelayMs known integer-ish delay, impulse-in produces peak near expected sample index (tolerance for Lagrange).\n   b. PitchShifter: at deltaC=0, Hann weights / dual-head path maintains ~unity gain on a steady sine or DC-free tone (mean power ratio ~1 within tolerance); document that w_A+w_B==1 is enforced. Prefer a unit-level check of crossfade weights or gain on coherent input.\n   c. MonoSafetyCrossover: with HP input == LP input (same x), reconstructed lp + hp (\u00b1 inverted polarity as designed) is approximately flat (no deep notch at fc) for a swept or multi-tone stimulus; cutoff dirty flag path callable.\n   d. WidthProcessor mono-lows invariant: feed identical L and R (pure mid / shared-LP-like) across width in {0,1,2}; S path leaves L'==R' and centered. Also width=1 identity on a case with L!=R.\n3. CMakeLists.txt (only this task edits it in phase B):\n   - Add Source/DSP/*.cpp to the ShredWidth plugin target sources.\n   - Ensure SHREDWIDTH_XOVER_ORDER compile definition default 2 remains available to DSP headers.\n   - Add ShredWidthTests (or similarly named) console executable linking required JUCE modules + DSP sources needed for tests; add_test so ctest can run it later in phase e.\n   - Do not remove VST3/CLAP/LV2/Standalone or unpin JUCE.\n\nDo not implement ShredWidthEngine or edit PluginProcessor/PluginEditor beyond what CMake source lists already reference.",
+          "status": "completed",
+          "tasks": [
+            {
+              "task": {
+                "task_id": "b.5",
+                "title": "TestMain harness and DSP primitive tests - delay, crossover reconstruction, width mono-lows invariant, unity-gain crossfade, CMakeLists registration",
+                "description": "Sole phase-B owner of CMakeLists.txt, tests/TestMain.cpp, and tests/DSPPrimitiveTests.cpp. Register DSP sources and a console test target; prove DSP primitive invariants without running full plugin hosts.\n\nBefore editing, inspect:\n- Source/DSP/* produced by b.1\u2013b.4 (public APIs: DelayLineFrac, PitchShifter, MonoSafetyCrossover, WidthProcessor)\n- CMakeLists.txt from phase A (juce_add_plugin ShredWidth, SHREDWIDTH_XOVER_ORDER, source lists)\n- .abracapocus/ShredWidth_Build_Spec.md \u00a7\u00a74.2\u20134.5, 4.7 and test intent in \u00a713 if present\n- Sibling plugin test harnesses under /home/mike/dev/mike/music/plugins/ if useful for JUCE console app + Catch2/minimal assert style\n\nImplement:\n1. tests/TestMain.cpp \u2014 minimal test runner main (Catch2 if already available via JUCE/sibling pattern; otherwise a tiny assert harness that returns non-zero on failure). Prefer self-contained asserts if Catch2 is not already wired \u2014 do not add network FetchContent if avoidable; mirror phase-A vegan CMake style.\n2. tests/DSPPrimitiveTests.cpp \u2014 focused checks:\n   a. DelayLineFrac: after prepare@48k, setDelayMs known integer-ish delay, impulse-in produces peak near expected sample index (tolerance for Lagrange).\n   b. PitchShifter: at deltaC=0, Hann weights / dual-head path maintains ~unity gain on a steady sine or DC-free tone (mean power ratio ~1 within tolerance); document that w_A+w_B==1 is enforced. Prefer a unit-level check of crossfade weights or gain on coherent input.\n   c. MonoSafetyCrossover: with HP input == LP input (same x), reconstructed lp + hp (\u00b1 inverted polarity as designed) is approximately flat (no deep notch at fc) for a swept or multi-tone stimulus; cutoff dirty flag path callable.\n   d. WidthProcessor mono-lows invariant: feed identical L and R (pure mid / shared-LP-like) across width in {0,1,2}; S path leaves L'==R' and centered. Also width=1 identity on a case with L!=R.\n3. CMakeLists.txt (only this task edits it in phase B):\n   - Add Source/DSP/*.cpp to the ShredWidth plugin target sources.\n   - Ensure SHREDWIDTH_XOVER_ORDER compile definition default 2 remains available to DSP headers.\n   - Add ShredWidthTests (or similarly named) console executable linking required JUCE modules + DSP sources needed for tests; add_test so ctest can run it later in phase e.\n   - Do not remove VST3/CLAP/LV2/Standalone or unpin JUCE.\n\nDo not implement ShredWidthEngine or edit PluginProcessor/PluginEditor beyond what CMake source lists already reference.",
+                "phase": "B",
+                "dependencies": [
+                  "b.1",
+                  "b.2",
+                  "b.3",
+                  "b.4"
+                ],
+                "exclusivity_category": null,
+                "max_in_category": null,
+                "status": "completed",
+                "acceptance_criteria": [
+                  "tests/TestMain.cpp exists and provides a test runner entry point",
+                  "tests/DSPPrimitiveTests.cpp exists and covers DelayLineFrac delay placement, PitchShifter unity-gain/crossfade behavior at 0 cents, MonoSafetyCrossover reconstruction without deep null when LP/HP inputs match, and WidthProcessor mono-lows / width=1 identity invariants",
+                  "CMakeLists.txt registers Source/DSP/DelayLineFrac.cpp, PitchShifter.cpp, MonoSafetyCrossover.cpp, WidthProcessor.cpp on the plugin target",
+                  "CMakeLists.txt defines a test executable and add_test entry for the DSP primitive tests",
+                  "SHREDWIDTH_XOVER_ORDER remains defined for targets that compile MonoSafetyCrossover",
+                  "No file outside the task's allowed_write_paths is created or modified"
+                ],
+                "created_at": "2026-07-27T17:45:19.367997",
+                "selected_backend": "pi_cli",
+                "model": "openrouter/minimax/minimax-m3",
+                "task_timeout_seconds": 1200.0,
+                "verification_profile": "focused",
+                "verification_commands": [],
+                "allowed_write_paths": [
+                  "CMakeLists.txt",
+                  "tests/TestMain.cpp",
+                  "tests/DSPPrimitiveTests.cpp"
+                ],
+                "forbidden_patterns_override": null
+              },
+              "dependencies": [],
+              "status": "completed"
+            }
+          ],
+          "completed": true,
+          "completed_at": "2026-07-27T17:54:16.301401",
+          "human_checkpoint": null
+        }
+      ],
+      "version": "task-b.5",
+      "created_at": "2026-07-27T17:45:19.438654"
+    }
   }
 ]
