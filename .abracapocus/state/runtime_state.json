@@ -1,17 +1,17 @@
 {
   "project_name": "shred-width",
-  "plan_version": "task-b.2",
+  "plan_version": "task-b.3",
   "active_phase": "B",
   "default_backend": "codex_cli",
   "routing_mode": "manual",
   "tasks": [
     {
-      "task_id": "b.2",
-      "title": "PitchShifter - dual-head granular buffer, double drift accumulator, 4-point Lagrange, Hann unity-gain crossfade",
+      "task_id": "b.3",
+      "title": "MonoSafetyCrossover - LR2 shared-LP design, inverted HP polarity, LR4 build option, block-rate coefficient recompute",
       "phase": "B",
-      "status": "completed",
+      "status": "planned",
       "backend": "codex_cli",
-      "last_run": "2026-07-27T17:38:13.578983",
+      "last_run": null,
       "notes": ""
     }
   ],

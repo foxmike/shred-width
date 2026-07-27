@@ -295,5 +295,62 @@
       "version": "task-b.1",
       "created_at": "2026-07-27T17:29:34.191482"
     }
+  },
+  {
+    "created_at": "2026-07-27T17:38:13.670212",
+    "project_name": "shred-width",
+    "goal": "Implement Source/DSP/PitchShifter only. One instance will later run at +detune and one at \u2212detune.\n\nBefore editing, inspect:\n- .abracapocus/ShredWidth_Build_Spec.md \u00a7\u00a74.2 (dual-head granular end-to-end math), 4.3 (Lagrange), 4.9 (Studio L=2048 / Live L=512), \u00a76 (detune smoothing feeds dv), \u00a77\u2013\u00a78\n- risk_notes: double drift accumulator; all four Lagrange neighbors wrapped mod L\n\nImplement class PitchShifter in Source/DSP/PitchShifter.h + PitchShifter.cpp:\n1. API: prepare(sampleRate, maxBlock), reset(), setLatencyModeStudioOrLive / setBufferLength(L), setDetuneCents(float deltaC), processSample(float x)->float (optional block process).\n2. Circular buffer length L: always allocate Studio L_max=2048 + \u22654 Lagrange guard in prepare; Live uses the first 512 samples only (no realloc on mode switch).\n3. Write pointer advances one sample per sample.\n4. Two read heads A/B offset by L/2 as delays behind the write pointer. Drift accumulator tau is double (NOT float): advance by dv = 1 - pow(2.0, deltaC/1200.0) each sample; branchless wrap: if (tau >= L) tau -= L; if (tau < 0) tau += L.\n5. Fractional read: 4-point cubic Lagrange (\u00a74.3). Each of y_{-1}, y_0, y_1, y_2 is read with individual wrap mod L.\n6. Raised-cosine (Hann) crossfade from head position so w_A + w_B == 1 exactly (unity gain, no ripple): w = 0.5 * (1 - cos(2\u03c0 * tau_head / L)); heads L/2 apart.\n7. detuneAmount path: accept smoothed cents (caller may smooth); setDetuneCents may also keep juce::SmoothedValue ~20 ms feeding dv so zipper cannot pitch-glitch.\n8. Nominal delay for docs/engine: L/2 samples (not implemented as host PDC here).\n9. RT: no heap/locks/logs outside prepare; O(1) per sample.\n\nDo not implement DelayLineFrac/crossover/width, tests, or CMakeLists. Do not wire into PluginProcessor.",
+    "plan_template": {
+      "project_name": "shred-width",
+      "summary": "Task run: PitchShifter - dual-head granular buffer, double drift accumulator, 4-point Lagrange, Hann unity-gain crossfade",
+      "phases": [
+        {
+          "name": "B",
+          "objective": "Implement Source/DSP/PitchShifter only. One instance will later run at +detune and one at \u2212detune.\n\nBefore editing, inspect:\n- .abracapocus/ShredWidth_Build_Spec.md \u00a7\u00a74.2 (dual-head granular end-to-end math), 4.3 (Lagrange), 4.9 (Studio L=2048 / Live L=512), \u00a76 (detune smoothing feeds dv), \u00a77\u2013\u00a78\n- risk_notes: double drift accumulator; all four Lagrange neighbors wrapped mod L\n\nImplement class PitchShifter in Source/DSP/PitchShifter.h + PitchShifter.cpp:\n1. API: prepare(sampleRate, maxBlock), reset(), setLatencyModeStudioOrLive / setBufferLength(L), setDetuneCents(float deltaC), processSample(float x)->float (optional block process).\n2. Circular buffer length L: always allocate Studio L_max=2048 + \u22654 Lagrange guard in prepare; Live uses the first 512 samples only (no realloc on mode switch).\n3. Write pointer advances one sample per sample.\n4. Two read heads A/B offset by L/2 as delays behind the write pointer. Drift accumulator tau is double (NOT float): advance by dv = 1 - pow(2.0, deltaC/1200.0) each sample; branchless wrap: if (tau >= L) tau -= L; if (tau < 0) tau += L.\n5. Fractional read: 4-point cubic Lagrange (\u00a74.3). Each of y_{-1}, y_0, y_1, y_2 is read with individual wrap mod L.\n6. Raised-cosine (Hann) crossfade from head position so w_A + w_B == 1 exactly (unity gain, no ripple): w = 0.5 * (1 - cos(2\u03c0 * tau_head / L)); heads L/2 apart.\n7. detuneAmount path: accept smoothed cents (caller may smooth); setDetuneCents may also keep juce::SmoothedValue ~20 ms feeding dv so zipper cannot pitch-glitch.\n8. Nominal delay for docs/engine: L/2 samples (not implemented as host PDC here).\n9. RT: no heap/locks/logs outside prepare; O(1) per sample.\n\nDo not implement DelayLineFrac/crossover/width, tests, or CMakeLists. Do not wire into PluginProcessor.",
+          "status": "completed",
+          "tasks": [
+            {
+              "task": {
+                "task_id": "b.2",
+                "title": "PitchShifter - dual-head granular buffer, double drift accumulator, 4-point Lagrange, Hann unity-gain crossfade",
+                "description": "Implement Source/DSP/PitchShifter only. One instance will later run at +detune and one at \u2212detune.\n\nBefore editing, inspect:\n- .abracapocus/ShredWidth_Build_Spec.md \u00a7\u00a74.2 (dual-head granular end-to-end math), 4.3 (Lagrange), 4.9 (Studio L=2048 / Live L=512), \u00a76 (detune smoothing feeds dv), \u00a77\u2013\u00a78\n- risk_notes: double drift accumulator; all four Lagrange neighbors wrapped mod L\n\nImplement class PitchShifter in Source/DSP/PitchShifter.h + PitchShifter.cpp:\n1. API: prepare(sampleRate, maxBlock), reset(), setLatencyModeStudioOrLive / setBufferLength(L), setDetuneCents(float deltaC), processSample(float x)->float (optional block process).\n2. Circular buffer length L: always allocate Studio L_max=2048 + \u22654 Lagrange guard in prepare; Live uses the first 512 samples only (no realloc on mode switch).\n3. Write pointer advances one sample per sample.\n4. Two read heads A/B offset by L/2 as delays behind the write pointer. Drift accumulator tau is double (NOT float): advance by dv = 1 - pow(2.0, deltaC/1200.0) each sample; branchless wrap: if (tau >= L) tau -= L; if (tau < 0) tau += L.\n5. Fractional read: 4-point cubic Lagrange (\u00a74.3). Each of y_{-1}, y_0, y_1, y_2 is read with individual wrap mod L.\n6. Raised-cosine (Hann) crossfade from head position so w_A + w_B == 1 exactly (unity gain, no ripple): w = 0.5 * (1 - cos(2\u03c0 * tau_head / L)); heads L/2 apart.\n7. detuneAmount path: accept smoothed cents (caller may smooth); setDetuneCents may also keep juce::SmoothedValue ~20 ms feeding dv so zipper cannot pitch-glitch.\n8. Nominal delay for docs/engine: L/2 samples (not implemented as host PDC here).\n9. RT: no heap/locks/logs outside prepare; O(1) per sample.\n\nDo not implement DelayLineFrac/crossover/width, tests, or CMakeLists. Do not wire into PluginProcessor.",
+                "phase": "B",
+                "dependencies": [],
+                "exclusivity_category": null,
+                "max_in_category": null,
+                "status": "completed",
+                "acceptance_criteria": [
+                  "Source/DSP/PitchShifter.h and Source/DSP/PitchShifter.cpp exist",
+                  "PitchShifter allocates L_max=2048 (+ Lagrange guard) in prepare and supports Live L=512 without reallocation",
+                  "Drift accumulator tau is double and advances by dv = 1 - 2^(deltaC/1200) with branchless wrap",
+                  "Dual read heads are offset by L/2 with Hann/raised-cosine weights satisfying w_A + w_B == 1",
+                  "Fractional reads use 4-point cubic Lagrange with each neighbor individually wrapped mod L",
+                  "prepare/process/reset API present; no allocation outside prepare",
+                  "No file outside the task's allowed_write_paths is created or modified"
+                ],
+                "created_at": "2026-07-27T17:34:48.790622",
+                "selected_backend": "codex_cli",
+                "model": null,
+                "task_timeout_seconds": 1200.0,
+                "verification_profile": "focused",
+                "verification_commands": [],
+                "allowed_write_paths": [
+                  "Source/DSP/PitchShifter.h",
+                  "Source/DSP/PitchShifter.cpp"
+                ],
+                "forbidden_patterns_override": null
+              },
+              "dependencies": [],
+              "status": "completed"
+            }
+          ],
+          "completed": true,
+          "completed_at": "2026-07-27T17:38:13.553186",
+          "human_checkpoint": null
+        }
+      ],
+      "version": "task-b.2",
+      "created_at": "2026-07-27T17:34:48.857543"
+    }
   }
 ]
