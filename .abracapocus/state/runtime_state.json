@@ -1,17 +1,17 @@
 {
   "project_name": "shred-width",
-  "plan_version": "task-a.4",
-  "active_phase": "A",
+  "plan_version": "task-b.1",
+  "active_phase": "B",
   "default_backend": "codex_cli",
   "routing_mode": "manual",
   "tasks": [
     {
-      "task_id": "a.4",
-      "title": ".gitignore, README, .gitmodules notes",
-      "phase": "A",
-      "status": "completed",
+      "task_id": "b.1",
+      "title": "DelayLineFrac - fractional ms delay, 3rd-order Lagrange read, >=50 ms read-distance smoothing",
+      "phase": "B",
+      "status": "planned",
       "backend": "pi_cli",
-      "last_run": "2026-07-27T17:29:33.397727",
+      "last_run": null,
       "notes": ""
     }
   ],
@@ -56,6 +56,6 @@
   "operator_overrides": {},
   "completed_phases": [],
   "remaining_phases": [
-    "A"
+    "B"
   ]
 }
