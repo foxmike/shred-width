@@ -9,9 +9,9 @@
       "task_id": "a.2",
       "title": "ParameterIDs.h v1 inventory, APVTS layout with skews, bus layout (mono/stereo in -> stereo out), PluginProcessor spine with prepareToPlay allocation and PDC hooks",
       "phase": "A",
-      "status": "planned",
+      "status": "completed",
       "backend": "codex_cli",
-      "last_run": null,
+      "last_run": "2026-07-27T17:16:13.167415",
       "notes": ""
     }
   ],
@@ -24,6 +24,15 @@
       "reviewer_status": "approved",
       "verifier_status": "passed",
       "timestamp": "2026-07-27T17:12:34.363703"
+    },
+    {
+      "run_id": "fb303e52-6b25-4bec-9756-9646411b2fcd",
+      "task_id": "a.2",
+      "backend": "codex_cli",
+      "status": "ok",
+      "reviewer_status": "approved",
+      "verifier_status": "passed",
+      "timestamp": "2026-07-27T17:16:13.167530"
     }
   ],
   "operator_overrides": {},
