@@ -1,17 +1,17 @@
 {
   "project_name": "shred-width",
-  "plan_version": "task-b.4",
+  "plan_version": "task-b.5",
   "active_phase": "B",
   "default_backend": "codex_cli",
   "routing_mode": "manual",
   "tasks": [
     {
-      "task_id": "b.4",
-      "title": "WidthProcessor - M/S width, mono-lows-preserved reconstruction",
+      "task_id": "b.5",
+      "title": "TestMain harness and DSP primitive tests - delay, crossover reconstruction, width mono-lows invariant, unity-gain crossfade, CMakeLists registration",
       "phase": "B",
-      "status": "completed",
+      "status": "planned",
       "backend": "pi_cli",
-      "last_run": "2026-07-27T17:45:19.253366",
+      "last_run": null,
       "notes": ""
     }
   ],
