@@ -9,9 +9,9 @@
       "task_id": "d.1",
       "title": "CustomLookAndFeel (corrected drawPopupMenuItem signature) and RotarySlider",
       "phase": "D",
-      "status": "planned",
+      "status": "completed",
       "backend": "antigravity_cli",
-      "last_run": null,
+      "last_run": "2026-07-27T18:18:54.398552",
       "notes": ""
     }
   ],
@@ -132,6 +132,15 @@
       "reviewer_status": "approved",
       "verifier_status": "passed",
       "timestamp": "2026-07-27T18:16:11.549763"
+    },
+    {
+      "run_id": "54242522-29e5-4dcf-92d1-140bf20eab02",
+      "task_id": "d.1",
+      "backend": "antigravity_cli",
+      "status": "ok",
+      "reviewer_status": "approved",
+      "verifier_status": "passed",
+      "timestamp": "2026-07-27T18:18:54.398769"
     }
   ],
   "operator_overrides": {},
