@@ -9,9 +9,9 @@
       "task_id": "d.2",
       "title": "GoniometerComponent - FIFO drain, 45-degree Lissajous, phosphor decay, underflow hold",
       "phase": "D",
-      "status": "planned",
+      "status": "completed",
       "backend": "antigravity_cli",
-      "last_run": null,
+      "last_run": "2026-07-27T18:21:25.488722",
       "notes": ""
     }
   ],
@@ -141,6 +141,15 @@
       "reviewer_status": "approved",
       "verifier_status": "passed",
       "timestamp": "2026-07-27T18:18:54.398769"
+    },
+    {
+      "run_id": "b2d3238a-7f04-4479-89b5-098d41abc9d9",
+      "task_id": "d.2",
+      "backend": "antigravity_cli",
+      "status": "ok",
+      "reviewer_status": "approved",
+      "verifier_status": "passed",
+      "timestamp": "2026-07-27T18:21:25.488845"
     }
   ],
   "operator_overrides": {},
