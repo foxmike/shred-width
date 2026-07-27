@@ -9,9 +9,9 @@
       "task_id": "c.4",
       "title": "Engine integration tests - determinism/null, bypass, Mix=0 passthrough, mono-lows invariant, latency report",
       "phase": "C",
-      "status": "planned",
+      "status": "completed",
       "backend": "pi_cli",
-      "last_run": null,
+      "last_run": "2026-07-27T18:16:11.549631",
       "notes": ""
     }
   ],
@@ -123,6 +123,15 @@
       "reviewer_status": "approved",
       "verifier_status": "passed",
       "timestamp": "2026-07-27T18:06:17.403949"
+    },
+    {
+      "run_id": "edf290c9-3205-4bb8-8691-e3998314d3f1",
+      "task_id": "c.4",
+      "backend": "pi_cli",
+      "status": "ok",
+      "reviewer_status": "approved",
+      "verifier_status": "passed",
+      "timestamp": "2026-07-27T18:16:11.549763"
     }
   ],
   "operator_overrides": {},
