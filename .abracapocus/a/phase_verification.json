@@ -1,0 +1,38 @@
+{
+  "verification": {
+    "checks": [
+      {
+        "name": "scaffold_files_exist",
+        "command": [
+          "bash",
+          "-lc",
+          "test -f CMakeLists.txt && test -f CMakePresets.json && test -f scripts/build_all.sh && test -f Source/ParameterIDs.h && test -f Source/PluginProcessor.cpp && test -f Source/PluginProcessor.h && test -f Source/StateManager.cpp && test -f Source/StateManager.h && test -f Source/PluginEditor.cpp && test -f Source/PluginEditor.h && test -f README.md && test -f .gitignore"
+        ]
+      },
+      {
+        "name": "parameter_ids_stable",
+        "command": [
+          "bash",
+          "-lc",
+          "rg -q 'detuneAmount' Source/ParameterIDs.h && rg -q 'delayL' Source/ParameterIDs.h && rg -q 'delayR' Source/ParameterIDs.h && rg -q 'monoXover' Source/ParameterIDs.h && rg -q 'latencyMode' Source/ParameterIDs.h && rg -q 'monoSource' Source/ParameterIDs.h && rg -q 'outTrim' Source/ParameterIDs.h"
+        ]
+      },
+      {
+        "name": "bus_layout_and_rt_stub",
+        "command": [
+          "bash",
+          "-lc",
+          "rg -q 'isBusesLayoutSupported' Source/PluginProcessor.cpp && rg -q 'ScopedNoDenormals' Source/PluginProcessor.cpp && rg -q 'setLatencySamples' Source/PluginProcessor.cpp"
+        ]
+      },
+      {
+        "name": "cmake_formats_and_xover",
+        "command": [
+          "bash",
+          "-lc",
+          "rg -q 'juce_add_plugin\\(ShredWidth' CMakeLists.txt && rg -q 'SHREDWIDTH_XOVER_ORDER' CMakeLists.txt && rg -q 'VST3' CMakeLists.txt && rg -q 'LV2' CMakeLists.txt && rg -q 'Standalone' CMakeLists.txt"
+        ]
+      }
+    ]
+  }
+}

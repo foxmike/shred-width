@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "task_id": "a.4",
+  "phase": "A",
+  "phase_id": "a",
+  "title": ".gitignore, README, .gitmodules notes",
+  "description": "Add repository hygiene docs/files for ShredWidth. Independent of processor work (wave 1 with a.1).\n\nBefore editing, inspect:\n- /home/mike/dev/mike/music/plugins/shredeq/.gitignore and README.md\n- /home/mike/dev/mike/music/plugins/aural-maximizer-pro/.gitmodules\n- .abracapocus/ShredWidth_Build_Spec.md purpose blurb and \u00a715 build notes\n- Existing a.1 .gitmodules if present (do not fight the JUCE pin; only document it)\n\nImplement:\n1. .gitignore including at least: build/, cmake-build-*, state/, .abracapocus/state/, .abracapocus/logs/, .abracapocus/reports/, plus common CMake/IDE/plugin artifacts (compile_commands.json, .idea optional per sibling style).\n2. README.md: project name ShredWidth; one-paragraph description (static micro-pitch detuner / lead widener, deterministic, no LFO); formats VST3/CLAP/LV2/Standalone; C++20/JUCE; build steps: git submodule update --init --recursive; ./scripts/build_all.sh (note CLion-bundled cmake because cmake may not be on PATH); mention SHREDWIDTH_XOVER_ORDER default 2; point to .abracapocus/ShredWidth_Build_Spec.md for full spec.\n3. .gitmodules notes: if .gitmodules is missing, create the JUCE submodule entry matching aural-maximizer-pro URL/path and note the required pin (tag 8.0.13). If a.1 already wrote .gitmodules, only add a short README subsection documenting the pin and clap-juce-extensions expectation \u2014 do not regress the pin commit. Prefer not rewriting .gitmodules when a.1 owns the pin; only touch .gitmodules when absent.\n\nDo not touch Source/ or CMakeLists.txt build logic.",
+  "acceptance_criteria": [
+    ".gitignore exists and ignores build/, cmake-build-*, state/, .abracapocus/state/, .abracapocus/logs/, .abracapocus/reports/",
+    "README.md describes ShredWidth, supported formats, submodule init, and scripts/build_all.sh / CLion cmake note",
+    "README.md references ShredWidth_Build_Spec.md or .abracapocus spec location",
+    "JUCE submodule pin is documented in README and/or .gitmodules without conflicting with a.1",
+    "No file outside the task's allowed_write_paths is created or modified"
+  ],
+  "selected_backend": "pi_cli",
+  "model": "openrouter/deepseek/deepseek-v4-flash",
+  "verification_profile": "focused",
+  "allowed_write_paths": [
+    ".gitignore",
+    "README.md",
+    ".gitmodules"
+  ],
+  "forbidden_changes": [
+    "modify CMakeLists.txt, CMakePresets.json, scripts/build_all.sh",
+    "modify any Source/** files",
+    "change JUCE pin away from aural-maximizer-pro 8.0.13 if .gitmodules already set by a.1",
+    "add binary build products"
+  ],
+  "allowed_symbols": [],
+  "decision_budget": {
+    "allowed": [
+      "mirror shredeq gitignore/README structure",
+      "document clap-juce-extensions submodule expectation in README"
+    ],
+    "forbidden": [
+      "implement code or CMake targets",
+      "overwrite a.1 JUCE commit pin with a different revision"
+    ]
+  },
+  "dependencies": [
+    "a.1"
+  ],
+  "task_timeout_seconds": 600,
+  "verification_commands": []
+}

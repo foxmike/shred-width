@@ -1,0 +1,46 @@
+{
+  "verification": {
+    "checks": [
+      {
+        "name": "engine_meter_files_exist",
+        "command": [
+          "bash",
+          "-lc",
+          "test -f Source/DSP/MeterTap.h && test -f Source/DSP/MeterTap.cpp && test -f Source/DSP/ShredWidthEngine.h && test -f Source/DSP/ShredWidthEngine.cpp && test -f tests/EngineTests.cpp && test -f Source/PluginProcessor.cpp"
+        ]
+      },
+      {
+        "name": "engine_meter_symbols_present",
+        "command": [
+          "bash",
+          "-lc",
+          "rg -q 'class\\s+MeterTap' Source/DSP/MeterTap.h && rg -q 'class\\s+ShredWidthEngine' Source/DSP/ShredWidthEngine.h && rg -q 'std::atomic' Source/DSP/MeterTap.h Source/DSP/MeterTap.cpp && rg -q 'AbstractFifo' Source/DSP/MeterTap.h Source/DSP/MeterTap.cpp && rg -q 'getReportedLatencySamples|setLatencyMode' Source/DSP/ShredWidthEngine.h Source/DSP/ShredWidthEngine.cpp && rg -q 'ScopedNoDenormals' Source/PluginProcessor.cpp"
+        ]
+      },
+      {
+        "name": "cmake_registers_engine_meter_tests",
+        "command": [
+          "bash",
+          "-lc",
+          "rg -q 'MeterTap\\.cpp' CMakeLists.txt && rg -q 'ShredWidthEngine\\.cpp' CMakeLists.txt && rg -q 'EngineTests\\.cpp' CMakeLists.txt"
+        ]
+      },
+      {
+        "name": "processblock_engine_wiring_present",
+        "command": [
+          "bash",
+          "-lc",
+          "rg -q 'ShredWidthEngine' Source/PluginProcessor.h Source/PluginProcessor.cpp && rg -q 'setLatencySamples' Source/PluginProcessor.cpp && rg -q 'updateHostDisplay' Source/PluginProcessor.cpp"
+        ]
+      },
+      {
+        "name": "engine_tests_cover_key_invariants",
+        "command": [
+          "bash",
+          "-lc",
+          "rg -q 'Mix|mix' tests/EngineTests.cpp && rg -q 'latency|1024|256' tests/EngineTests.cpp && rg -q 'mono|width|L.*R' tests/EngineTests.cpp"
+        ]
+      }
+    ]
+  }
+}

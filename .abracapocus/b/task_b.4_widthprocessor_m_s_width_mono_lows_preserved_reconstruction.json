@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "task_id": "b.4",
+  "phase": "B",
+  "phase_id": "b",
+  "title": "WidthProcessor - M/S width, mono-lows-preserved reconstruction",
+  "description": "Implement Source/DSP/WidthProcessor only. Post-assembly M/S width (\u00a74.7) that cannot move shared lows off-center.\n\nBefore editing, inspect:\n- .abracapocus/ShredWidth_Build_Spec.md \u00a74.7 (M/S math and mono-lows proof), \u00a75 width range 0\u2013200% \u2192 factor [0,2], \u00a76 ~20 ms smoothing\n\nImplement class WidthProcessor in Source/DSP/WidthProcessor.h + WidthProcessor.cpp:\n1. API: prepare(sampleRate) [for smoother], reset(), setWidth(float width01or02), processSample(float inL, float inR, float& outL, float& outR) and/or block process.\n2. Math exactly: M=(yL+yR)/2, S=(yL-yR)/2, yL'=M+width*S, yR'=M-width*S with width clamped to [0, 2]. width=0 mono; width=1 identity; width=2 side doubled.\n3. Accept either 0\u20132 linear factor or 0\u2013200 percent mapped to [0,2] \u2014 document in header; tests will use [0,2] factor.\n4. Optional juce::SmoothedValue ~20 ms on width to avoid zipper (safe and matches \u00a76).\n5. No filtering here \u2014 mono-lows preservation is by construction when LP was shared upstream (do not reimplement crossover).\n6. RT-safe; no allocation outside prepare;\n\nDo not implement other DSP classes, tests, or CMakeLists.",
+  "acceptance_criteria": [
+    "Source/DSP/WidthProcessor.h and Source/DSP/WidthProcessor.cpp exist",
+    "WidthProcessor applies M=(L+R)/2, S=(L-R)/2, L'=M+w*S, R'=M-w*S with w clamped to [0,2]",
+    "width=1 yields identity (within float tolerance) for arbitrary L/R inputs",
+    "width=0 yields L'==R'==M",
+    "prepare/reset/process API present; no allocation outside prepare",
+    "No file outside the task's allowed_write_paths is created or modified"
+  ],
+  "selected_backend": "pi_cli",
+  "verification_profile": "focused",
+  "allowed_write_paths": [
+    "Source/DSP/WidthProcessor.h",
+    "Source/DSP/WidthProcessor.cpp"
+  ],
+  "forbidden_changes": [
+    "modify CMakeLists.txt, CMakePresets.json, scripts/**",
+    "modify DelayLineFrac, PitchShifter, MonoSafetyCrossover, PluginProcessor, PluginEditor",
+    "modify tests/**",
+    "apply frequency-dependent width or reimplement crossover",
+    "move lows via additional M/S EQ"
+  ],
+  "allowed_symbols": [
+    "WidthProcessor",
+    "prepare",
+    "reset",
+    "setWidth",
+    "processSample"
+  ],
+  "decision_budget": {
+    "allowed": [
+      "map 0\u2013200% to [0,2] or take [0,2] directly with clear docs",
+      "optional 20 ms SmoothedValue on width"
+    ],
+    "forbidden": [
+      "own CMakeLists or tests",
+      "change parameter IDs",
+      "add stereo imaging beyond \u00a74.7 M/S scale"
+    ]
+  },
+  "dependencies": [],
+  "task_timeout_seconds": 600,
+  "verification_commands": [],
+  "model": "openrouter/minimax/minimax-m3"
+}

@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "task_id": "c.2",
+  "phase": "C",
+  "phase_id": "c",
+  "title": "MeterTap - audio-thread Pearson correlation one-pole, lock-free AbstractFifo pair push, atomic rho",
+  "description": "Implement Source/DSP/MeterTap only. Wave-1 standalone metering block used by ShredWidthEngine / processBlock for UI transport.\n\nBefore editing, inspect:\n- .abracapocus/ShredWidth_Build_Spec.md \u00a7\u00a79.3 (Pearson \u03c1), 9.4 (Audio\u2192UI transport), 7 (RT-safety: no lock/alloc/String on push)\n- Existing JUCE AbstractFifo usage patterns in sibling plugins if present under /home/mike/dev/mike/music/plugins/\n\nImplement class MeterTap in Source/DSP/MeterTap.h + MeterTap.cpp:\n1. API: prepare(double sampleRate, int maxBlock), reset(), pushSample(float L, float R) and/or pushBlock(const float* L, const float* R, int n), float getCorrelation() const (or load atomic), and a drain API for the UI thread (e.g. popPairs into caller buffers via AbstractFifo read).\n2. Correlation: normalized Pearson on output L/R on the audio thread:\n   \u03c1 = mean(LR) / (sqrt(mean(L\u00b2)\u00b7mean(R\u00b2)) + \u03b5), \u03c1 \u2208 [-1, 1].\n   One-pole running means with time constant \u2248 300 ms (coeff from sampleRate); \u03b5 silence guard. Publish smoothed \u03c1 as std::atomic<float> (memory_order relaxed or acquire/release as appropriate).\n3. Goniometer transport: juce::AbstractFifo lock-free SPSC sized ~4096 stereo frames; push decimated L/R pairs (e.g. every Nth sample so UI @ 30\u201360 Hz is fed). No lock, no heap allocation, no juce::String on the push path.\n4. prepare allocates any ring storage once; process/push never resizes.\n5. RT-safe; O(1) per pushed sample.\n\nDo not implement ShredWidthEngine, PluginProcessor wiring, tests, or CMakeLists.",
+  "acceptance_criteria": [
+    "Source/DSP/MeterTap.h and Source/DSP/MeterTap.cpp exist",
+    "MeterTap publishes smoothed Pearson correlation via std::atomic<float>",
+    "Correlation uses one-pole means with ~300 ms time constant and an epsilon guard",
+    "MeterTap pushes decimated L/R pairs through juce::AbstractFifo (~4096 frames capacity)",
+    "prepare/reset/push (and UI drain) API present; no allocation, lock, or juce::String on the audio push path",
+    "No file outside the task's allowed_write_paths is created or modified"
+  ],
+  "selected_backend": "codex_cli",
+  "verification_profile": "focused",
+  "allowed_write_paths": [
+    "Source/DSP/MeterTap.h",
+    "Source/DSP/MeterTap.cpp"
+  ],
+  "forbidden_changes": [
+    "modify CMakeLists.txt, CMakePresets.json, scripts/**",
+    "modify ShredWidthEngine, PluginProcessor, PluginEditor, ParameterIDs, StateManager",
+    "modify other Source/DSP/** primitives (PitchShifter, DelayLineFrac, MonoSafetyCrossover, WidthProcessor)",
+    "modify tests/**",
+    "use mutex/CriticalSection or allocate on the push path"
+  ],
+  "allowed_symbols": [
+    "MeterTap",
+    "prepare",
+    "reset",
+    "pushSample",
+    "pushBlock",
+    "getCorrelation",
+    "AbstractFifo"
+  ],
+  "decision_budget": {
+    "allowed": [
+      "choose decimation stride N for FIFO push",
+      "expose either pushSample and/or block push plus a simple UI drain API",
+      "store L/R pairs as interleaved floats or struct of two floats"
+    ],
+    "forbidden": [
+      "own CMakeLists or unit tests",
+      "implement full engine signal path",
+      "cross threads with locks or message-thread calls from push"
+    ]
+  },
+  "dependencies": [],
+  "task_timeout_seconds": 900,
+  "verification_commands": []
+}

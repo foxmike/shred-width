@@ -1,0 +1,216 @@
+{
+  "plan_name": "SHREDWIDTH",
+  "purpose": "Build ShredWidth: a static micro-pitch detuner and lead widener for guitar and monophonic sources. C++20/JUCE plugin targeting VST3, CLAP, LV2, and Standalone. Fully deterministic (no LFO, no randomness): a dual-head granular crossfading pitch shifter with 3rd-order Lagrange interpolation applies a fixed +/-detune per channel; independent Haas delays widen; an LR2 (build-option LR4) Linkwitz-Riley crossover keeps lows shared and centered (mono-safe by construction) while only the highs spread; post-assembly M/S width scales 0-200% without moving the lows; equal-gain dry/wet mix; nominal PDC via setLatencySamples with Studio/Live buffer modes. Honest metering: audio-thread Pearson correlation and a goniometer fed over a lock-free AbstractFifo. Full product specification in ShredWidth_Build_Spec.md. Section 16 open decisions are materialized at their defaults (LR2 with LR4 build option, hidden monoSource=Sum, Output Trim included at 0 dB, no AU target, masked-crossfade live latency switch).",
+  "async_strategy": "Phases run sequentially. Within each phase, tasks with disjoint write paths run in parallel waves. Fan-in tasks (processBlock wiring, editor assembly, CMakeLists source registration) depend on all upstream tasks in the same phase and are the sole owner of CMakeLists.txt, PluginProcessor, and PluginEditor within that phase. The C++ language adapter provides cmake/ctest verification inference from CMakeLists.txt once the build system exists, so task verification_commands arrays are left empty. Real build, ctest, RT-safety, and pluginval verification run in phase e via scripts that resolve cmake through build_all.sh (CLion-bundled cmake; not on PATH).",
+  "cost_estimate": "medium",
+  "operator_questions": [],
+  "phases": [
+    {
+      "phase_id": "a",
+      "goal": "Project scaffold, build system, APVTS parameter infrastructure, and state.\n\nSee ShredWidth_Build_Spec.md sections 5 (parameters), 10 (formats), 11 (bus layout), 13 (file structure), and 15 (build integration).\n\nCMakeLists.txt: juce_add_plugin targeting VST3, CLAP (via clap-juce-extensions), LV2 (JUCE native LV2 target), and Standalone. Expose the SHREDWIDTH_XOVER_ORDER compile option (default 2 for LR2). CMakePresets.json and scripts/build_all.sh; build_all.sh must locate CLion's bundled cmake because cmake is not on PATH. Add JUCE as a git submodule pinned to the same tag aural-maximizer-pro uses (so the drawPopupMenuItem signature and LV2 support match a known-good version); inspect aural-maximizer-pro CMakeLists.txt for the known-working structure and follow the same nSpace conventions (plugin code, manufacturer code, company, bundle ID, version, copy-after-build). JUCE may already be present on this machine via symlink.\n\nParameterIDs.h: stable v1 inventory with never-renumbered string IDs: detuneAmount (0-25 cents, default 7), delayL (1-50 ms, 12.5), delayR (1-50 ms, 18.0), monoXover (80-300 Hz, 180, log skew ~0.35), width (0-200%, 100), mix (0-100% wet, 40), latencyMode ({Studio,Live}, Studio), outTrim (-12..+12 dB, 0), bypass (bool), and the hidden monoSource ({Sum,Left}, default Sum, not surfaced on the GUI). detuneAmount is one control applied as +amount to the L shifter and -amount to the R shifter.\n\nPluginProcessor spine: APVTS with NormalisableRange skews; isBusesLayoutSupported accepts {mono in, stereo out} and {stereo in, stereo out} and rejects others (mono->mono collapses to Mix=0 dry passthrough); processBlock stub with ScopedNoDenormals; prepareToPlay allocates all buffers sized for the Studio worst case and never reallocates on the audio thread (2x pitch circular buffers L=2048+4 guard, 2x delay lines ceil(50ms*maxSampleRate)+guard, 1x dry-align delay 1024, meter FIFO ring); setLatencySamples PDC hooks.\n\nStateManager: full APVTS XML getStateInformation/setStateInformation with parameterLayoutVersion for forward migration and A/B slots.\n\nPluginEditor skeleton: window, Timer, ResizableCornerComponent.\n\n.gitignore (build/, cmake-build-*, state/, .abracapocus/state/, .abracapocus/logs/, .abracapocus/reports/) and README.",
+      "expected_changed_files": [
+        "CMakeLists.txt",
+        "CMakePresets.json",
+        "scripts/build_all.sh",
+        "Source/PluginProcessor.h",
+        "Source/PluginProcessor.cpp",
+        "Source/PluginEditor.h",
+        "Source/PluginEditor.cpp",
+        "Source/ParameterIDs.h",
+        "Source/StateManager.h",
+        "Source/StateManager.cpp",
+        "README.md",
+        ".gitignore",
+        ".gitmodules"
+      ],
+      "async_notes": "Wave 1: a.1 (CMakeLists + CMakePresets + build_all.sh + JUCE submodule; sole CMakeLists owner) and a.4 (.gitignore + README) are independent. Wave 2: a.2 (ParameterIDs + APVTS + bus layout + PluginProcessor spine; sole Processor owner) depends on a.1. Wave 3: a.3 (StateManager + PluginEditor skeleton) depends on a.2.",
+      "risk_notes": "a.1 sole CMakeLists owner; a.2 sole Processor owner. Bus layout must accept only mono->stereo and stereo->stereo. JUCE pin must match aural-maximizer-pro for drawPopupMenuItem and LV2. Param IDs are stable strings and must never be renumbered.",
+      "estimated_task_count": 4,
+      "task_hints": [
+        {
+          "title": "CMakeLists.txt, CMakePresets.json, build_all.sh (CLion-bundled cmake), JUCE submodule pinned to aural-maximizer-pro tag",
+          "selected_backend": "codex_cli"
+        },
+        {
+          "title": "ParameterIDs.h v1 inventory, APVTS layout with skews, bus layout (mono/stereo in -> stereo out), PluginProcessor spine with prepareToPlay allocation and PDC hooks",
+          "selected_backend": "codex_cli"
+        },
+        {
+          "title": "StateManager (APVTS XML save/restore, layout version, A/B slots) and PluginEditor skeleton",
+          "selected_backend": "antigravity_cli"
+        },
+        {
+          "title": ".gitignore, README, .gitmodules notes",
+          "selected_backend": "pi_cli",
+          "model": "openrouter/deepseek/deepseek-v4-flash"
+        }
+      ]
+    },
+    {
+      "phase_id": "b",
+      "goal": "DSP primitives: fractional delay, dual-head granular pitch shifter, mono-safety crossover, and M/S width.\n\nSee ShredWidth_Build_Spec.md sections 3 (signal flow), 4.2-4.5 and 4.7 (per-stage DSP math), 6 (smoothing), 7 (RT-safety), and 8 (memory) for complete math. All DSP classes expose prepare(spec)/process(...)/reset() and allocate nothing outside prepare.\n\nDelayLineFrac: ms->samples fractional delay at the live sampleRate using 3rd-order Lagrange (or a juce::dsp::DelayLine<float, Lagrange3rd> equivalent), preallocated for ceil(50ms*maxSampleRate)+guard; the read distance is smoothed over a >=50 ms ramp (D9) so automation does not pitch-glitch.\n\nPitchShifter (one instance per detune polarity): length-L circular buffer, write pointer advancing one sample/sample, two read heads offset by L/2 expressed as delays behind the write pointer, a DOUBLE drift accumulator tau advanced by dv = 1 - 2^(deltaC/1200) with branchless wrap (if tau>=L tau-=L; if tau<0 tau+=L), 4-point cubic Lagrange interpolation with each neighbor read individually wrapped mod L, and raised-cosine (Hann) crossfade weights keyed to head position so w_A + w_B == 1 exactly (unity gain, no ripple). detuneAmount smoothing feeds the dv computation. Buffer L=2048 for Studio (always allocated); Live uses the first 512 samples.\n\nMonoSafetyCrossover: LR2 = two cascaded 1st-order Butterworth sections per band (juce::dsp::IIR). The LP path operates on the dry mono source x(n) as a single shared instance (centered lows); the HP path operates per shifted+delayed channel (spread highs) with the highpass polarity inverted internally. Provide the SHREDWIDTH_XOVER_ORDER=4 build option (two cascaded 2nd-order Butterworth per band, in-phase LR4). Recompute coefficients only on a monoXover dirty flag at block start, never per-sample.\n\nWidthProcessor: post-assembly M/S width (section 4.7). M=(yL+yR)/2, S=(yL-yR)/2, yL'=M+width*S, yR'=M-width*S with width in [0,2]. The shared LP cancels in S, so the low band contributes zero to Side and width can never move the lows off-center.",
+      "expected_changed_files": [
+        "Source/DSP/DelayLineFrac.h",
+        "Source/DSP/DelayLineFrac.cpp",
+        "Source/DSP/PitchShifter.h",
+        "Source/DSP/PitchShifter.cpp",
+        "Source/DSP/MonoSafetyCrossover.h",
+        "Source/DSP/MonoSafetyCrossover.cpp",
+        "Source/DSP/WidthProcessor.h",
+        "Source/DSP/WidthProcessor.cpp",
+        "CMakeLists.txt",
+        "tests/TestMain.cpp",
+        "tests/DSPPrimitiveTests.cpp"
+      ],
+      "async_notes": "Wave 1: b.1 (DelayLineFrac), b.2 (PitchShifter), b.3 (MonoSafetyCrossover), and b.4 (WidthProcessor) are all independent (disjoint files). Wave 2: b.5 (TestMain harness + DSP primitive tests + CMakeLists source/test registration; sole CMakeLists owner) depends on b.1, b.2, b.3, and b.4.",
+      "risk_notes": "b.2 drift accumulator must be double (single precision drifts audibly over minutes); all four Lagrange neighbor reads wrapped mod L. b.3 highpass polarity inverted; LR2/LR4 selected by compile option. b.5 sole CMakeLists owner.",
+      "estimated_task_count": 5,
+      "task_hints": [
+        {
+          "title": "DelayLineFrac - fractional ms delay, 3rd-order Lagrange read, >=50 ms read-distance smoothing",
+          "selected_backend": "pi_cli",
+          "model": "openrouter/minimax/minimax-m3"
+        },
+        {
+          "title": "PitchShifter - dual-head granular buffer, double drift accumulator, 4-point Lagrange, Hann unity-gain crossfade",
+          "selected_backend": "codex_cli"
+        },
+        {
+          "title": "MonoSafetyCrossover - LR2 shared-LP design, inverted HP polarity, LR4 build option, block-rate coefficient recompute",
+          "selected_backend": "codex_cli"
+        },
+        {
+          "title": "WidthProcessor - M/S width, mono-lows-preserved reconstruction",
+          "selected_backend": "pi_cli",
+          "model": "openrouter/minimax/minimax-m3"
+        },
+        {
+          "title": "TestMain harness and DSP primitive tests - delay, crossover reconstruction, width mono-lows invariant, unity-gain crossfade, CMakeLists registration",
+          "selected_backend": "pi_cli",
+          "model": "openrouter/minimax/minimax-m3"
+        }
+      ]
+    },
+    {
+      "phase_id": "c",
+      "goal": "Engine orchestration, audio-thread metering tap, and processBlock integration.\n\nSee ShredWidth_Build_Spec.md sections 3 (signal flow), 4.1 (mono source), 4.6 (channel assembly), 4.8 (dry/wet mix), 4.9 (latency modes and PDC), 7 (RT-safety), 9.3-9.4 (correlation and audio->UI transport), and 14 (tests).\n\nMeterTap: audio-thread normalized Pearson correlation rho of the output L/R, one-pole smoothed with a ~300 ms time constant and an epsilon guard, published as a std::atomic<float>; decimated output L/R pairs pushed into a juce::AbstractFifo (lock-free SPSC, ~4096 frames). No lock, allocation, or juce::String on the push path.\n\nShredWidthEngine: owns the two PitchShifters (+deltaC and -deltaC), two DelayLineFracs (tau_L, tau_R), one MonoSafetyCrossover (shared LP computed once and added to both channels), one WidthProcessor, the dry-align delay, and the MeterTap. Per-sample path: mono sum x = 0.5*(L+R) for stereo input or L for mono input (honor hidden monoSource) -> +/-deltaC pitch shift -> tau_L / tau_R delays -> HP(shifted) + shared LP(x) channel assembly -> M/S width -> equal-gain dry/wet mix against the original input delayed by the reported PDC. Latency-mode change repoints/relengths the pre-allocated buffers (no realloc, D5) and is masked by a ~10 ms internal crossfade. Delay offsets are excluded from reported latency (D4).\n\nPluginProcessor processBlock: ScopedNoDenormals at top; read smoothed parameters (crossover coefficients per block; width, mix, and detune drift per sample); call engine.process; push the final output pairs to the MeterTap; report latency via setLatencySamples = L/2 for the active mode and call updateHostDisplay on mode switch. Register the new sources in CMakeLists.",
+      "expected_changed_files": [
+        "Source/DSP/ShredWidthEngine.h",
+        "Source/DSP/ShredWidthEngine.cpp",
+        "Source/DSP/MeterTap.h",
+        "Source/DSP/MeterTap.cpp",
+        "Source/PluginProcessor.h",
+        "Source/PluginProcessor.cpp",
+        "CMakeLists.txt",
+        "tests/EngineTests.cpp"
+      ],
+      "async_notes": "Wave 1: c.2 (MeterTap) is standalone. Wave 2: c.1 (ShredWidthEngine, which holds a MeterTap member) depends on c.2. Wave 3: c.3 (processBlock wiring + latency reporting + CMakeLists; sole Processor/CMakeLists owner) depends on c.1. Wave 4: c.4 (engine integration tests) depends on c.1.",
+      "risk_notes": "c.3 is the Processor fan-in and sole CMakeLists owner. Latency-mode switch must repoint pre-allocated buffers (no realloc) and mask with a crossfade (D5). Dry path is aligned to the reported PDC only; delay offsets are excluded (D4).",
+      "estimated_task_count": 4,
+      "task_hints": [
+        {
+          "title": "ShredWidthEngine - full per-sample orchestration, shared-LP assembly, dry-align, latency-mode buffer repoint + masked crossfade",
+          "selected_backend": "codex_cli"
+        },
+        {
+          "title": "MeterTap - audio-thread Pearson correlation one-pole, lock-free AbstractFifo pair push, atomic rho",
+          "selected_backend": "codex_cli"
+        },
+        {
+          "title": "PluginProcessor processBlock wiring - ScopedNoDenormals, smoothed reads, latency reporting, meter push, CMakeLists",
+          "selected_backend": "antigravity_cli"
+        },
+        {
+          "title": "Engine integration tests - determinism/null, bypass, Mix=0 passthrough, mono-lows invariant, latency report",
+          "selected_backend": "pi_cli",
+          "model": "openrouter/minimax/minimax-m3"
+        }
+      ]
+    },
+    {
+      "phase_id": "d",
+      "goal": "GUI: LookAndFeel, goniometer, correlation meter, and full editor layout.\n\nSee ShredWidth_Build_Spec.md section 9 (GUI and visualizations) and section 13 (file structure). Single window, dark theme, custom LookAndFeel.\n\nCustomLookAndFeel: rotary drawing, dark-theme colors, and fonts. Implement drawPopupMenuItem with the LookAndFeel_V4 individual-parameter signature (isSeparator, isActive, isHighlighted, isTicked, hasSubMenu, text, shortcutKeyText, icon, textColour) - NOT the newer PopupMenu::Item& overload, which does not exist in the pinned JUCE version. RotarySlider factored out of the LookAndFeel.\n\nGoniometerComponent: drain the lock-free AbstractFifo and plot output L/R rotated 45 degrees (x_plot=(R-L)/sqrt(2) Side, y_plot=(L+R)/sqrt(2) Mid) as a Lissajous vectorscope with phosphor alpha decay (older dots dimmer), ~1-2k points per frame; on FIFO underflow hold the last frame.\n\nCorrelationMeter: read the atomic rho and draw a horizontal bar centered at 0 (green +1..+0.3, yellow +0.3..-0.3, red <-0.3) with a held peak-toward--1 flash as the mono-cancellation warning.\n\nPluginEditor full layout: header (plugin name, preset selector, A/B compare, bypass LED); left column rotaries (Detune Amount, Width, Mix, Output Trim); center column (Delay Offset L, Delay Offset R, Low Mono Crossover, segmented Studio/Live latency toggle); right column metering (Goniometer above CorrelationMeter). Wire APVTS SliderAttachments, a Timer at 30-60 Hz to drive the meters, ResizableCornerComponent with a constrained aspect, and store the window size in the value tree state. Register the new sources in CMakeLists.",
+      "expected_changed_files": [
+        "Source/GUI/CustomLookAndFeel.h",
+        "Source/GUI/CustomLookAndFeel.cpp",
+        "Source/GUI/RotarySlider.h",
+        "Source/GUI/RotarySlider.cpp",
+        "Source/GUI/GoniometerComponent.h",
+        "Source/GUI/GoniometerComponent.cpp",
+        "Source/GUI/CorrelationMeter.h",
+        "Source/GUI/CorrelationMeter.cpp",
+        "Source/PluginEditor.h",
+        "Source/PluginEditor.cpp",
+        "CMakeLists.txt"
+      ],
+      "async_notes": "Wave 1: d.1 (CustomLookAndFeel + RotarySlider) is standalone. Wave 2: d.2 (GoniometerComponent) and d.3 (CorrelationMeter) depend on d.1 for shared colors but are independent of each other. Wave 3: d.4 (PluginEditor assembly + CMakeLists; sole Editor/CMakeLists owner) depends on d.1, d.2, and d.3.",
+      "risk_notes": "Antigravity-heavy phase. d.4 is the Editor fan-in. drawPopupMenuItem must use the LookAndFeel_V4 individual-parameter signature (not PopupMenu::Item&) to match the pinned JUCE version.",
+      "estimated_task_count": 4,
+      "task_hints": [
+        {
+          "title": "CustomLookAndFeel (corrected drawPopupMenuItem signature) and RotarySlider",
+          "selected_backend": "antigravity_cli"
+        },
+        {
+          "title": "GoniometerComponent - FIFO drain, 45-degree Lissajous, phosphor decay, underflow hold",
+          "selected_backend": "antigravity_cli"
+        },
+        {
+          "title": "CorrelationMeter - atomic rho read, colored bar, mono-cancellation flash",
+          "selected_backend": "antigravity_cli"
+        },
+        {
+          "title": "PluginEditor full layout - header, control columns, metering column, APVTS attachments, timer, resize, CMakeLists",
+          "selected_backend": "antigravity_cli"
+        }
+      ]
+    },
+    {
+      "phase_id": "e",
+      "goal": "Factory presets, correctness tests, verification scripts, and release documentation.\n\nSee ShredWidth_Build_Spec.md section 12 (presets), section 14 (verification and test plan), section 15 (build integration), and section 16 (open decisions, all defaulted).\n\nFactory presets as APVTS XML in Resources/Presets/, embedded via BinaryData: Tight Lead (Detune +/-5, Delay 10/14 ms, Xover 200 Hz, Width 90%, Mix 30%); Wide Lead (+/-7, 12.5/18 ms, 180 Hz, 100%, 40%); Huge Solo (+/-14, 20/28 ms, 150 Hz, 140%, 55%); Mono-Safe Subtle (+/-4, 8/11 ms, 250 Hz, 70%, 25%); Live Tracking (Live mode, +/-6, 10/13 ms, 200 Hz, 90%, 35%).\n\nCorrectness tests that need the full output path: pitch accuracy (FFT the +deltaC output of a pure tone and assert the peak lands within tolerance of f*2^(deltaC/1200)) and correlation sanity (Width=200% with large detune drops rho; Width=0 gives rho ~ 1; the folded-to-mono sum has no null below f_cross). Register preset BinaryData and the final test target in CMakeLists.\n\nVerification scripts: an RT-safety grep gate that fails the build if processBlock references new, malloc, juce::String, or a lock and asserts ScopedNoDenormals is present; and a pluginval runner at strictness 8+ on VST3 and CLAP with LV2 and Standalone smoke-load. Scripts resolve cmake and pluginval through build_all.sh / CLion because cmake is not on PATH.\n\nDocumentation: a verification checklist covering the section 14 CI-runnable checks (RT-safety, determinism/null, bypass null, Mix=0 passthrough, mono-lows invariant, unity-gain crossfade, pitch accuracy, correlation sanity, latency report, pluginval) and an honest note that the ear-pass and full host matrix are manual; and a user manual covering nominal (not sample-exact) latency, the hidden monoSource toggle, latencyMode being automatable but discouraged, the LV2 host port-metadata note, and the factory preset descriptions.",
+      "expected_changed_files": [
+        "Resources/Presets/TightLead.xml",
+        "Resources/Presets/WideLead.xml",
+        "Resources/Presets/HugeSolo.xml",
+        "Resources/Presets/MonoSafeSubtle.xml",
+        "Resources/Presets/LiveTracking.xml",
+        "tests/CorrectnessTests.cpp",
+        "CMakeLists.txt",
+        "scripts/check_rt_safety.sh",
+        "scripts/run_pluginval.sh",
+        "docs/verification/shredwidth_verification.md",
+        "docs/shredwidth_manual.md"
+      ],
+      "async_notes": "Wave 1: e.1 (preset XML assets), e.3 (RT-safety grep-gate script), e.4 (pluginval + smoke-load script), and e.5 (verification + manual docs) are all independent. Wave 2: e.2 (correctness tests + preset BinaryData embedding + CMakeLists; sole CMakeLists owner) depends on e.1.",
+      "risk_notes": "e.2 sole CMakeLists owner (preset BinaryData + final tests). Verification scripts assume cmake/pluginval resolved via build_all.sh / CLion (cmake not on PATH). Host pluginval beyond CI and the ear-pass are manual (section 14).",
+      "estimated_task_count": 5,
+      "task_hints": [
+        {
+          "title": "Factory preset XML assets (Tight Lead, Wide Lead, Huge Solo, Mono-Safe Subtle, Live Tracking)",
+          "selected_backend": "pi_cli",
+          "model": "openrouter/deepseek/deepseek-v4-flash"
+        },
+        {
+          "title": "Pitch-accuracy FFT and correlation-sanity tests, preset BinaryData embedding, CMakeLists",
+          "selected_backend": "pi_cli",
+          "model": "openrouter/minimax/minimax-m3"
+        },
+        {
+          "title": "RT-safety grep-gate script (forbidden processBlock calls, ScopedNoDenormals present)",
+          "selected_backend": "pi_cli",
+          "model": "openrouter/minimax/minimax-m3"
+        },
+        {
+          "title": "pluginval and format smoke-load script (VST3/CLAP strictness 8+, LV2/Standalone)",
+          "selected_backend": "pi_cli",
+          "model": "openrouter/minimax/minimax-m3"
+        },
+        {
+          "title": "Verification checklist and user manual docs (nominal latency, monoSource, automation caveats, LV2 host notes)",
+          "selected_backend": "pi_cli",
+          "model": "openrouter/deepseek/deepseek-v4-flash"
+        }
+      ]
+    }
+  ]
+}

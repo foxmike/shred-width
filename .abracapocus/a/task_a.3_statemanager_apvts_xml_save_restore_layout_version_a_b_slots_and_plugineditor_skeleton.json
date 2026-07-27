@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "task_id": "a.3",
+  "phase": "A",
+  "phase_id": "a",
+  "title": "StateManager (APVTS XML save/restore, layout version, A/B slots) and PluginEditor skeleton",
+  "description": "Add StateManager and a minimal PluginEditor skeleton. Depends on a.2 ParameterIDs / processor types.\n\nBefore editing, inspect:\n- /home/mike/dev/mike/music/plugins/shredeq/Source/StateManager.h and StateManager.cpp (A/B slots, schema_version, capture/apply patterns \u2014 simplify; do not copy gain-match machinery unless tiny)\n- Source/PluginProcessor.h/.cpp from a.2 (APVTS accessors, get/setStateInformation hooks)\n- /home/mike/dev/mike/music/plugins/shredeq/Source/PluginEditor.h/.cpp for Timer + editor construction pattern\n- .abracapocus/ShredWidth_Build_Spec.md \u00a75 (parameterLayoutVersion) and \u00a713\n\nImplement:\n1. Source/StateManager.h/.cpp:\n   - Owns schema-versioned state helpers for ShredWidth.\n   - Full APVTS XML serialization helpers used by getStateInformation/setStateInformation: copyState \u2192 ValueTree with parameterLayoutVersion (or schema_version) property; restore replaces APVTS state; reject/ignore newer future versions safely; allow forward migration hook stub when version < current.\n   - A/B slots: captureSlot/applySlot (or captureFrom/applyTo + swap/copy A\u2194B) storing ValueTree snapshots; active slot tracking.\n   - Message-thread only for XML/ValueTree; document RT-unsafe.\n\n2. Wire PluginProcessor getStateInformation/setStateInformation to StateManager (edit only the state methods and private StateManager member in PluginProcessor if required \u2014 keep changes minimal and do not rework APVTS layout or bus/PDC logic from a.2).\n\n3. Source/PluginEditor.h/.cpp skeleton:\n   - ShredWidthAudioProcessorEditor : juce::AudioProcessorEditor, juce::Timer\n   - Constructor takes processor ref; setSize reasonable default (e.g. 800\u00d7480); add juce::ResizableCornerComponent and setResizable with limits; Timer start at 30\u201360 Hz with empty/lightweight timerCallback.\n   - paint/resized stubs (dark background fill, no full control layout yet).\n   - Processor createEditor returns new ShredWidthAudioProcessorEditor(*this); hasEditor true.\n\nDo not implement Goniometer, CorrelationMeter, CustomLookAndFeel, or full rotary layout (phase D). Do not edit CMakeLists.txt unless absolutely unavoidable; a.1 already lists editor/processor sources.",
+  "acceptance_criteria": [
+    "Source/StateManager.h and Source/StateManager.cpp exist with A/B slot capture/apply and parameterLayoutVersion (or schema_version) on saved state",
+    "PluginProcessor getStateInformation/setStateInformation round-trip APVTS via StateManager XML/ValueTree path",
+    "Source/PluginEditor.h and Source/PluginEditor.cpp define ShredWidthAudioProcessorEditor with Timer and ResizableCornerComponent",
+    "createEditor returns ShredWidthAudioProcessorEditor and hasEditor is true",
+    "StateManager does not allocate or lock on a documented audio-thread API path",
+    "No file outside the task's allowed_write_paths is created or modified"
+  ],
+  "selected_backend": "antigravity_cli",
+  "verification_profile": "focused",
+  "allowed_write_paths": [
+    "Source/StateManager.h",
+    "Source/StateManager.cpp",
+    "Source/PluginEditor.h",
+    "Source/PluginEditor.cpp",
+    "Source/PluginProcessor.h",
+    "Source/PluginProcessor.cpp"
+  ],
+  "forbidden_changes": [
+    "modify CMakeLists.txt, CMakePresets.json, scripts/build_all.sh, .gitmodules",
+    "rename or renumber ParameterIDs stable strings",
+    "rewrite isBusesLayoutSupported or createParameterLayout ranges/defaults",
+    "implement full GUI controls, LookAndFeel, goniometer, or correlation meter",
+    "implement DSP engine classes",
+    "change plugin manufacturer/codes"
+  ],
+  "allowed_symbols": [
+    "StateManager",
+    "parameterLayoutVersion",
+    "schema_version",
+    "captureSlot",
+    "applySlot",
+    "ShredWidthAudioProcessorEditor",
+    "getStateInformation",
+    "setStateInformation",
+    "createEditor",
+    "timerCallback"
+  ],
+  "decision_budget": {
+    "allowed": [
+      "simplify ShredEQ StateManager A/B pattern without gain-match meters",
+      "minimal processor edits to own StateManager and delegate state I/O",
+      "placeholder paint/resized only"
+    ],
+    "forbidden": [
+      "phase D full editor layout",
+      "change bus layout or parameter inventory",
+      "add new third-party dependencies"
+    ]
+  },
+  "dependencies": [
+    "a.2"
+  ],
+  "task_timeout_seconds": 900,
+  "verification_commands": []
+}

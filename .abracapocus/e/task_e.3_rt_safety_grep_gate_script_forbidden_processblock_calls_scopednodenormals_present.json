@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "task_id": "e.3",
+  "phase": "E",
+  "phase_id": "e",
+  "title": "RT-safety grep-gate script (forbidden processBlock calls, ScopedNoDenormals present)",
+  "description": "Add a CI-runnable RT-safety static grep gate per Build Spec \u00a714 item 1. Wave-1 independent task; scripts only.\n\nBefore editing, inspect:\n- Source/PluginProcessor.cpp processBlock region (ScopedNoDenormals, engine call path)\n- .abracapocus/ShredWidth_Build_Spec.md \u00a77 (processBlock contract) and \u00a714 item 1\n- scripts/build_all.sh from phase A (how cmake is located; cmake is NOT on PATH \u2014 CLion-bundled via build_all.sh)\n- Sibling gate scripts under /home/mike/dev/mike/music/plugins/ if any\n\nImplement scripts/check_rt_safety.sh:\n1. Bash script, set -euo pipefail, runnable from repo root: `bash scripts/check_rt_safety.sh`.\n2. Fail (non-zero) if processBlock-related sources reference forbidden APIs in audio-thread code paths, at minimum grepping Source/PluginProcessor.cpp (and optionally Source/DSP/** process paths) for: `\\bnew\\b`, `malloc`, `juce::String`, and lock primitives (`lock`, `CriticalSection`, `std::mutex`, `scoped_lock`) used inside processBlock or clearly audio push paths. Prefer scoped checks (processBlock function body / MeterTap push) to avoid false positives on prepareToPlay; document the strategy in script comments.\n3. Assert `ScopedNoDenormals` is present in Source/PluginProcessor.cpp processBlock path; fail if missing.\n4. Print clear PASS/FAIL lines on stdout; exit 0 only on full pass.\n5. Do not require cmake on PATH; this gate is pure source grep (no configure/build). May call `rg` or `grep -E`.\n6. Make the script executable bit in content via shebang; chmod is fine if the environment allows.\n\nDo not edit CMakeLists, C++ sources, presets, or docs.",
+  "acceptance_criteria": [
+    "scripts/check_rt_safety.sh exists and is a bash script with a shebang",
+    "scripts/check_rt_safety.sh fails when processBlock sources contain forbidden patterns among new, malloc, juce::String, or lock primitives (as implemented)",
+    "scripts/check_rt_safety.sh asserts ScopedNoDenormals is present in Source/PluginProcessor.cpp",
+    "scripts/check_rt_safety.sh exits 0 only on pass and prints PASS/FAIL diagnostics",
+    "Script does not assume cmake is on PATH",
+    "No file outside the task's allowed_write_paths is created or modified"
+  ],
+  "selected_backend": "pi_cli",
+  "verification_profile": "focused",
+  "allowed_write_paths": [
+    "scripts/check_rt_safety.sh"
+  ],
+  "forbidden_changes": [
+    "modify CMakeLists.txt, CMakePresets.json",
+    "modify Source/**, tests/**, Resources/**, docs/**",
+    "modify scripts/build_all.sh or scripts/run_pluginval.sh",
+    "hard-code machine-specific absolute paths unrelated to repo-relative lookup",
+    "require network access"
+  ],
+  "allowed_symbols": [
+    "ScopedNoDenormals",
+    "processBlock"
+  ],
+  "decision_budget": {
+    "allowed": [
+      "rg or grep -E implementation",
+      "limit scan to processBlock body and MeterTap push TO reduce false positives",
+      "optional allowlist comments for known false positives"
+    ],
+    "forbidden": [
+      "edit C++ to silence the gate",
+      "own pluginval script or CMakeLists wiring",
+      "full dynamic allocator-hook sanitizer harness in this task (static grep only)"
+    ]
+  },
+  "dependencies": [],
+  "task_timeout_seconds": 900,
+  "verification_commands": [],
+  "model": "openrouter/minimax/minimax-m3"
+}

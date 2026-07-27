@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "task_id": "c.4",
+  "phase": "C",
+  "phase_id": "c",
+  "title": "Engine integration tests - determinism/null, bypass, Mix=0 passthrough, mono-lows invariant, latency report",
+  "description": "Author tests/EngineTests.cpp only. Prove ShredWidthEngine integration invariants from Build Spec \u00a714 without owning CMakeLists (c.3 registers this file).\n\nBefore editing, inspect:\n- Source/DSP/ShredWidthEngine.h API from c.1\n- tests/TestMain.cpp and tests/DSPPrimitiveTests.cpp harness style from phase B\n- .abracapocus/ShredWidth_Build_Spec.md \u00a714 items 2\u20135, 9 (determinism, bypass, Mix=0, mono-lows, latency report)\n\nImplement focused engine-level tests in tests/EngineTests.cpp:\n1. Determinism / null: identical input + params over two runs produces bit-identical (or exact float-equal) output checksum/buffers \u2014 guards hidden state.\n2. Bypass / true dry path policy: with engine/processor bypass semantics available at engine level (mix=0 or explicit bypass if exposed), output matches dry input delayed by reported latency where applicable; document whether test drives engine-only or a minimal AudioProcessor fixture. Prefer engine-only if bypass lives above engine \u2014 then assert Mix=0 path strictly.\n3. Mix=0 passthrough: wet path silenced; out == original input delayed by getReportedLatencySamples() (integer dry-align \u21d2 sample-exact).\n4. Mono-lows invariant: stimulus is a sub-f_cross sine (e.g. 100 Hz with xover 180 Hz); for width in {0, 1, 2} assert L(n) == R(n) within FP epsilon across a block after settling \u2014 proves shared-LP assembly + M/S cannot move lows.\n5. Latency report: Studio \u21d2 1024, Live \u21d2 256 via getReportedLatencySamples(); switching mode updates the reported value (and does not require re-prepare realloc).\n\nUse the existing test runner entry (TestMain). Do not edit CMakeLists, PluginProcessor, or DSP sources. Keep tests deterministic and allocation-light.",
+  "acceptance_criteria": [
+    "tests/EngineTests.cpp exists and is wired for the phase-B test runner style",
+    "EngineTests covers determinism (two identical runs match) for ShredWidthEngine",
+    "EngineTests covers Mix=0 passthrough aligned to reported PDC latency",
+    "EngineTests covers mono-lows invariant L==R for sub-f_cross sine across width {0,1,2}",
+    "EngineTests asserts getReportedLatencySamples is 1024 (Studio) and 256 (Live) and updates on mode switch",
+    "No file outside the task's allowed_write_paths is created or modified"
+  ],
+  "selected_backend": "pi_cli",
+  "verification_profile": "focused",
+  "allowed_write_paths": [
+    "tests/EngineTests.cpp"
+  ],
+  "forbidden_changes": [
+    "modify CMakeLists.txt, CMakePresets.json, scripts/**",
+    "modify Source/** (consume ShredWidthEngine as written)",
+    "modify tests/TestMain.cpp or tests/DSPPrimitiveTests.cpp unless strictly required (prefer EngineTests only)",
+    "add network FetchContent dependencies",
+    "non-deterministic tests (time-based seeds, host I/O)"
+  ],
+  "allowed_symbols": [
+    "ShredWidthEngine",
+    "prepare",
+    "process",
+    "reset",
+    "getReportedLatencySamples",
+    "setMix",
+    "setWidth",
+    "setLatencyMode",
+    "setCrossoverHz"
+  ],
+  "decision_budget": {
+    "allowed": [
+      "engine-only fixtures without full PluginProcessor if simpler",
+      "small helper to fill sine buffers and compare with epsilon",
+      "settle/skip initial latency samples before mono-lows asserts"
+    ],
+    "forbidden": [
+      "rewrite engine DSP in the test file",
+      "own CMakeLists registration (c.3)",
+      "pluginval or host-based tests here"
+    ]
+  },
+  "dependencies": [
+    "c.1"
+  ],
+  "task_timeout_seconds": 1200,
+  "verification_commands": [],
+  "model": "openrouter/minimax/minimax-m3"
+}

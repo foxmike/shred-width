@@ -1,0 +1,54 @@
+{
+  "verification": {
+    "checks": [
+      {
+        "name": "factory_presets_exist",
+        "command": [
+          "bash",
+          "-lc",
+          "test -f Resources/Presets/TightLead.xml && test -f Resources/Presets/WideLead.xml && test -f Resources/Presets/HugeSolo.xml && test -f Resources/Presets/MonoSafeSubtle.xml && test -f Resources/Presets/LiveTracking.xml"
+        ]
+      },
+      {
+        "name": "preset_parameter_values_present",
+        "command": [
+          "bash",
+          "-lc",
+          "rg -q 'detuneAmount' Resources/Presets/*.xml && rg -q 'delayL' Resources/Presets/*.xml && rg -q 'monoXover' Resources/Presets/*.xml && rg -qi 'Live' Resources/Presets/LiveTracking.xml"
+        ]
+      },
+      {
+        "name": "correctness_tests_and_cmake",
+        "command": [
+          "bash",
+          "-lc",
+          "test -f tests/CorrectnessTests.cpp && rg -q 'CorrectnessTests\\.cpp' CMakeLists.txt && rg -qi 'binary_data|BinaryData|Presets' CMakeLists.txt && rg -qi 'FFT|fft|pitch|deltaC|2\\^|cents' tests/CorrectnessTests.cpp && rg -qi 'corr|rho|width' tests/CorrectnessTests.cpp"
+        ]
+      },
+      {
+        "name": "rt_safety_script",
+        "command": [
+          "bash",
+          "-lc",
+          "test -f scripts/check_rt_safety.sh && rg -q 'ScopedNoDenormals' scripts/check_rt_safety.sh && rg -q 'malloc|juce::String|processBlock' scripts/check_rt_safety.sh"
+        ]
+      },
+      {
+        "name": "pluginval_script",
+        "command": [
+          "bash",
+          "-lc",
+          "test -f scripts/run_pluginval.sh && rg -qi 'pluginval' scripts/run_pluginval.sh && rg -q 'strictness|VST3|CLAP' scripts/run_pluginval.sh && rg -qi 'LV2|Standalone' scripts/run_pluginval.sh"
+        ]
+      },
+      {
+        "name": "verification_and_manual_docs",
+        "command": [
+          "bash",
+          "-lc",
+          "test -f docs/verification/shredwidth_verification.md && test -f docs/shredwidth_manual.md && rg -qi 'pluginval|mono-lows|pitch accuracy|ear-pass|manual' docs/verification/shredwidth_verification.md && rg -qi 'nominal|latency|monoSource|LV2|Tight Lead|Live Tracking' docs/shredwidth_manual.md"
+        ]
+      }
+    ]
+  }
+}

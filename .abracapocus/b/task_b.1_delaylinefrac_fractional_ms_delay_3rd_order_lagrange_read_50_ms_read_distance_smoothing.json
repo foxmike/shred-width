@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "task_id": "b.1",
+  "phase": "B",
+  "phase_id": "b",
+  "title": "DelayLineFrac - fractional ms delay, 3rd-order Lagrange read, >=50 ms read-distance smoothing",
+  "description": "Implement Source/DSP/DelayLineFrac only. Haas delay primitive used once per shifted channel later by ShredWidthEngine.\n\nBefore editing, inspect:\n- .abracapocus/ShredWidth_Build_Spec.md \u00a7\u00a74.3 (3rd-order Lagrange), 4.4 (Haas ms delays), D9 (read-distance smoothing \u226550 ms), \u00a77 (RT-safety), \u00a78 (sizing)\n- Any existing Source/ tree or sibling plugins' juce::dsp::DelayLine usage for style only\n\nImplement class DelayLineFrac in Source/DSP/DelayLineFrac.h + DelayLineFrac.cpp:\n1. API: prepare(const juce::dsp::ProcessSpec&\u201d or (double sampleRate, int maxBlockSize)), reset(), setDelayMs(float ms), processSample(float x) -> float (and optionally process(float* data, int n) in-place).\n2. Fractional delay: convert ms\u2192samples at the live sampleRate; read with 3rd-order (4-point) Lagrange (\u00a74.3 coefficients) OR juce::dsp::DelayLine<float, juce::dsp::DelayLineInterpolationTypes::Lagrange3rd> equivalent. All neighbor reads must wrap the circular storage safely.\n3. Capacity: preallocate in prepare for ceil(50ms * maxSampleRate) + Lagrange guard (\u22654). Never allocate/resize outside prepare. maxSampleRate may be the prepare sampleRate if host max is unknown \u2014 size at least ceil(0.05 * sampleRate) + guard; document assumption.\n4. D9 smoothing: smooth the *read distance* (not the write pointer) with juce::SmoothedValue (or equivalent linear ramp) reset to \u226550 ms ramp in prepare so automation does not pitch-glitch.\n5. Clamp requested delay into [minDelaySamples, maxCapacity] (min ~1 sample or 1 ms equivalent). reset() clears buffer and smoothing state.\n6. RT contract: no heap, locks, logs, or vectors resize on the audio path.\n\nDo not implement PitchShifter, crossover, width, tests, or CMakeLists (b.5 sole CMakeLists owner). Do not wire into PluginProcessor.",
+  "acceptance_criteria": [
+    "Source/DSP/DelayLineFrac.h and Source/DSP/DelayLineFrac.cpp exist",
+    "DelayLineFrac exposes prepare, reset, setDelayMs, and sample/block process that return delayed audio",
+    "Delay capacity is sized in prepare for at least 50 ms at sampleRate plus Lagrange guard; no allocation outside prepare",
+    "Read path uses 3rd-order Lagrange (or juce::dsp::DelayLine Lagrange3rd equivalent)",
+    "Read-distance smoothing ramp is >= 50 ms (D9)",
+    "No file outside the task's allowed_write_paths is created or modified"
+  ],
+  "selected_backend": "pi_cli",
+  "verification_profile": "focused",
+  "allowed_write_paths": [
+    "Source/DSP/DelayLineFrac.h",
+    "Source/DSP/DelayLineFrac.cpp"
+  ],
+  "forbidden_changes": [
+    "modify CMakeLists.txt, CMakePresets.json, scripts/**",
+    "modify PitchShifter, MonoSafetyCrossover, WidthProcessor, PluginProcessor, PluginEditor",
+    "modify tests/**",
+    "add third-party dependencies",
+    "allocate on the audio thread / outside prepare"
+  ],
+  "allowed_symbols": [
+    "DelayLineFrac",
+    "prepare",
+    "reset",
+    "setDelayMs",
+    "processSample"
+  ],
+  "decision_budget": {
+    "allowed": [
+      "wrap juce::dsp::DelayLine with Lagrange3rd or hand-roll circular buffer + Lagrange",
+      "implement processSample and/or block process helper",
+      "use juce::SmoothedValue for read-distance ramp"
+    ],
+    "forbidden": [
+      "report Haas delay as PDC / setLatencySamples",
+      "add LFO or randomness",
+      "own CMakeLists or tests",
+      "change APVTS parameter IDs"
+    ]
+  },
+  "dependencies": [],
+  "task_timeout_seconds": 900,
+  "verification_commands": [],
+  "model": "openrouter/minimax/minimax-m3"
+}

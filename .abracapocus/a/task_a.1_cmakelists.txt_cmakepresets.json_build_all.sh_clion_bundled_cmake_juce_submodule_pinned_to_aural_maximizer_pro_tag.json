@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "task_id": "a.1",
+  "phase": "A",
+  "phase_id": "a",
+  "title": "CMakeLists.txt, CMakePresets.json, build_all.sh (CLion-bundled cmake), JUCE submodule pinned to aural-maximizer-pro tag",
+  "description": "Create the ShredWidth CMake scaffold and JUCE pin. This task is the sole owner of CMakeLists.txt in phase A.\n\nBefore editing, inspect:\n- /home/mike/dev/mike/music/plugins/aural-maximizer-pro/CMakeLists.txt (structure, juce_add_plugin fields, LV2)\n- /home/mike/dev/mike/music/plugins/aural-maximizer-pro/.gitmodules and JUCE tag (git -C JUCE describe --tags \u2192 8.0.13 / 7c9d3783b127263d72bb65fe0a7e2dc8a02a7ac2)\n- /home/mike/dev/mike/music/plugins/shredboost/CMakeLists.txt (nSpace conventions: COMPANY_NAME, PLUGIN_MANUFACTURER_CODE NSPC, BUNDLE_ID, LV2URI, CXX20, configure-only option, JUCE presence check)\n- /home/mike/dev/mike/music/plugins/shredeq/CMakePresets.json\n- .abracapocus/ShredWidth_Build_Spec.md \u00a7\u00a710, 13, 15\n\nImplement:\n1. CMakeLists.txt:\n   - cmake_minimum_required 3.22; project(ShredWidth VERSION 1.0.0 LANGUAGES C CXX); C++20 required.\n   - option SHREDWIDTH_CONFIGURE_ONLY (return early without JUCE).\n   - FATAL_ERROR if JUCE/CMakeLists.txt missing when not configure-only.\n   - add_subdirectory(JUCE).\n   - juce_add_plugin(ShredWidth): PRODUCT_NAME ShredWidth, COMPANY_NAME \"nSpace Systems\", VERSION 1.0.0, PLUGIN_MANUFACTURER_CODE NSPC, PLUGIN_CODE ShWd, BUNDLE_ID com.nspacesystems.shredwidth, LV2URI urn:nspacesystems:plugin:shredwidth, FORMATS VST3 CLAP LV2 Standalone (no AU), IS_SYNTH FALSE, NEEDS_MIDI_INPUT FALSE, COPY_PLUGIN_AFTER_BUILD TRUE or match aural-maximizer-pro/shredboost practice.\n   - Wire CLAP via clap-juce-extensions if available as submodule path clap-juce-extensions; if submodule not present, document the expected add_subdirectory + clap_juce_extensions_plugin call and include conditional integration so configure still works once the submodule exists.\n   - target_sources PRIVATE minimal stubs: Source/PluginProcessor.cpp, Source/PluginEditor.cpp (files may be created empty/minimal by this task only if needed for configure; prefer listing paths that a.2/a.3 will fill).\n   - target_compile_definitions: JUCE_WEB_BROWSER=0, JUCE_USE_CURL=0, JUCE_VST3_CAN_REPLACE_VST2=0, and SHREDWIDTH_XOVER_ORDER cache/option default 2 (expose as compile definition).\n   - link juce::juce_audio_utils, juce::juce_dsp, recommended config/lto/warning flags like shredboost.\n   - enable_testing() scaffold (no heavy tests yet).\n2. CMakePresets.json: version 3, configure/build/test presets for linux-relwithdebinfo (or linux-release) with binaryDir under build/.\n3. scripts/build_all.sh: set -euo pipefail; resolve cmake when not on PATH by searching CLion bundled locations (e.g. $HOME/.local/share/JetBrains/Toolbox/apps/clion/*/bin/cmake/linux/x64/bin/cmake, /opt/clion/*/bin/cmake/linux/x64/bin/cmake, common CLion snap/flatpak paths); fall back to cmake on PATH; configure with preset; build all format targets.\n4. JUCE submodule: write/update .gitmodules entry path=JUCE url=https://github.com/juce-framework/JUCE.git; pin to the same commit/tag as aural-maximizer-pro (8.0.13 / 7c9d3783b127263d72bb65fe0a7e2dc8a02a7ac2). Prefer git submodule add/update; if JUCE already exists via symlink on this machine, keep/ensure submodule metadata matches the pin and do not vendor a second copy.\n\nDo not implement ParameterIDs, APVTS, StateManager, or editor UI logic here.",
+  "acceptance_criteria": [
+    "CMakeLists.txt exists and contains juce_add_plugin(ShredWidth with FORMATS including VST3, CLAP, LV2, and Standalone",
+    "CMakeLists.txt exposes SHREDWIDTH_XOVER_ORDER defaulting to 2",
+    "CMakeLists.txt uses nSpace identity: PLUGIN_MANUFACTURER_CODE NSPC, PLUGIN_CODE ShWd, BUNDLE_ID com.nspacesystems.shredwidth, COMPANY_NAME nSpace Systems",
+    "CMakePresets.json exists with a linux configure+build preset and binaryDir under build/",
+    "scripts/build_all.sh exists, is executable-intent bash, and locates CLion-bundled cmake when cmake is not on PATH",
+    ".gitmodules pins JUCE to the aural-maximizer-pro tag/commit (8.0.13 / 7c9d3783b127263d72bb65fe0a7e2dc8a02a7ac2)",
+    "No file outside the task's allowed_write_paths is created or modified"
+  ],
+  "selected_backend": "codex_cli",
+  "verification_profile": "focused",
+  "allowed_write_paths": [
+    "CMakeLists.txt",
+    "CMakePresets.json",
+    "scripts/build_all.sh",
+    ".gitmodules"
+  ],
+  "forbidden_changes": [
+    "modify Source/PluginProcessor.h or Source/PluginProcessor.cpp beyond what is strictly required only if CMake target_sources must compile empty stubs \u2014 prefer not touching Source/",
+    "modify Source/ParameterIDs.h, Source/StateManager.*, Source/PluginEditor.*, README.md, .gitignore",
+    "add AU format target",
+    "pin JUCE to a different tag than aural-maximizer-pro",
+    "add unrelated third-party dependencies beyond JUCE and clap-juce-extensions",
+    "implement DSP, APVTS parameters, or GUI logic"
+  ],
+  "allowed_symbols": [
+    "ShredWidth",
+    "SHREDWIDTH_XOVER_ORDER",
+    "SHREDWIDTH_CONFIGURE_ONLY"
+  ],
+  "decision_budget": {
+    "allowed": [
+      "mirror shredboost/aural-maximizer-pro CMake structure",
+      "conditional clap-juce-extensions integration",
+      "CLion cmake path discovery heuristics in build_all.sh",
+      "linux-relwithdebinfo or linux-release preset naming consistent with sibling plugins"
+    ],
+    "forbidden": [
+      "redesign plugin identity codes away from nSpace conventions",
+      "require system-wide cmake without CLion fallback",
+      "add AU or AAX targets",
+      "implement full DSP or parameter tree in this task"
+    ]
+  },
+  "dependencies": [],
+  "task_timeout_seconds": 900,
+  "verification_commands": []
+}

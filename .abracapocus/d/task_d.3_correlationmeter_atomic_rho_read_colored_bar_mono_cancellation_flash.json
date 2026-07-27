@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "task_id": "d.3",
+  "phase": "D",
+  "phase_id": "d",
+  "title": "CorrelationMeter - atomic rho read, colored bar, mono-cancellation flash",
+  "description": "Wave-2 correlation meter component. Independent of GoniometerComponent; depends on d.1 only for shared colours/style.\n\nSTRICT FILE SCOPE: Create or modify ONLY the files listed in this task's allowed_write_paths.\n\nBefore editing, inspect:\n- .abracapocus/ShredWidth_Build_Spec.md \u00a79.3 (correlation display colours, peak-toward-\u22121 flash)\n- Source/DSP/MeterTap.h getCorrelation / atomic \u03c1 read API from phase C\n- Source/GUI/CustomLookAndFeel.* from d.1\n\nImplement Source/GUI/CorrelationMeter.h/.cpp as a juce::Component:\n1. UI-thread only: read smoothed \u03c1 from MeterTap (std::atomic<float> load) or a float source pointer set by the editor. Never write the audio-thread estimator.\n2. Horizontal bar meter spanning \u22121\u2026+1, geometric center at 0.\n3. Colour bands (fill from 0 toward current \u03c1):\n   - green for +1 \u2026 +0.3\n   - yellow for +0.3 \u2026 \u22120.3\n   - red for < \u22120.3 (mono-cancellation warning)\n4. Held peak-toward-\u22121 indicator: when \u03c1 dips low (toward \u22121 / through red band), flash or hold a peak marker that decays slowly so brief mono-collapse danger is visible.\n5. Labels or tick marks at \u22121, 0, +1 optional but recommended; paint allocation-light.\n\nDo not implement Goniometer, PluginEditor layout, or CMakeLists.",
+  "acceptance_criteria": [
+    "Source/GUI/CorrelationMeter.h and Source/GUI/CorrelationMeter.cpp exist",
+    "CorrelationMeter reads smoothed rho via atomic/float source (MeterTap getCorrelation or equivalent) on the UI path only",
+    "Horizontal bar is centered at 0 over the range -1..+1",
+    "Bar colours: green +1..+0.3, yellow +0.3..-0.3, red <-0.3",
+    "Held peak-toward--1 flash/indicator present for mono-cancellation warning",
+    "No file outside the task's allowed_write_paths is created or modified"
+  ],
+  "selected_backend": "antigravity_cli",
+  "verification_profile": "focused",
+  "allowed_write_paths": [
+    "Source/GUI/CorrelationMeter.h",
+    "Source/GUI/CorrelationMeter.cpp"
+  ],
+  "forbidden_changes": [
+    "modify CMakeLists.txt, CMakePresets.json, scripts/**",
+    "modify Source/DSP/MeterTap.* implementation (consume public API only)",
+    "modify Source/PluginEditor.*, Source/PluginProcessor.*, Source/GUI/CustomLookAndFeel.*, Source/GUI/RotarySlider.*, Source/GUI/GoniometerComponent.*",
+    "modify tests/**",
+    "recompute Pearson correlation on the UI thread instead of reading the published atomic"
+  ],
+  "allowed_symbols": [
+    "CorrelationMeter",
+    "paint",
+    "resized",
+    "getCorrelation",
+    "MeterTap"
+  ],
+  "decision_budget": {
+    "allowed": [
+      "choose peak-hold decay time and flash style",
+      "bind via MeterTap* or std::atomic<float>* setter",
+      "optional numeric rho readout text"
+    ],
+    "forbidden": [
+      "own editor timer or CMakeLists",
+      "implement audio-thread correlation math",
+      "use locks to share rho"
+    ]
+  },
+  "dependencies": [
+    "d.1"
+  ],
+  "task_timeout_seconds": 900,
+  "verification_commands": []
+}

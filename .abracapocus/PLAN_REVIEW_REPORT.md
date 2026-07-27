@@ -1,0 +1,284 @@
+# Plan Review Report
+
+Plan directory: /home/mike/dev/mike/music/plugins/shred-width/.abracapocus
+
+## Warnings
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/a/task_a.1_cmakelists.txt_cmakepresets.json_build_all.sh_clion_bundled_cmake_juce_submodule_pinned_to_aural_maximizer_pro_tag.json] allowed_write_paths entry 'CMakeLists.txt' does not exist in working root
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/a/task_a.1_cmakelists.txt_cmakepresets.json_build_all.sh_clion_bundled_cmake_juce_submodule_pinned_to_aural_maximizer_pro_tag.json] allowed_write_paths entry 'CMakePresets.json' does not exist in working root
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/a/task_a.1_cmakelists.txt_cmakepresets.json_build_all.sh_clion_bundled_cmake_juce_submodule_pinned_to_aural_maximizer_pro_tag.json] allowed_write_paths entry 'scripts/build_all.sh' does not exist in working root
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/a/task_a.1_cmakelists.txt_cmakepresets.json_build_all.sh_clion_bundled_cmake_juce_submodule_pinned_to_aural_maximizer_pro_tag.json] allowed_write_paths entry '.gitmodules' does not exist in working root
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/a/task_a.1_cmakelists.txt_cmakepresets.json_build_all.sh_clion_bundled_cmake_juce_submodule_pinned_to_aural_maximizer_pro_tag.json] acceptance_criteria list length > 5
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/a/task_a.1_cmakelists.txt_cmakepresets.json_build_all.sh_clion_bundled_cmake_juce_submodule_pinned_to_aural_maximizer_pro_tag.json] acceptance_criteria item length > 120 characters
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/a/task_a.1_cmakelists.txt_cmakepresets.json_build_all.sh_clion_bundled_cmake_juce_submodule_pinned_to_aural_maximizer_pro_tag.json] description field length > 300 characters
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/a/task_a.1_cmakelists.txt_cmakepresets.json_build_all.sh_clion_bundled_cmake_juce_submodule_pinned_to_aural_maximizer_pro_tag.json] description contains broad word: all
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/a/task_a.2_parameterids.h_v1_inventory_apvts_layout_with_skews_bus_layout_mono_stereo_in_stereo_out_pluginprocessor_spine_with_preparetoplay_allocation_and_pdc_hooks.json] allowed_write_paths entry 'Source/ParameterIDs.h' does not exist in working root
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/a/task_a.2_parameterids.h_v1_inventory_apvts_layout_with_skews_bus_layout_mono_stereo_in_stereo_out_pluginprocessor_spine_with_preparetoplay_allocation_and_pdc_hooks.json] allowed_write_paths entry 'Source/PluginProcessor.h' does not exist in working root
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/a/task_a.2_parameterids.h_v1_inventory_apvts_layout_with_skews_bus_layout_mono_stereo_in_stereo_out_pluginprocessor_spine_with_preparetoplay_allocation_and_pdc_hooks.json] allowed_write_paths entry 'Source/PluginProcessor.cpp' does not exist in working root
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/a/task_a.2_parameterids.h_v1_inventory_apvts_layout_with_skews_bus_layout_mono_stereo_in_stereo_out_pluginprocessor_spine_with_preparetoplay_allocation_and_pdc_hooks.json] acceptance_criteria list length > 5
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/a/task_a.2_parameterids.h_v1_inventory_apvts_layout_with_skews_bus_layout_mono_stereo_in_stereo_out_pluginprocessor_spine_with_preparetoplay_allocation_and_pdc_hooks.json] acceptance_criteria item length > 120 characters
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/a/task_a.2_parameterids.h_v1_inventory_apvts_layout_with_skews_bus_layout_mono_stereo_in_stereo_out_pluginprocessor_spine_with_preparetoplay_allocation_and_pdc_hooks.json] description field length > 300 characters
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/a/task_a.2_parameterids.h_v1_inventory_apvts_layout_with_skews_bus_layout_mono_stereo_in_stereo_out_pluginprocessor_spine_with_preparetoplay_allocation_and_pdc_hooks.json] description contains broad word: full
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/a/task_a.2_parameterids.h_v1_inventory_apvts_layout_with_skews_bus_layout_mono_stereo_in_stereo_out_pluginprocessor_spine_with_preparetoplay_allocation_and_pdc_hooks.json] description contains broad word: all
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/a/task_a.2_parameterids.h_v1_inventory_apvts_layout_with_skews_bus_layout_mono_stereo_in_stereo_out_pluginprocessor_spine_with_preparetoplay_allocation_and_pdc_hooks.json] acceptance_criteria[2] contains broad word: all
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/a/task_a.3_statemanager_apvts_xml_save_restore_layout_version_a_b_slots_and_plugineditor_skeleton.json] allowed_write_paths list length > 4
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/a/task_a.3_statemanager_apvts_xml_save_restore_layout_version_a_b_slots_and_plugineditor_skeleton.json] allowed_write_paths entry 'Source/StateManager.h' does not exist in working root
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/a/task_a.3_statemanager_apvts_xml_save_restore_layout_version_a_b_slots_and_plugineditor_skeleton.json] allowed_write_paths entry 'Source/StateManager.cpp' does not exist in working root
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/a/task_a.3_statemanager_apvts_xml_save_restore_layout_version_a_b_slots_and_plugineditor_skeleton.json] allowed_write_paths entry 'Source/PluginEditor.h' does not exist in working root
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/a/task_a.3_statemanager_apvts_xml_save_restore_layout_version_a_b_slots_and_plugineditor_skeleton.json] allowed_write_paths entry 'Source/PluginEditor.cpp' does not exist in working root
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/a/task_a.3_statemanager_apvts_xml_save_restore_layout_version_a_b_slots_and_plugineditor_skeleton.json] allowed_write_paths entry 'Source/PluginProcessor.h' does not exist in working root
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/a/task_a.3_statemanager_apvts_xml_save_restore_layout_version_a_b_slots_and_plugineditor_skeleton.json] allowed_write_paths entry 'Source/PluginProcessor.cpp' does not exist in working root
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/a/task_a.3_statemanager_apvts_xml_save_restore_layout_version_a_b_slots_and_plugineditor_skeleton.json] acceptance_criteria list length > 5
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/a/task_a.3_statemanager_apvts_xml_save_restore_layout_version_a_b_slots_and_plugineditor_skeleton.json] acceptance_criteria item length > 120 characters
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/a/task_a.3_statemanager_apvts_xml_save_restore_layout_version_a_b_slots_and_plugineditor_skeleton.json] description field length > 300 characters
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/a/task_a.3_statemanager_apvts_xml_save_restore_layout_version_a_b_slots_and_plugineditor_skeleton.json] description contains broad word: full
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/a/task_a.4_.gitignore_readme_.gitmodules_notes.json] allowed_write_paths entry '.gitignore' does not exist in working root
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/a/task_a.4_.gitignore_readme_.gitmodules_notes.json] allowed_write_paths entry 'README.md' does not exist in working root
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/a/task_a.4_.gitignore_readme_.gitmodules_notes.json] allowed_write_paths entry '.gitmodules' does not exist in working root
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/a/task_a.4_.gitignore_readme_.gitmodules_notes.json] acceptance_criteria item length > 120 characters
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/a/task_a.4_.gitignore_readme_.gitmodules_notes.json] description field length > 300 characters
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/a/task_a.4_.gitignore_readme_.gitmodules_notes.json] description contains broad word: full
+- Task 'a.1' has overlapping allowed_write_paths with 'a.4' but no dependency declared
+- Task 'a.2' depends on 'a.1' but their allowed_write_paths are disjoint; dependency may be unnecessary
+- Task 'a.2' has overlapping allowed_write_paths with 'a.3' but no dependency declared
+- Task 'a.1' acceptance_criteria[5] may produce unsatisfied reconciliation: '.gitmodules pins JUCE to the aural-maximizer-pro tag/commit ...' lacks file reference or test command
+- Task 'a.1' acceptance_criteria[6] may produce unsatisfied reconciliation: 'No file outside the task's allowed_write_paths is created or...' lacks file reference or test command
+- Task 'a.2' acceptance_criteria[3] may produce unsatisfied reconciliation: 'isBusesLayoutSupported accepts only mono→stereo and stereo→s...' lacks file reference or test command
+- Task 'a.2' acceptance_criteria[4] may produce unsatisfied reconciliation: 'prepareToPlay allocates Studio worst-case pitch buffers (204...' lacks file reference or test command
+- Task 'a.2' acceptance_criteria[5] may produce unsatisfied reconciliation: 'processBlock begins with juce::ScopedNoDenormals...' lacks file reference or test command
+- Task 'a.2' acceptance_criteria[6] may produce unsatisfied reconciliation: 'setLatencySamples / getLatencySamples path reports Studio no...' lacks file reference or test command
+- Task 'a.2' acceptance_criteria[7] may produce unsatisfied reconciliation: 'createPluginFilter exports ShredWidthAudioProcessor...' lacks file reference or test command
+- Task 'a.2' acceptance_criteria[8] may produce unsatisfied reconciliation: 'No file outside the task's allowed_write_paths is created or...' lacks file reference or test command
+- Task 'a.3' acceptance_criteria[1] may produce unsatisfied reconciliation: 'PluginProcessor getStateInformation/setStateInformation roun...' lacks file reference or test command
+- Task 'a.3' acceptance_criteria[3] may produce unsatisfied reconciliation: 'createEditor returns ShredWidthAudioProcessorEditor and hasE...' lacks file reference or test command
+- Task 'a.3' acceptance_criteria[4] may produce unsatisfied reconciliation: 'StateManager does not allocate or lock on a documented audio...' lacks file reference or test command
+- Task 'a.3' acceptance_criteria[5] may produce unsatisfied reconciliation: 'No file outside the task's allowed_write_paths is created or...' lacks file reference or test command
+- Task 'a.4' acceptance_criteria[0] may produce unsatisfied reconciliation: '.gitignore exists and ignores build/, cmake-build-*, state/,...' lacks file reference or test command
+- Task 'a.4' acceptance_criteria[3] may produce unsatisfied reconciliation: 'JUCE submodule pin is documented in README and/or .gitmodule...' lacks file reference or test command
+- Task 'a.4' acceptance_criteria[4] may produce unsatisfied reconciliation: 'No file outside the task's allowed_write_paths is created or...' lacks file reference or test command
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/b/task_b.1_delaylinefrac_fractional_ms_delay_3rd_order_lagrange_read_50_ms_read_distance_smoothing.json] allowed_write_paths entry 'Source/DSP/DelayLineFrac.h' does not exist in working root
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/b/task_b.1_delaylinefrac_fractional_ms_delay_3rd_order_lagrange_read_50_ms_read_distance_smoothing.json] allowed_write_paths entry 'Source/DSP/DelayLineFrac.cpp' does not exist in working root
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/b/task_b.1_delaylinefrac_fractional_ms_delay_3rd_order_lagrange_read_50_ms_read_distance_smoothing.json] acceptance_criteria list length > 5
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/b/task_b.1_delaylinefrac_fractional_ms_delay_3rd_order_lagrange_read_50_ms_read_distance_smoothing.json] description field length > 300 characters
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/b/task_b.1_delaylinefrac_fractional_ms_delay_3rd_order_lagrange_read_50_ms_read_distance_smoothing.json] description contains broad word: all
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/b/task_b.2_pitchshifter_dual_head_granular_buffer_double_drift_accumulator_4_point_lagrange_hann_unity_gain_crossfade.json] allowed_write_paths entry 'Source/DSP/PitchShifter.h' does not exist in working root
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/b/task_b.2_pitchshifter_dual_head_granular_buffer_double_drift_accumulator_4_point_lagrange_hann_unity_gain_crossfade.json] allowed_write_paths entry 'Source/DSP/PitchShifter.cpp' does not exist in working root
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/b/task_b.2_pitchshifter_dual_head_granular_buffer_double_drift_accumulator_4_point_lagrange_hann_unity_gain_crossfade.json] acceptance_criteria list length > 5
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/b/task_b.2_pitchshifter_dual_head_granular_buffer_double_drift_accumulator_4_point_lagrange_hann_unity_gain_crossfade.json] description field length > 300 characters
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/b/task_b.2_pitchshifter_dual_head_granular_buffer_double_drift_accumulator_4_point_lagrange_hann_unity_gain_crossfade.json] description contains broad word: all
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/b/task_b.3_monosafetycrossover_lr2_shared_lp_design_inverted_hp_polarity_lr4_build_option_block_rate_coefficient_recompute.json] allowed_write_paths entry 'Source/DSP/MonoSafetyCrossover.h' does not exist in working root
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/b/task_b.3_monosafetycrossover_lr2_shared_lp_design_inverted_hp_polarity_lr4_build_option_block_rate_coefficient_recompute.json] allowed_write_paths entry 'Source/DSP/MonoSafetyCrossover.cpp' does not exist in working root
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/b/task_b.3_monosafetycrossover_lr2_shared_lp_design_inverted_hp_polarity_lr4_build_option_block_rate_coefficient_recompute.json] acceptance_criteria list length > 5
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/b/task_b.3_monosafetycrossover_lr2_shared_lp_design_inverted_hp_polarity_lr4_build_option_block_rate_coefficient_recompute.json] description field length > 300 characters
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/b/task_b.4_widthprocessor_m_s_width_mono_lows_preserved_reconstruction.json] allowed_write_paths entry 'Source/DSP/WidthProcessor.h' does not exist in working root
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/b/task_b.4_widthprocessor_m_s_width_mono_lows_preserved_reconstruction.json] allowed_write_paths entry 'Source/DSP/WidthProcessor.cpp' does not exist in working root
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/b/task_b.4_widthprocessor_m_s_width_mono_lows_preserved_reconstruction.json] acceptance_criteria list length > 5
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/b/task_b.4_widthprocessor_m_s_width_mono_lows_preserved_reconstruction.json] description field length > 300 characters
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/b/task_b.5_testmain_harness_and_dsp_primitive_tests_delay_crossover_reconstruction_width_mono_lows_invariant_unity_gain_crossfade_cmakelists_registration.json] allowed_write_paths entry 'CMakeLists.txt' does not exist in working root
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/b/task_b.5_testmain_harness_and_dsp_primitive_tests_delay_crossover_reconstruction_width_mono_lows_invariant_unity_gain_crossfade_cmakelists_registration.json] allowed_write_paths entry 'tests/TestMain.cpp' does not exist in working root
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/b/task_b.5_testmain_harness_and_dsp_primitive_tests_delay_crossover_reconstruction_width_mono_lows_invariant_unity_gain_crossfade_cmakelists_registration.json] allowed_write_paths entry 'tests/DSPPrimitiveTests.cpp' does not exist in working root
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/b/task_b.5_testmain_harness_and_dsp_primitive_tests_delay_crossover_reconstruction_width_mono_lows_invariant_unity_gain_crossfade_cmakelists_registration.json] acceptance_criteria list length > 5
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/b/task_b.5_testmain_harness_and_dsp_primitive_tests_delay_crossover_reconstruction_width_mono_lows_invariant_unity_gain_crossfade_cmakelists_registration.json] acceptance_criteria item length > 120 characters
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/b/task_b.5_testmain_harness_and_dsp_primitive_tests_delay_crossover_reconstruction_width_mono_lows_invariant_unity_gain_crossfade_cmakelists_registration.json] acceptance_criteria references pytest or test without a test allowed_write_path
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/b/task_b.5_testmain_harness_and_dsp_primitive_tests_delay_crossover_reconstruction_width_mono_lows_invariant_unity_gain_crossfade_cmakelists_registration.json] description field length > 300 characters
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/b/task_b.5_testmain_harness_and_dsp_primitive_tests_delay_crossover_reconstruction_width_mono_lows_invariant_unity_gain_crossfade_cmakelists_registration.json] description contains broad word: full
+- Task 'b.5' depends on 'b.1' but their allowed_write_paths are disjoint; dependency may be unnecessary
+- Task 'b.5' depends on 'b.2' but their allowed_write_paths are disjoint; dependency may be unnecessary
+- Task 'b.5' depends on 'b.3' but their allowed_write_paths are disjoint; dependency may be unnecessary
+- Task 'b.5' depends on 'b.4' but their allowed_write_paths are disjoint; dependency may be unnecessary
+- Task 'b.1' acceptance_criteria[1] may produce unsatisfied reconciliation: 'DelayLineFrac exposes prepare, reset, setDelayMs, and sample...' lacks file reference or test command
+- Task 'b.1' acceptance_criteria[2] may produce unsatisfied reconciliation: 'Delay capacity is sized in prepare for at least 50 ms at sam...' lacks file reference or test command
+- Task 'b.1' acceptance_criteria[3] may produce unsatisfied reconciliation: 'Read path uses 3rd-order Lagrange (or juce::dsp::DelayLine L...' lacks file reference or test command
+- Task 'b.1' acceptance_criteria[4] may produce unsatisfied reconciliation: 'Read-distance smoothing ramp is >= 50 ms (D9)...' lacks file reference or test command
+- Task 'b.1' acceptance_criteria[5] may produce unsatisfied reconciliation: 'No file outside the task's allowed_write_paths is created or...' lacks file reference or test command
+- Task 'b.2' acceptance_criteria[1] may produce unsatisfied reconciliation: 'PitchShifter allocates L_max=2048 (+ Lagrange guard) in prep...' lacks file reference or test command
+- Task 'b.2' acceptance_criteria[2] may produce unsatisfied reconciliation: 'Drift accumulator tau is double and advances by dv = 1 - 2^(...' lacks file reference or test command
+- Task 'b.2' acceptance_criteria[3] may produce unsatisfied reconciliation: 'Dual read heads are offset by L/2 with Hann/raised-cosine we...' lacks file reference or test command
+- Task 'b.2' acceptance_criteria[4] may produce unsatisfied reconciliation: 'Fractional reads use 4-point cubic Lagrange with each neighb...' lacks file reference or test command
+- Task 'b.2' acceptance_criteria[5] may produce unsatisfied reconciliation: 'prepare/process/reset API present; no allocation outside pre...' lacks file reference or test command
+- Task 'b.2' acceptance_criteria[6] may produce unsatisfied reconciliation: 'No file outside the task's allowed_write_paths is created or...' lacks file reference or test command
+- Task 'b.3' acceptance_criteria[1] may produce unsatisfied reconciliation: 'Shared lowpass path is a single instance for dry mono source...' lacks file reference or test command
+- Task 'b.3' acceptance_criteria[2] may produce unsatisfied reconciliation: 'Independent highpass paths exist for L and R wet/shifted inp...' lacks file reference or test command
+- Task 'b.3' acceptance_criteria[3] may produce unsatisfied reconciliation: 'Highpass polarity is inverted internally (D2)...' lacks file reference or test command
+- Task 'b.3' acceptance_criteria[4] may produce unsatisfied reconciliation: 'Default path is LR2 (two cascaded 1st-order Butterworth sect...' lacks file reference or test command
+- Task 'b.3' acceptance_criteria[5] may produce unsatisfied reconciliation: 'SHREDWIDTH_XOVER_ORDER == 4 selects LR4 (two cascaded 2nd-or...' lacks file reference or test command
+- Task 'b.3' acceptance_criteria[6] may produce unsatisfied reconciliation: 'Coefficients recompute only on dirty cutoff at block boundar...' lacks file reference or test command
+- Task 'b.3' acceptance_criteria[7] may produce unsatisfied reconciliation: 'prepare/process/reset present; no allocation outside prepare...' lacks file reference or test command
+- Task 'b.3' acceptance_criteria[8] may produce unsatisfied reconciliation: 'No file outside the task's allowed_write_paths is created or...' lacks file reference or test command
+- Task 'b.4' acceptance_criteria[1] may produce unsatisfied reconciliation: 'WidthProcessor applies M=(L+R)/2, S=(L-R)/2, L'=M+w*S, R'=M-...' lacks file reference or test command
+- Task 'b.4' acceptance_criteria[2] may produce unsatisfied reconciliation: 'width=1 yields identity (within float tolerance) for arbitra...' lacks file reference or test command
+- Task 'b.4' acceptance_criteria[3] may produce unsatisfied reconciliation: 'width=0 yields L'==R'==M...' lacks file reference or test command
+- Task 'b.4' acceptance_criteria[4] may produce unsatisfied reconciliation: 'prepare/reset/process API present; no allocation outside pre...' lacks file reference or test command
+- Task 'b.4' acceptance_criteria[5] may produce unsatisfied reconciliation: 'No file outside the task's allowed_write_paths is created or...' lacks file reference or test command
+- Task 'b.5' acceptance_criteria[4] may produce unsatisfied reconciliation: 'SHREDWIDTH_XOVER_ORDER remains defined for targets that comp...' lacks file reference or test command
+- Task 'b.5' acceptance_criteria[5] may produce unsatisfied reconciliation: 'No file outside the task's allowed_write_paths is created or...' lacks file reference or test command
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/c/task_c.1_shredwidthengine_full_per_sample_orchestration_shared_lp_assembly_dry_align_latency_mode_buffer_repoint_masked_crossfade.json] allowed_write_paths entry 'Source/DSP/ShredWidthEngine.h' does not exist in working root
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/c/task_c.1_shredwidthengine_full_per_sample_orchestration_shared_lp_assembly_dry_align_latency_mode_buffer_repoint_masked_crossfade.json] allowed_write_paths entry 'Source/DSP/ShredWidthEngine.cpp' does not exist in working root
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/c/task_c.1_shredwidthengine_full_per_sample_orchestration_shared_lp_assembly_dry_align_latency_mode_buffer_repoint_masked_crossfade.json] acceptance_criteria list length > 5
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/c/task_c.1_shredwidthengine_full_per_sample_orchestration_shared_lp_assembly_dry_align_latency_mode_buffer_repoint_masked_crossfade.json] acceptance_criteria item length > 120 characters
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/c/task_c.1_shredwidthengine_full_per_sample_orchestration_shared_lp_assembly_dry_align_latency_mode_buffer_repoint_masked_crossfade.json] description field length > 300 characters
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/c/task_c.1_shredwidthengine_full_per_sample_orchestration_shared_lp_assembly_dry_align_latency_mode_buffer_repoint_masked_crossfade.json] description contains broad word: full
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/c/task_c.1_shredwidthengine_full_per_sample_orchestration_shared_lp_assembly_dry_align_latency_mode_buffer_repoint_masked_crossfade.json] description contains broad word: all
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/c/task_c.2_metertap_audio_thread_pearson_correlation_one_pole_lock_free_abstractfifo_pair_push_atomic_rho.json] allowed_write_paths entry 'Source/DSP/MeterTap.h' does not exist in working root
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/c/task_c.2_metertap_audio_thread_pearson_correlation_one_pole_lock_free_abstractfifo_pair_push_atomic_rho.json] allowed_write_paths entry 'Source/DSP/MeterTap.cpp' does not exist in working root
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/c/task_c.2_metertap_audio_thread_pearson_correlation_one_pole_lock_free_abstractfifo_pair_push_atomic_rho.json] acceptance_criteria list length > 5
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/c/task_c.2_metertap_audio_thread_pearson_correlation_one_pole_lock_free_abstractfifo_pair_push_atomic_rho.json] description field length > 300 characters
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/c/task_c.2_metertap_audio_thread_pearson_correlation_one_pole_lock_free_abstractfifo_pair_push_atomic_rho.json] description contains broad word: every
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/c/task_c.3_pluginprocessor_processblock_wiring_scopednodenormals_smoothed_reads_latency_reporting_meter_push_cmakelists.json] allowed_write_paths entry 'Source/PluginProcessor.h' does not exist in working root
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/c/task_c.3_pluginprocessor_processblock_wiring_scopednodenormals_smoothed_reads_latency_reporting_meter_push_cmakelists.json] allowed_write_paths entry 'Source/PluginProcessor.cpp' does not exist in working root
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/c/task_c.3_pluginprocessor_processblock_wiring_scopednodenormals_smoothed_reads_latency_reporting_meter_push_cmakelists.json] allowed_write_paths entry 'CMakeLists.txt' does not exist in working root
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/c/task_c.3_pluginprocessor_processblock_wiring_scopednodenormals_smoothed_reads_latency_reporting_meter_push_cmakelists.json] acceptance_criteria list length > 5
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/c/task_c.3_pluginprocessor_processblock_wiring_scopednodenormals_smoothed_reads_latency_reporting_meter_push_cmakelists.json] acceptance_criteria references pytest or test without a test allowed_write_path
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/c/task_c.3_pluginprocessor_processblock_wiring_scopednodenormals_smoothed_reads_latency_reporting_meter_push_cmakelists.json] description field length > 300 characters
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/c/task_c.4_engine_integration_tests_determinism_null_bypass_mix_0_passthrough_mono_lows_invariant_latency_report.json] allowed_write_paths entry 'tests/EngineTests.cpp' does not exist in working root
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/c/task_c.4_engine_integration_tests_determinism_null_bypass_mix_0_passthrough_mono_lows_invariant_latency_report.json] acceptance_criteria list length > 5
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/c/task_c.4_engine_integration_tests_determinism_null_bypass_mix_0_passthrough_mono_lows_invariant_latency_report.json] acceptance_criteria references pytest or test without a test allowed_write_path
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/c/task_c.4_engine_integration_tests_determinism_null_bypass_mix_0_passthrough_mono_lows_invariant_latency_report.json] description field length > 300 characters
+- Task 'c.1' depends on 'c.2' but their allowed_write_paths are disjoint; dependency may be unnecessary
+- Task 'c.3' depends on 'c.1' but their allowed_write_paths are disjoint; dependency may be unnecessary
+- Task 'c.4' depends on 'c.1' but their allowed_write_paths are disjoint; dependency may be unnecessary
+- Task 'c.1' acceptance_criteria[1] may produce unsatisfied reconciliation: 'ShredWidthEngine owns two PitchShifters, two DelayLineFracs,...' lacks file reference or test command
+- Task 'c.1' acceptance_criteria[2] may produce unsatisfied reconciliation: 'Per-sample path implements mono source → ±detune → Haas dela...' lacks file reference or test command
+- Task 'c.1' acceptance_criteria[3] may produce unsatisfied reconciliation: 'getReportedLatencySamples returns L/2 for Studio (1024) and ...' lacks file reference or test command
+- Task 'c.1' acceptance_criteria[4] may produce unsatisfied reconciliation: 'Latency-mode switch does not reallocate; it repoints/relengt...' lacks file reference or test command
+- Task 'c.1' acceptance_criteria[5] may produce unsatisfied reconciliation: 'prepare/process/reset API present; process pushes final L/R ...' lacks file reference or test command
+- Task 'c.1' acceptance_criteria[6] may produce unsatisfied reconciliation: 'No file outside the task's allowed_write_paths is created or...' lacks file reference or test command
+- Task 'c.2' acceptance_criteria[1] may produce unsatisfied reconciliation: 'MeterTap publishes smoothed Pearson correlation via std::ato...' lacks file reference or test command
+- Task 'c.2' acceptance_criteria[2] may produce unsatisfied reconciliation: 'Correlation uses one-pole means with ~300 ms time constant a...' lacks file reference or test command
+- Task 'c.2' acceptance_criteria[3] may produce unsatisfied reconciliation: 'MeterTap pushes decimated L/R pairs through juce::AbstractFi...' lacks file reference or test command
+- Task 'c.2' acceptance_criteria[4] may produce unsatisfied reconciliation: 'prepare/reset/push (and UI drain) API present; no allocation...' lacks file reference or test command
+- Task 'c.2' acceptance_criteria[5] may produce unsatisfied reconciliation: 'No file outside the task's allowed_write_paths is created or...' lacks file reference or test command
+- Task 'c.3' acceptance_criteria[1] may produce unsatisfied reconciliation: 'PluginProcessor owns/uses ShredWidthEngine and feeds smoothe...' lacks file reference or test command
+- Task 'c.3' acceptance_criteria[2] may produce unsatisfied reconciliation: 'setLatencySamples reports L/2 for the active latencyMode and...' lacks file reference or test command
+- Task 'c.3' acceptance_criteria[3] may produce unsatisfied reconciliation: 'Final output pairs are pushed to MeterTap (via engine path) ...' lacks file reference or test command
+- Task 'c.3' acceptance_criteria[6] may produce unsatisfied reconciliation: 'bypass and outTrim parameters are honored in the process pat...' lacks file reference or test command
+- Task 'c.3' acceptance_criteria[7] may produce unsatisfied reconciliation: 'No file outside the task's allowed_write_paths is created or...' lacks file reference or test command
+- Task 'c.4' acceptance_criteria[1] may produce unsatisfied reconciliation: 'EngineTests covers determinism (two identical runs match) fo...' lacks file reference or test command
+- Task 'c.4' acceptance_criteria[2] may produce unsatisfied reconciliation: 'EngineTests covers Mix=0 passthrough aligned to reported PDC...' lacks file reference or test command
+- Task 'c.4' acceptance_criteria[3] may produce unsatisfied reconciliation: 'EngineTests covers mono-lows invariant L==R for sub-f_cross ...' lacks file reference or test command
+- Task 'c.4' acceptance_criteria[4] may produce unsatisfied reconciliation: 'EngineTests asserts getReportedLatencySamples is 1024 (Studi...' lacks file reference or test command
+- Task 'c.4' acceptance_criteria[5] may produce unsatisfied reconciliation: 'No file outside the task's allowed_write_paths is created or...' lacks file reference or test command
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/d/task_d.1_customlookandfeel_corrected_drawpopupmenuitem_signature_and_rotaryslider.json] allowed_write_paths entry 'Source/GUI/CustomLookAndFeel.h' does not exist in working root
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/d/task_d.1_customlookandfeel_corrected_drawpopupmenuitem_signature_and_rotaryslider.json] allowed_write_paths entry 'Source/GUI/CustomLookAndFeel.cpp' does not exist in working root
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/d/task_d.1_customlookandfeel_corrected_drawpopupmenuitem_signature_and_rotaryslider.json] allowed_write_paths entry 'Source/GUI/RotarySlider.h' does not exist in working root
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/d/task_d.1_customlookandfeel_corrected_drawpopupmenuitem_signature_and_rotaryslider.json] allowed_write_paths entry 'Source/GUI/RotarySlider.cpp' does not exist in working root
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/d/task_d.1_customlookandfeel_corrected_drawpopupmenuitem_signature_and_rotaryslider.json] acceptance_criteria list length > 5
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/d/task_d.1_customlookandfeel_corrected_drawpopupmenuitem_signature_and_rotaryslider.json] acceptance_criteria item length > 120 characters
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/d/task_d.1_customlookandfeel_corrected_drawpopupmenuitem_signature_and_rotaryslider.json] description field length > 300 characters
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/d/task_d.2_goniometercomponent_fifo_drain_45_degree_lissajous_phosphor_decay_underflow_hold.json] allowed_write_paths entry 'Source/GUI/GoniometerComponent.h' does not exist in working root
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/d/task_d.2_goniometercomponent_fifo_drain_45_degree_lissajous_phosphor_decay_underflow_hold.json] allowed_write_paths entry 'Source/GUI/GoniometerComponent.cpp' does not exist in working root
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/d/task_d.2_goniometercomponent_fifo_drain_45_degree_lissajous_phosphor_decay_underflow_hold.json] acceptance_criteria list length > 5
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/d/task_d.2_goniometercomponent_fifo_drain_45_degree_lissajous_phosphor_decay_underflow_hold.json] description field length > 300 characters
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/d/task_d.3_correlationmeter_atomic_rho_read_colored_bar_mono_cancellation_flash.json] allowed_write_paths entry 'Source/GUI/CorrelationMeter.h' does not exist in working root
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/d/task_d.3_correlationmeter_atomic_rho_read_colored_bar_mono_cancellation_flash.json] allowed_write_paths entry 'Source/GUI/CorrelationMeter.cpp' does not exist in working root
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/d/task_d.3_correlationmeter_atomic_rho_read_colored_bar_mono_cancellation_flash.json] acceptance_criteria list length > 5
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/d/task_d.3_correlationmeter_atomic_rho_read_colored_bar_mono_cancellation_flash.json] description field length > 300 characters
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/d/task_d.4_plugineditor_full_layout_header_control_columns_metering_column_apvts_attachments_timer_resize_cmakelists.json] allowed_write_paths entry 'Source/PluginEditor.h' does not exist in working root
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/d/task_d.4_plugineditor_full_layout_header_control_columns_metering_column_apvts_attachments_timer_resize_cmakelists.json] allowed_write_paths entry 'Source/PluginEditor.cpp' does not exist in working root
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/d/task_d.4_plugineditor_full_layout_header_control_columns_metering_column_apvts_attachments_timer_resize_cmakelists.json] allowed_write_paths entry 'CMakeLists.txt' does not exist in working root
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/d/task_d.4_plugineditor_full_layout_header_control_columns_metering_column_apvts_attachments_timer_resize_cmakelists.json] acceptance_criteria list length > 5
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/d/task_d.4_plugineditor_full_layout_header_control_columns_metering_column_apvts_attachments_timer_resize_cmakelists.json] acceptance_criteria item length > 120 characters
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/d/task_d.4_plugineditor_full_layout_header_control_columns_metering_column_apvts_attachments_timer_resize_cmakelists.json] description field length > 300 characters
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/d/task_d.4_plugineditor_full_layout_header_control_columns_metering_column_apvts_attachments_timer_resize_cmakelists.json] description contains broad word: full
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/d/task_d.4_plugineditor_full_layout_header_control_columns_metering_column_apvts_attachments_timer_resize_cmakelists.json] description contains broad word: all
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/d/task_d.4_plugineditor_full_layout_header_control_columns_metering_column_apvts_attachments_timer_resize_cmakelists.json] description contains broad word: every
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/d/task_d.4_plugineditor_full_layout_header_control_columns_metering_column_apvts_attachments_timer_resize_cmakelists.json] acceptance_criteria[0] contains broad word: full
+- Task 'd.2' depends on 'd.1' but their allowed_write_paths are disjoint; dependency may be unnecessary
+- Task 'd.3' depends on 'd.1' but their allowed_write_paths are disjoint; dependency may be unnecessary
+- Task 'd.4' depends on 'd.1' but their allowed_write_paths are disjoint; dependency may be unnecessary
+- Task 'd.4' depends on 'd.2' but their allowed_write_paths are disjoint; dependency may be unnecessary
+- Task 'd.4' depends on 'd.3' but their allowed_write_paths are disjoint; dependency may be unnecessary
+- Task 'd.4' has 3 broad words (limit 2)
+- Task 'd.1' acceptance_criteria[2] may produce unsatisfied reconciliation: 'CustomLookAndFeel derives from juce::LookAndFeel_V4 and impl...' lacks file reference or test command
+- Task 'd.1' acceptance_criteria[3] may produce unsatisfied reconciliation: 'CustomLookAndFeel::drawPopupMenuItem uses the individual-par...' lacks file reference or test command
+- Task 'd.1' acceptance_criteria[4] may produce unsatisfied reconciliation: 'drawPopupMenuItem does not use a PopupMenu::Item& overload...' lacks file reference or test command
+- Task 'd.1' acceptance_criteria[5] may produce unsatisfied reconciliation: 'RotarySlider is a juce::Slider subclass factored for editor ...' lacks file reference or test command
+- Task 'd.1' acceptance_criteria[6] may produce unsatisfied reconciliation: 'No file outside the task's allowed_write_paths is created or...' lacks file reference or test command
+- Task 'd.2' acceptance_criteria[1] may produce unsatisfied reconciliation: 'GoniometerComponent drains MeterTap/AbstractFifo pairs on th...' lacks file reference or test command
+- Task 'd.2' acceptance_criteria[2] may produce unsatisfied reconciliation: 'Plot uses x_plot=(R-L)/sqrt(2) and y_plot=(L+R)/sqrt(2)...' lacks file reference or test command
+- Task 'd.2' acceptance_criteria[3] may produce unsatisfied reconciliation: 'Phosphor-style alpha decay draws older points dimmer; ~1-2k ...' lacks file reference or test command
+- Task 'd.2' acceptance_criteria[4] may produce unsatisfied reconciliation: 'FIFO underflow holds the last frame rather than clearing...' lacks file reference or test command
+- Task 'd.2' acceptance_criteria[5] may produce unsatisfied reconciliation: 'No file outside the task's allowed_write_paths is created or...' lacks file reference or test command
+- Task 'd.3' acceptance_criteria[1] may produce unsatisfied reconciliation: 'CorrelationMeter reads smoothed rho via atomic/float source ...' lacks file reference or test command
+- Task 'd.3' acceptance_criteria[2] may produce unsatisfied reconciliation: 'Horizontal bar is centered at 0 over the range -1..+1...' lacks file reference or test command
+- Task 'd.3' acceptance_criteria[3] may produce unsatisfied reconciliation: 'Bar colours: green +1..+0.3, yellow +0.3..-0.3, red <-0.3...' lacks file reference or test command
+- Task 'd.3' acceptance_criteria[4] may produce unsatisfied reconciliation: 'Held peak-toward--1 flash/indicator present for mono-cancell...' lacks file reference or test command
+- Task 'd.3' acceptance_criteria[5] may produce unsatisfied reconciliation: 'No file outside the task's allowed_write_paths is created or...' lacks file reference or test command
+- Task 'd.4' acceptance_criteria[1] may produce unsatisfied reconciliation: 'Left rotaries bind Detune Amount, Width, Mix, Output Trim vi...' lacks file reference or test command
+- Task 'd.4' acceptance_criteria[2] may produce unsatisfied reconciliation: 'Center controls bind Delay Offset L/R, Low Mono Crossover, a...' lacks file reference or test command
+- Task 'd.4' acceptance_criteria[3] may produce unsatisfied reconciliation: 'Right column hosts GoniometerComponent above CorrelationMete...' lacks file reference or test command
+- Task 'd.4' acceptance_criteria[4] may produce unsatisfied reconciliation: 'Timer at 30-60 Hz drives meter repaint/drain only...' lacks file reference or test command
+- Task 'd.4' acceptance_criteria[5] may produce unsatisfied reconciliation: 'ResizableCornerComponent with constrained aspect; window siz...' lacks file reference or test command
+- Task 'd.4' acceptance_criteria[6] may produce unsatisfied reconciliation: 'CustomLookAndFeel applied; A/B compare and bypass LED/contro...' lacks file reference or test command
+- Task 'd.4' acceptance_criteria[8] may produce unsatisfied reconciliation: 'No file outside the task's allowed_write_paths is created or...' lacks file reference or test command
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/e/task_e.1_factory_preset_xml_assets_tight_lead_wide_lead_huge_solo_mono_safe_subtle_live_tracking.json] allowed_write_paths list length > 4
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/e/task_e.1_factory_preset_xml_assets_tight_lead_wide_lead_huge_solo_mono_safe_subtle_live_tracking.json] allowed_write_paths entry 'Resources/Presets/TightLead.xml' does not exist in working root
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/e/task_e.1_factory_preset_xml_assets_tight_lead_wide_lead_huge_solo_mono_safe_subtle_live_tracking.json] allowed_write_paths entry 'Resources/Presets/WideLead.xml' does not exist in working root
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/e/task_e.1_factory_preset_xml_assets_tight_lead_wide_lead_huge_solo_mono_safe_subtle_live_tracking.json] allowed_write_paths entry 'Resources/Presets/HugeSolo.xml' does not exist in working root
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/e/task_e.1_factory_preset_xml_assets_tight_lead_wide_lead_huge_solo_mono_safe_subtle_live_tracking.json] allowed_write_paths entry 'Resources/Presets/MonoSafeSubtle.xml' does not exist in working root
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/e/task_e.1_factory_preset_xml_assets_tight_lead_wide_lead_huge_solo_mono_safe_subtle_live_tracking.json] allowed_write_paths entry 'Resources/Presets/LiveTracking.xml' does not exist in working root
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/e/task_e.1_factory_preset_xml_assets_tight_lead_wide_lead_huge_solo_mono_safe_subtle_live_tracking.json] acceptance_criteria list length > 5
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/e/task_e.1_factory_preset_xml_assets_tight_lead_wide_lead_huge_solo_mono_safe_subtle_live_tracking.json] acceptance_criteria item length > 120 characters
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/e/task_e.1_factory_preset_xml_assets_tight_lead_wide_lead_huge_solo_mono_safe_subtle_live_tracking.json] description field length > 300 characters
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/e/task_e.1_factory_preset_xml_assets_tight_lead_wide_lead_huge_solo_mono_safe_subtle_live_tracking.json] description contains broad word: full
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/e/task_e.2_pitch_accuracy_fft_and_correlation_sanity_tests_preset_binarydata_embedding_cmakelists.json] allowed_write_paths entry 'tests/CorrectnessTests.cpp' does not exist in working root
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/e/task_e.2_pitch_accuracy_fft_and_correlation_sanity_tests_preset_binarydata_embedding_cmakelists.json] allowed_write_paths entry 'CMakeLists.txt' does not exist in working root
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/e/task_e.2_pitch_accuracy_fft_and_correlation_sanity_tests_preset_binarydata_embedding_cmakelists.json] acceptance_criteria list length > 5
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/e/task_e.2_pitch_accuracy_fft_and_correlation_sanity_tests_preset_binarydata_embedding_cmakelists.json] acceptance_criteria item length > 120 characters
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/e/task_e.2_pitch_accuracy_fft_and_correlation_sanity_tests_preset_binarydata_embedding_cmakelists.json] acceptance_criteria references pytest or test without a test allowed_write_path
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/e/task_e.2_pitch_accuracy_fft_and_correlation_sanity_tests_preset_binarydata_embedding_cmakelists.json] description field length > 300 characters
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/e/task_e.2_pitch_accuracy_fft_and_correlation_sanity_tests_preset_binarydata_embedding_cmakelists.json] description contains broad word: full
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/e/task_e.3_rt_safety_grep_gate_script_forbidden_processblock_calls_scopednodenormals_present.json] allowed_write_paths entry 'scripts/check_rt_safety.sh' does not exist in working root
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/e/task_e.3_rt_safety_grep_gate_script_forbidden_processblock_calls_scopednodenormals_present.json] acceptance_criteria list length > 5
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/e/task_e.3_rt_safety_grep_gate_script_forbidden_processblock_calls_scopednodenormals_present.json] acceptance_criteria item length > 120 characters
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/e/task_e.3_rt_safety_grep_gate_script_forbidden_processblock_calls_scopednodenormals_present.json] description field length > 300 characters
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/e/task_e.3_rt_safety_grep_gate_script_forbidden_processblock_calls_scopednodenormals_present.json] description contains broad word: full
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/e/task_e.4_pluginval_and_format_smoke_load_script_vst3_clap_strictness_8_lv2_standalone.json] allowed_write_paths entry 'scripts/run_pluginval.sh' does not exist in working root
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/e/task_e.4_pluginval_and_format_smoke_load_script_vst3_clap_strictness_8_lv2_standalone.json] acceptance_criteria list length > 5
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/e/task_e.4_pluginval_and_format_smoke_load_script_vst3_clap_strictness_8_lv2_standalone.json] acceptance_criteria item length > 120 characters
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/e/task_e.4_pluginval_and_format_smoke_load_script_vst3_clap_strictness_8_lv2_standalone.json] description field length > 300 characters
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/e/task_e.4_pluginval_and_format_smoke_load_script_vst3_clap_strictness_8_lv2_standalone.json] description contains broad word: full
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/e/task_e.4_pluginval_and_format_smoke_load_script_vst3_clap_strictness_8_lv2_standalone.json] acceptance_criteria[2] contains broad word: full
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/e/task_e.5_verification_checklist_and_user_manual_docs_nominal_latency_monosource_automation_caveats_lv2_host_notes.json] allowed_write_paths entry 'docs/verification/shredwidth_verification.md' does not exist in working root
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/e/task_e.5_verification_checklist_and_user_manual_docs_nominal_latency_monosource_automation_caveats_lv2_host_notes.json] allowed_write_paths entry 'docs/shredwidth_manual.md' does not exist in working root
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/e/task_e.5_verification_checklist_and_user_manual_docs_nominal_latency_monosource_automation_caveats_lv2_host_notes.json] acceptance_criteria list length > 5
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/e/task_e.5_verification_checklist_and_user_manual_docs_nominal_latency_monosource_automation_caveats_lv2_host_notes.json] acceptance_criteria item length > 120 characters
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/e/task_e.5_verification_checklist_and_user_manual_docs_nominal_latency_monosource_automation_caveats_lv2_host_notes.json] description field length > 300 characters
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/e/task_e.5_verification_checklist_and_user_manual_docs_nominal_latency_monosource_automation_caveats_lv2_host_notes.json] description contains broad word: full
+- [/home/mike/dev/mike/music/plugins/shred-width/.abracapocus/e/task_e.5_verification_checklist_and_user_manual_docs_nominal_latency_monosource_automation_caveats_lv2_host_notes.json] acceptance_criteria[1] contains broad word: full
+- Task 'e.2' depends on 'e.1' but their allowed_write_paths are disjoint; dependency may be unnecessary
+- Task 'e.1' acceptance_criteria[6] may produce unsatisfied reconciliation: 'No file outside the task's allowed_write_paths is created or...' lacks file reference or test command
+- Task 'e.2' acceptance_criteria[5] may produce unsatisfied reconciliation: 'No file outside the task's allowed_write_paths is created or...' lacks file reference or test command
+- Task 'e.3' acceptance_criteria[4] may produce unsatisfied reconciliation: 'Script does not assume cmake is on PATH...' lacks file reference or test command
+- Task 'e.3' acceptance_criteria[5] may produce unsatisfied reconciliation: 'No file outside the task's allowed_write_paths is created or...' lacks file reference or test command
+- Task 'e.4' acceptance_criteria[4] may produce unsatisfied reconciliation: 'Script exits non-zero when a required VST3/CLAP pluginval ru...' lacks file reference or test command
+- Task 'e.4' acceptance_criteria[5] may produce unsatisfied reconciliation: 'No file outside the task's allowed_write_paths is created or...' lacks file reference or test command
+- Task 'e.5' acceptance_criteria[5] may produce unsatisfied reconciliation: 'No file outside the task's allowed_write_paths is created or...' lacks file reference or test command
+
+## Lint Results
+- /home/mike/dev/mike/music/plugins/shred-width/.abracapocus/a/task_a.1_cmakelists.txt_cmakepresets.json_build_all.sh_clion_bundled_cmake_juce_submodule_pinned_to_aural_maximizer_pro_tag.json: 0 errors, 8 warnings
+- /home/mike/dev/mike/music/plugins/shred-width/.abracapocus/a/task_a.2_parameterids.h_v1_inventory_apvts_layout_with_skews_bus_layout_mono_stereo_in_stereo_out_pluginprocessor_spine_with_preparetoplay_allocation_and_pdc_hooks.json: 0 errors, 9 warnings
+- /home/mike/dev/mike/music/plugins/shred-width/.abracapocus/a/task_a.3_statemanager_apvts_xml_save_restore_layout_version_a_b_slots_and_plugineditor_skeleton.json: 0 errors, 11 warnings
+- /home/mike/dev/mike/music/plugins/shred-width/.abracapocus/a/task_a.4_.gitignore_readme_.gitmodules_notes.json: 0 errors, 6 warnings
+- /home/mike/dev/mike/music/plugins/shred-width/.abracapocus/b/task_b.1_delaylinefrac_fractional_ms_delay_3rd_order_lagrange_read_50_ms_read_distance_smoothing.json: 0 errors, 5 warnings
+- /home/mike/dev/mike/music/plugins/shred-width/.abracapocus/b/task_b.2_pitchshifter_dual_head_granular_buffer_double_drift_accumulator_4_point_lagrange_hann_unity_gain_crossfade.json: 0 errors, 5 warnings
+- /home/mike/dev/mike/music/plugins/shred-width/.abracapocus/b/task_b.3_monosafetycrossover_lr2_shared_lp_design_inverted_hp_polarity_lr4_build_option_block_rate_coefficient_recompute.json: 0 errors, 4 warnings
+- /home/mike/dev/mike/music/plugins/shred-width/.abracapocus/b/task_b.4_widthprocessor_m_s_width_mono_lows_preserved_reconstruction.json: 0 errors, 4 warnings
+- /home/mike/dev/mike/music/plugins/shred-width/.abracapocus/b/task_b.5_testmain_harness_and_dsp_primitive_tests_delay_crossover_reconstruction_width_mono_lows_invariant_unity_gain_crossfade_cmakelists_registration.json: 0 errors, 8 warnings
+- /home/mike/dev/mike/music/plugins/shred-width/.abracapocus/c/task_c.1_shredwidthengine_full_per_sample_orchestration_shared_lp_assembly_dry_align_latency_mode_buffer_repoint_masked_crossfade.json: 0 errors, 7 warnings
+- /home/mike/dev/mike/music/plugins/shred-width/.abracapocus/c/task_c.2_metertap_audio_thread_pearson_correlation_one_pole_lock_free_abstractfifo_pair_push_atomic_rho.json: 0 errors, 5 warnings
+- /home/mike/dev/mike/music/plugins/shred-width/.abracapocus/c/task_c.3_pluginprocessor_processblock_wiring_scopednodenormals_smoothed_reads_latency_reporting_meter_push_cmakelists.json: 0 errors, 6 warnings
+- /home/mike/dev/mike/music/plugins/shred-width/.abracapocus/c/task_c.4_engine_integration_tests_determinism_null_bypass_mix_0_passthrough_mono_lows_invariant_latency_report.json: 0 errors, 4 warnings
+- /home/mike/dev/mike/music/plugins/shred-width/.abracapocus/d/task_d.1_customlookandfeel_corrected_drawpopupmenuitem_signature_and_rotaryslider.json: 0 errors, 7 warnings
+- /home/mike/dev/mike/music/plugins/shred-width/.abracapocus/d/task_d.2_goniometercomponent_fifo_drain_45_degree_lissajous_phosphor_decay_underflow_hold.json: 0 errors, 4 warnings
+- /home/mike/dev/mike/music/plugins/shred-width/.abracapocus/d/task_d.3_correlationmeter_atomic_rho_read_colored_bar_mono_cancellation_flash.json: 0 errors, 4 warnings
+- /home/mike/dev/mike/music/plugins/shred-width/.abracapocus/d/task_d.4_plugineditor_full_layout_header_control_columns_metering_column_apvts_attachments_timer_resize_cmakelists.json: 0 errors, 10 warnings
+- /home/mike/dev/mike/music/plugins/shred-width/.abracapocus/e/task_e.1_factory_preset_xml_assets_tight_lead_wide_lead_huge_solo_mono_safe_subtle_live_tracking.json: 0 errors, 10 warnings
+- /home/mike/dev/mike/music/plugins/shred-width/.abracapocus/e/task_e.2_pitch_accuracy_fft_and_correlation_sanity_tests_preset_binarydata_embedding_cmakelists.json: 0 errors, 7 warnings
+- /home/mike/dev/mike/music/plugins/shred-width/.abracapocus/e/task_e.3_rt_safety_grep_gate_script_forbidden_processblock_calls_scopednodenormals_present.json: 0 errors, 5 warnings
+- /home/mike/dev/mike/music/plugins/shred-width/.abracapocus/e/task_e.4_pluginval_and_format_smoke_load_script_vst3_clap_strictness_8_lv2_standalone.json: 0 errors, 6 warnings
+- /home/mike/dev/mike/music/plugins/shred-width/.abracapocus/e/task_e.5_verification_checklist_and_user_manual_docs_nominal_latency_monosource_automation_caveats_lv2_host_notes.json: 0 errors, 7 warnings
+
+## Summary
+- Total errors: 0
+- Total warnings: 250
+- Linted files: 22

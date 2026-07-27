@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "task_id": "b.3",
+  "phase": "B",
+  "phase_id": "b",
+  "title": "MonoSafetyCrossover - LR2 shared-LP design, inverted HP polarity, LR4 build option, block-rate coefficient recompute",
+  "description": "Implement Source/DSP/MonoSafetyCrossover only. Shared-LP centered lows + per-channel HP on shifted/delayed highs (\u00a74.5\u20134.6).\n\nBefore editing, inspect:\n- .abracapocus/ShredWidth_Build_Spec.md \u00a7\u00a74.5 (LR2 math, polarity D2), 4.6 (channel assembly roles), \u00a76 (block-rate coeff), CMake SHREDWIDTH_XOVER_ORDER expectation from phase A\n- risk_notes: HP polarity inverted; LR2/LR4 by compile option\n\nImplement class MonoSafetyCrossover in Source/DSP/MonoSafetyCrossover.h + MonoSafetyCrossover.cpp:\n1. API: prepare(spec/sampleRate), reset(), setCutoffHz(float fc), processBlock or process that can:\n   - run the single shared LP on dry mono source x(n) once per sample\n   - run HP on left shifted+delayed and right shifted+delayed independently\n   Prefer clear methods such as processLowpass(float x)->float and processHighpassL/R(float x)->float, or a structured process(x, wetL, wetR, lpOut, hpLOut, hpROut).\n2. LR2 default: two cascaded 1st-order Butterworth sections per band via juce::dsp::IIR::Filter (matched LP/HP). Coefficients from cutoff and sampleRate.\n3. Build option: if SHREDWIDTH_XOVER_ORDER is defined as 4 (or == 4), use LR4 \u2014 two cascaded 2nd-order Butterworth per band (in-phase, 24 dB/oct). Default when undefined or 2 remains LR2. Use #if SHREDWIDTH_XOVER_ORDER == 4 (treat missing macro as 2).\n4. Highpass polarity inverted internally so degenerate Mix=1, \u0394C\u21920, \u03c4\u21920 reconstruction is flat rather than notched (D2).\n5. Coefficient recompute only when cutoff dirty flag set; apply at block start (setCutoffHz marks dirty; process applies once). Never recompute per-sample.\n6. Shared LP is a single filter instance \u2014 bit-identical left/right lows by design when assembly later adds the same lp to both channels.\n7. RT: fixed state, no heap outside prepare; ScopedNoDenormals is caller's job.\n\nDo not implement other DSP classes, assembly engine, tests, or CMakeLists (b.5 may add compile definition wiring if missing \u2014 this task only consumes the macro).",
+  "acceptance_criteria": [
+    "Source/DSP/MonoSafetyCrossover.h and Source/DSP/MonoSafetyCrossover.cpp exist",
+    "Shared lowpass path is a single instance for dry mono source x(n)",
+    "Independent highpass paths exist for L and R wet/shifted inputs",
+    "Highpass polarity is inverted internally (D2)",
+    "Default path is LR2 (two cascaded 1st-order Butterworth sections per band via juce::dsp::IIR)",
+    "SHREDWIDTH_XOVER_ORDER == 4 selects LR4 (two cascaded 2nd-order Butterworth per band)",
+    "Coefficients recompute only on dirty cutoff at block boundary, not per-sample",
+    "prepare/process/reset present; no allocation outside prepare",
+    "No file outside the task's allowed_write_paths is created or modified"
+  ],
+  "selected_backend": "codex_cli",
+  "verification_profile": "focused",
+  "allowed_write_paths": [
+    "Source/DSP/MonoSafetyCrossover.h",
+    "Source/DSP/MonoSafetyCrossover.cpp"
+  ],
+  "forbidden_changes": [
+    "modify CMakeLists.txt, CMakePresets.json, scripts/**",
+    "modify DelayLineFrac, PitchShifter, WidthProcessor, PluginProcessor, PluginEditor",
+    "modify tests/**",
+    "recompute IIR coefficients per sample",
+    "duplicate LP filter instances per channel"
+  ],
+  "allowed_symbols": [
+    "MonoSafetyCrossover",
+    "prepare",
+    "reset",
+    "setCutoffHz",
+    "processLowpass",
+    "processHighpassL",
+    "processHighpassR"
+  ],
+  "decision_budget": {
+    "allowed": [
+      "juce::dsp::IIR::Filter + Coefficients helpers for Butterworth",
+      "single process() API packing lp/hp I/O if clearer than split methods",
+      "dirty-flag coeff update at start of processBlock-style entry"
+    ],
+    "forbidden": [
+      "own CMakeLists compile definition registration (b.5)",
+      "implement full yL/yR assembly/mix/width here",
+      "add oversampling"
+    ]
+  },
+  "dependencies": [],
+  "task_timeout_seconds": 1200,
+  "verification_commands": []
+}

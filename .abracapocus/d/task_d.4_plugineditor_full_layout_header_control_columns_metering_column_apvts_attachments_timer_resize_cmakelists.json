@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "task_id": "d.4",
+  "phase": "D",
+  "phase_id": "d",
+  "title": "PluginEditor full layout - header, control columns, metering column, APVTS attachments, timer, resize, CMakeLists",
+  "description": "Phase-D fan-in and sole owner of Source/PluginEditor.* and CMakeLists.txt. Assemble the full single-window editor and register all new GUI sources.\n\nSTRICT FILE SCOPE: Create or modify ONLY the files listed in this task's allowed_write_paths.\n\nBefore editing, inspect:\n- .abracapocus/ShredWidth_Build_Spec.md \u00a79.1 (layout), \u00a79.4 (Timer 30\u201360 Hz), \u00a75 parameter IDs, \u00a713 file list\n- Source/PluginEditor.h/.cpp skeleton from a.3 (Timer, ResizableCornerComponent)\n- Source/PluginProcessor.h accessors for APVTS + MeterTap / engine hooks from c.3\n- Source/ParameterIDs.h (detuneAmount, delayL/R, monoXover / low mono crossover id, width, mix, outTrim, latencyMode, bypass)\n- Source/GUI/{CustomLookAndFeel,RotarySlider,GoniometerComponent,CorrelationMeter} APIs from d.1\u2013d.3\n- CMakeLists.txt plugin source list from phase C (add GUI .cpp files only; do not drop DSP/test entries)\n- async_notes/risk_notes: d.4 is sole Editor/CMakeLists owner\n\nImplement full ShredWidthAudioProcessorEditor layout:\n1. Apply CustomLookAndFeel to the editor (member owned by editor);\n2. Header: plugin name label, preset selector ComboBox (factory list stub OK if BinaryData presets land in phase E \u2014 wire to APVTS/StateManager load path if already available), A/B compare controls calling StateManager slots, bypass LED/toggle bound to bypass param.\n3. Left column RotarySliders: Detune Amount, Width, Mix, Output Trim (Detune largest).\n4. Center column: Delay Offset L, Delay Offset R, Low Mono Crossover rotaries; segmented Studio/Live latencyMode control (juce::ComboBox or two-text toggle / Radio-style TextButtons mapping choice param).\n5. Right column metering: GoniometerComponent (square) above CorrelationMeter (horizontal bar); both bound to processor MeterTap accessors.\n6. APVTS SliderAttachment / ButtonAttachment / ComboBoxAttachment (or equivalent) for every surfaced param; no manual processBlock writes from UI.\n7. juce::Timer at 30\u201360 Hz: drain/repaint goniometer and correlation meter only (no audio work).\n8. ResizableCornerComponent + setResizable with constrained aspect; persist editor width/height into APVTS value tree state (non-parameter properties) on resize/shutdown and restore in ctor.\n9. paint/resized implement the three-column + header layout on a dark background.\n\nCMakeLists.txt only in this phase task:\n- Register Source/GUI/CustomLookAndFeel.cpp, RotarySlider.cpp, GoniometerComponent.cpp, CorrelationMeter.cpp on the ShredWidth plugin target.\n- Ensure PluginEditor.cpp remains listed.\n- Do not remove VST3/CLAP/LV2/Standalone, unpin JUCE, drop DSP sources, or rewrite test targets beyond what is required to keep the build consistent.\n\nDo not author factory preset XML bodies, correctness tests, or verification scripts (phase E).",
+  "acceptance_criteria": [
+    "Source/PluginEditor.h and Source/PluginEditor.cpp implement full header + left/center/right column layout per \u00a79.1",
+    "Left rotaries bind Detune Amount, Width, Mix, Output Trim via APVTS attachments",
+    "Center controls bind Delay Offset L/R, Low Mono Crossover, and Studio/Live latencyMode",
+    "Right column hosts GoniometerComponent above CorrelationMeter fed from processor MeterTap",
+    "Timer at 30-60 Hz drives meter repaint/drain only",
+    "ResizableCornerComponent with constrained aspect; window size stored in value tree state",
+    "CustomLookAndFeel applied; A/B compare and bypass LED/control present in header",
+    "CMakeLists.txt registers CustomLookAndFeel.cpp, RotarySlider.cpp, GoniometerComponent.cpp, and CorrelationMeter.cpp on the plugin target",
+    "No file outside the task's allowed_write_paths is created or modified"
+  ],
+  "selected_backend": "antigravity_cli",
+  "verification_profile": "focused",
+  "allowed_write_paths": [
+    "Source/PluginEditor.h",
+    "Source/PluginEditor.cpp",
+    "CMakeLists.txt"
+  ],
+  "forbidden_changes": [
+    "modify Source/GUI/** component implementations beyond what editor includes (edit editor + CMakeLists only)",
+    "modify Source/DSP/**, Source/ParameterIDs.h, Source/StateManager.*, tests/**",
+    "rewrite CMake presets, unpin JUCE, remove format targets, or drop prior DSP/test sources",
+    "implement factory preset XML files or phase-E verification scripts",
+    "perform audio-thread work inside timerCallback"
+  ],
+  "allowed_symbols": [
+    "ShredWidthAudioProcessorEditor",
+    "timerCallback",
+    "resized",
+    "paint",
+    "SliderAttachment",
+    "ComboBoxAttachment",
+    "ButtonAttachment",
+    "ResizableCornerComponent",
+    "GoniometerComponent",
+    "CorrelationMeter",
+    "CustomLookAndFeel",
+    "RotarySlider"
+  ],
+  "decision_budget": {
+    "allowed": [
+      "exact pixel layout and default window size within a practical ~wide editor",
+      "preset ComboBox stub list if BinaryData bank is not yet present",
+      "latencyMode as ComboBox or segmented TextButtons bound to choice param",
+      "value-tree property keys for editorWidth/editorHeight"
+    ],
+    "forbidden": [
+      "change ParameterIDs stable strings",
+      "rework processBlock or DSP engine",
+      "own phase-E presets/tests/docs"
+    ]
+  },
+  "dependencies": [
+    "d.1",
+    "d.2",
+    "d.3"
+  ],
+  "task_timeout_seconds": 900,
+  "verification_commands": []
+}

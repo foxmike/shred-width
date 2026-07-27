@@ -1,0 +1,5 @@
+# SHREDWIDTH
+
+## Purpose
+
+Build ShredWidth: a static micro-pitch detuner and lead widener for guitar and monophonic sources. C++20/JUCE plugin targeting VST3, CLAP, LV2, and Standalone. Fully deterministic (no LFO, no randomness): a dual-head granular crossfading pitch shifter with 3rd-order Lagrange interpolation applies a fixed +/-detune per channel; independent Haas delays widen; an LR2 (build-option LR4) Linkwitz-Riley crossover keeps lows shared and centered (mono-safe by construction) while only the highs spread; post-assembly M/S width scales 0-200% without moving the lows; equal-gain dry/wet mix; nominal PDC via setLatencySamples with Studio/Live buffer modes. Honest metering: audio-thread Pearson correlation and a goniometer fed over a lock-free AbstractFifo. Full product specification in ShredWidth_Build_Spec.md. Section 16 open decisions are materialized at their defaults (LR2 with LR4 build option, hidden monoSource=Sum, Output Trim included at 0 dB, no AU target, masked-crossfade live latency switch).

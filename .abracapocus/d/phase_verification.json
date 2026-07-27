@@ -1,0 +1,54 @@
+{
+  "verification": {
+    "checks": [
+      {
+        "name": "gui_files_exist",
+        "command": [
+          "bash",
+          "-lc",
+          "test -f Source/GUI/CustomLookAndFeel.h && test -f Source/GUI/CustomLookAndFeel.cpp && test -f Source/GUI/RotarySlider.h && test -f Source/GUI/RotarySlider.cpp && test -f Source/GUI/GoniometerComponent.h && test -f Source/GUI/GoniometerComponent.cpp && test -f Source/GUI/CorrelationMeter.h && test -f Source/GUI/CorrelationMeter.cpp && test -f Source/PluginEditor.h && test -f Source/PluginEditor.cpp && test -f CMakeLists.txt"
+        ]
+      },
+      {
+        "name": "lookandfeel_popup_signature",
+        "command": [
+          "bash",
+          "-lc",
+          "rg -q 'drawPopupMenuItem' Source/GUI/CustomLookAndFeel.h Source/GUI/CustomLookAndFeel.cpp && rg -q 'isSeparator' Source/GUI/CustomLookAndFeel.h Source/GUI/CustomLookAndFeel.cpp && ! rg -q 'PopupMenu::Item' Source/GUI/CustomLookAndFeel.h Source/GUI/CustomLookAndFeel.cpp"
+        ]
+      },
+      {
+        "name": "goniometer_lissajous_math",
+        "command": [
+          "bash",
+          "-lc",
+          "rg -q 'GoniometerComponent' Source/GUI/GoniometerComponent.h && rg -n 'sqrt|Side|Mid|R - L|L \\+ R|phosphor|alpha|AbstractFifo|hold' Source/GUI/GoniometerComponent.h Source/GUI/GoniometerComponent.cpp"
+        ]
+      },
+      {
+        "name": "correlation_meter_bands",
+        "command": [
+          "bash",
+          "-lc",
+          "rg -q 'CorrelationMeter' Source/GUI/CorrelationMeter.h && rg -n '0\\.3|green|yellow|red|rho|getCorrelation|atomic' Source/GUI/CorrelationMeter.h Source/GUI/CorrelationMeter.cpp"
+        ]
+      },
+      {
+        "name": "editor_layout_and_timer",
+        "command": [
+          "bash",
+          "-lc",
+          "rg -q 'GoniometerComponent' Source/PluginEditor.h Source/PluginEditor.cpp && rg -q 'CorrelationMeter' Source/PluginEditor.h Source/PluginEditor.cpp && rg -q 'CustomLookAndFeel' Source/PluginEditor.h Source/PluginEditor.cpp && rg -q 'timerCallback' Source/PluginEditor.h Source/PluginEditor.cpp && rg -q 'ResizableCornerComponent|setResizable' Source/PluginEditor.h Source/PluginEditor.cpp && rg -q 'SliderAttachment|AudioProcessorValueTreeState::SliderAttachment' Source/PluginEditor.h Source/PluginEditor.cpp"
+        ]
+      },
+      {
+        "name": "cmake_registers_gui_sources",
+        "command": [
+          "bash",
+          "-lc",
+          "rg -q 'CustomLookAndFeel\\.cpp' CMakeLists.txt && rg -q 'RotarySlider\\.cpp' CMakeLists.txt && rg -q 'GoniometerComponent\\.cpp' CMakeLists.txt && rg -q 'CorrelationMeter\\.cpp' CMakeLists.txt && rg -q 'PluginEditor\\.cpp' CMakeLists.txt"
+        ]
+      }
+    ]
+  }
+}

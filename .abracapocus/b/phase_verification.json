@@ -1,0 +1,38 @@
+{
+  "verification": {
+    "checks": [
+      {
+        "name": "dsp_primitive_files_exist",
+        "command": [
+          "bash",
+          "-lc",
+          "test -f Source/DSP/DelayLineFrac.h && test -f Source/DSP/DelayLineFrac.cpp && test -f Source/DSP/PitchShifter.h && test -f Source/DSP/PitchShifter.cpp && test -f Source/DSP/MonoSafetyCrossover.h && test -f Source/DSP/MonoSafetyCrossover.cpp && test -f Source/DSP/WidthProcessor.h && test -f Source/DSP/WidthProcessor.cpp && test -f tests/TestMain.cpp && test -f tests/DSPPrimitiveTests.cpp"
+        ]
+      },
+      {
+        "name": "dsp_symbols_present",
+        "command": [
+          "bash",
+          "-lc",
+          "rg -q 'class\\s+DelayLineFrac' Source/DSP/DelayLineFrac.h && rg -q 'class\\s+PitchShifter' Source/DSP/PitchShifter.h && rg -q 'class\\s+MonoSafetyCrossover' Source/DSP/MonoSafetyCrossover.h && rg -q 'class\\s+WidthProcessor' Source/DSP/WidthProcessor.h && rg -q 'double' Source/DSP/PitchShifter.h Source/DSP/PitchShifter.cpp && rg -q 'SHREDWIDTH_XOVER_ORDER' Source/DSP/MonoSafetyCrossover.h Source/DSP/MonoSafetyCrossover.cpp"
+        ]
+      },
+      {
+        "name": "cmake_registers_dsp_and_tests",
+        "command": [
+          "bash",
+          "-lc",
+          "rg -q 'DelayLineFrac\\.cpp' CMakeLists.txt && rg -q 'PitchShifter\\.cpp' CMakeLists.txt && rg -q 'MonoSafetyCrossover\\.cpp' CMakeLists.txt && rg -q 'WidthProcessor\\.cpp' CMakeLists.txt && rg -q 'DSPPrimitiveTests\\.cpp' CMakeLists.txt && rg -q 'add_test' CMakeLists.txt"
+        ]
+      },
+      {
+        "name": "width_ms_math_present",
+        "command": [
+          "bash",
+          "-lc",
+          "rg -q 'setWidth|processSample' Source/DSP/WidthProcessor.h Source/DSP/WidthProcessor.cpp && rg -n 'width' Source/DSP/WidthProcessor.cpp | head -20"
+        ]
+      }
+    ]
+  }
+}
