@@ -821,5 +821,63 @@
       "version": "task-d.1",
       "created_at": "2026-07-27T18:16:12.358452"
     }
+  },
+  {
+    "created_at": "2026-07-27T18:21:25.561563",
+    "project_name": "shred-width",
+    "goal": "Wave-2 goniometer component. Depends on d.1 for shared dark-theme colours/style only; no Dependency on CorrelationMeter or PluginEditor.\n\nSTRICT FILE SCOPE: Create or modify ONLY the files listed in this task's allowed_write_paths.\n\nBefore editing, inspect:\n- .abracapocus/ShredWidth_Build_Spec.md \u00a79.2 (Goniometer math and phosphor behaviour), \u00a79.4 (AbstractFifo UI drain @ 30\u201360 Hz)\n- Source/DSP/MeterTap.h drain/popPairs API from phase C (UI-thread consumer)\n- Source/GUI/CustomLookAndFeel.* colour conventions from d.1\n\nImplement Source/GUI/GoniometerComponent.h/.cpp as a juce::Component:\n1. Constructor / setMeterTap (or equivalent) accepts a non-owning pointer/reference to MeterTap (or raw AbstractFifo + buffers if MeterTap exposes drain only). Component never pushes audio; UI thread only.\n2. Drain the lock-free FIFO each paint/timer tick driven later by the editor; decimate/cap to ~1\u20132k points per frame.\n3. Plot rotated 45\u00b0 Lissajous / vectorscope of output L/R:\n   x_plot = (R - L) / sqrt(2)  // Side\n   y_plot = (L + R) / sqrt(2)  // Mid\n   Map into component bounds with origin at center; vertical = mono, horizontal = anti-correlation.\n4. Phosphor look: older points drawn with lower alpha (decay); hold last frame on FIFO underflow (paused/stopped audio) \u2014 do not clear the plot to blank.\n5. paint() is allocation-light on the steady path (reuse point storage reserved in constructor/resized).\n6. Square preferred aspect; resized maintains plotting area.\n\nDo not implement CorrelationMeter, PluginEditor, CustomLookAndFeel changes, or CMakeLists.",
+    "plan_template": {
+      "project_name": "shred-width",
+      "summary": "Task run: GoniometerComponent - FIFO drain, 45-degree Lissajous, phosphor decay, underflow hold",
+      "phases": [
+        {
+          "name": "D",
+          "objective": "Wave-2 goniometer component. Depends on d.1 for shared dark-theme colours/style only; no Dependency on CorrelationMeter or PluginEditor.\n\nSTRICT FILE SCOPE: Create or modify ONLY the files listed in this task's allowed_write_paths.\n\nBefore editing, inspect:\n- .abracapocus/ShredWidth_Build_Spec.md \u00a79.2 (Goniometer math and phosphor behaviour), \u00a79.4 (AbstractFifo UI drain @ 30\u201360 Hz)\n- Source/DSP/MeterTap.h drain/popPairs API from phase C (UI-thread consumer)\n- Source/GUI/CustomLookAndFeel.* colour conventions from d.1\n\nImplement Source/GUI/GoniometerComponent.h/.cpp as a juce::Component:\n1. Constructor / setMeterTap (or equivalent) accepts a non-owning pointer/reference to MeterTap (or raw AbstractFifo + buffers if MeterTap exposes drain only). Component never pushes audio; UI thread only.\n2. Drain the lock-free FIFO each paint/timer tick driven later by the editor; decimate/cap to ~1\u20132k points per frame.\n3. Plot rotated 45\u00b0 Lissajous / vectorscope of output L/R:\n   x_plot = (R - L) / sqrt(2)  // Side\n   y_plot = (L + R) / sqrt(2)  // Mid\n   Map into component bounds with origin at center; vertical = mono, horizontal = anti-correlation.\n4. Phosphor look: older points drawn with lower alpha (decay); hold last frame on FIFO underflow (paused/stopped audio) \u2014 do not clear the plot to blank.\n5. paint() is allocation-light on the steady path (reuse point storage reserved in constructor/resized).\n6. Square preferred aspect; resized maintains plotting area.\n\nDo not implement CorrelationMeter, PluginEditor, CustomLookAndFeel changes, or CMakeLists.",
+          "status": "completed",
+          "tasks": [
+            {
+              "task": {
+                "task_id": "d.2",
+                "title": "GoniometerComponent - FIFO drain, 45-degree Lissajous, phosphor decay, underflow hold",
+                "description": "Wave-2 goniometer component. Depends on d.1 for shared dark-theme colours/style only; no Dependency on CorrelationMeter or PluginEditor.\n\nSTRICT FILE SCOPE: Create or modify ONLY the files listed in this task's allowed_write_paths.\n\nBefore editing, inspect:\n- .abracapocus/ShredWidth_Build_Spec.md \u00a79.2 (Goniometer math and phosphor behaviour), \u00a79.4 (AbstractFifo UI drain @ 30\u201360 Hz)\n- Source/DSP/MeterTap.h drain/popPairs API from phase C (UI-thread consumer)\n- Source/GUI/CustomLookAndFeel.* colour conventions from d.1\n\nImplement Source/GUI/GoniometerComponent.h/.cpp as a juce::Component:\n1. Constructor / setMeterTap (or equivalent) accepts a non-owning pointer/reference to MeterTap (or raw AbstractFifo + buffers if MeterTap exposes drain only). Component never pushes audio; UI thread only.\n2. Drain the lock-free FIFO each paint/timer tick driven later by the editor; decimate/cap to ~1\u20132k points per frame.\n3. Plot rotated 45\u00b0 Lissajous / vectorscope of output L/R:\n   x_plot = (R - L) / sqrt(2)  // Side\n   y_plot = (L + R) / sqrt(2)  // Mid\n   Map into component bounds with origin at center; vertical = mono, horizontal = anti-correlation.\n4. Phosphor look: older points drawn with lower alpha (decay); hold last frame on FIFO underflow (paused/stopped audio) \u2014 do not clear the plot to blank.\n5. paint() is allocation-light on the steady path (reuse point storage reserved in constructor/resized).\n6. Square preferred aspect; resized maintains plotting area.\n\nDo not implement CorrelationMeter, PluginEditor, CustomLookAndFeel changes, or CMakeLists.",
+                "phase": "D",
+                "dependencies": [
+                  "d.1"
+                ],
+                "exclusivity_category": null,
+                "max_in_category": null,
+                "status": "completed",
+                "acceptance_criteria": [
+                  "Source/GUI/GoniometerComponent.h and Source/GUI/GoniometerComponent.cpp exist",
+                  "GoniometerComponent drains MeterTap/AbstractFifo pairs on the UI path",
+                  "Plot uses x_plot=(R-L)/sqrt(2) and y_plot=(L+R)/sqrt(2)",
+                  "Phosphor-style alpha decay draws older points dimmer; ~1-2k points per frame cap",
+                  "FIFO underflow holds the last frame rather than clearing",
+                  "No file outside the task's allowed_write_paths is created or modified"
+                ],
+                "created_at": "2026-07-27T18:18:54.498706",
+                "selected_backend": "antigravity_cli",
+                "model": null,
+                "task_timeout_seconds": 900.0,
+                "verification_profile": "focused",
+                "verification_commands": [],
+                "allowed_write_paths": [
+                  "Source/GUI/GoniometerComponent.h",
+                  "Source/GUI/GoniometerComponent.cpp"
+                ],
+                "forbidden_patterns_override": null
+              },
+              "dependencies": [],
+              "status": "completed"
+            }
+          ],
+          "completed": true,
+          "completed_at": "2026-07-27T18:21:25.462984",
+          "human_checkpoint": null
+        }
+      ],
+      "version": "task-d.2",
+      "created_at": "2026-07-27T18:18:54.573094"
+    }
   }
 ]

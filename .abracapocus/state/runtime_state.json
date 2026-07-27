@@ -1,17 +1,17 @@
 {
   "project_name": "shred-width",
-  "plan_version": "task-d.2",
+  "plan_version": "task-d.3",
   "active_phase": "D",
   "default_backend": "codex_cli",
   "routing_mode": "manual",
   "tasks": [
     {
-      "task_id": "d.2",
-      "title": "GoniometerComponent - FIFO drain, 45-degree Lissajous, phosphor decay, underflow hold",
+      "task_id": "d.3",
+      "title": "CorrelationMeter - atomic rho read, colored bar, mono-cancellation flash",
       "phase": "D",
-      "status": "completed",
+      "status": "planned",
       "backend": "antigravity_cli",
-      "last_run": "2026-07-27T18:21:25.488722",
+      "last_run": null,
       "notes": ""
     }
   ],
