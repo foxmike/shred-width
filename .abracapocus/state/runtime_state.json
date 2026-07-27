@@ -9,9 +9,9 @@
       "task_id": "e.3",
       "title": "RT-safety grep-gate script (forbidden processBlock calls, ScopedNoDenormals present)",
       "phase": "E",
-      "status": "planned",
+      "status": "completed",
       "backend": "pi_cli",
-      "last_run": null,
+      "last_run": "2026-07-27T18:39:10.476553",
       "notes": ""
     }
   ],
@@ -186,6 +186,15 @@
       "reviewer_status": "approved",
       "verifier_status": "passed",
       "timestamp": "2026-07-27T18:29:01.375591"
+    },
+    {
+      "run_id": "666a9980-7148-4ef1-b26b-67df7e93b124",
+      "task_id": "e.3",
+      "backend": "pi_cli",
+      "status": "ok",
+      "reviewer_status": "approved",
+      "verifier_status": "passed",
+      "timestamp": "2026-07-27T18:39:10.476658"
     }
   ],
   "operator_overrides": {},
