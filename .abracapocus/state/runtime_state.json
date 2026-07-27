@@ -9,9 +9,9 @@
       "task_id": "c.1",
       "title": "ShredWidthEngine - full per-sample orchestration, shared-LP assembly, dry-align, latency-mode buffer repoint + masked crossfade",
       "phase": "C",
-      "status": "planned",
+      "status": "completed",
       "backend": "codex_cli",
-      "last_run": null,
+      "last_run": "2026-07-27T18:00:40.670359",
       "notes": ""
     }
   ],
@@ -96,6 +96,15 @@
       "reviewer_status": "approved",
       "verifier_status": "passed",
       "timestamp": "2026-07-27T17:54:16.326160"
+    },
+    {
+      "run_id": "3e1c6e1a-b972-4702-926c-334be4c8e9c0",
+      "task_id": "c.1",
+      "backend": "codex_cli",
+      "status": "ok",
+      "reviewer_status": "approved",
+      "verifier_status": "passed",
+      "timestamp": "2026-07-27T18:00:40.670524"
     }
   ],
   "operator_overrides": {},
