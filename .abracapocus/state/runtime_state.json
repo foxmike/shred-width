@@ -1,17 +1,17 @@
 {
   "project_name": "shred-width",
-  "plan_version": "task-a.3",
+  "plan_version": "task-a.4",
   "active_phase": "A",
   "default_backend": "codex_cli",
   "routing_mode": "manual",
   "tasks": [
     {
-      "task_id": "a.3",
-      "title": "StateManager (APVTS XML save/restore, layout version, A/B slots) and PluginEditor skeleton",
+      "task_id": "a.4",
+      "title": ".gitignore, README, .gitmodules notes",
       "phase": "A",
-      "status": "completed",
-      "backend": "antigravity_cli",
-      "last_run": "2026-07-27T17:27:00.487261",
+      "status": "planned",
+      "backend": "pi_cli",
+      "last_run": null,
       "notes": ""
     }
   ],
