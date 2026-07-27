@@ -1061,5 +1061,63 @@
       "version": "task-e.1",
       "created_at": "2026-07-27T18:25:21.277337"
     }
+  },
+  {
+    "created_at": "2026-07-27T18:29:01.445634",
+    "project_name": "shred-width",
+    "goal": "Phase-E sole owner of CMakeLists.txt. Add full-path correctness tests and embed factory presets via juce_add_binary_data. Depends on e.1 preset XML files existing.\n\nBefore editing, inspect:\n- Resources/Presets/*.xml from e.1\n- tests/TestMain.cpp, tests/DSPPrimitiveTests.cpp, tests/EngineTests.cpp harness style\n- CMakeLists.txt from prior phases (plugin target, ShredWidthTests / add_test, juce_add_binary_data patterns)\n- Source/DSP/ShredWidthEngine.h, PitchShifter, MeterTap public APIs\n- .abracapocus/ShredWidth_Build_Spec.md \u00a712 (BinaryData), \u00a714 items 7\u20138 (pitch accuracy, correlation sanity)\n- Sibling juce_add_binary_data usage under /home/mike/dev/mike/music/plugins/\n\nImplement:\n1. tests/CorrectnessTests.cpp:\n   a. Pitch accuracy: drive +\u0394C path (PitchShifter alone or engine configured so one side is measurable) with a pure tone at known f (e.g. 1000 Hz @ 48 kHz); FFT the wet/shifted output; assert spectral peak lies within tolerance of f * 2^(\u0394C/1200). Document FFT size, hop/window, and cents tolerance. Prefer self-contained radix-2 or simple DFT helper \u2014 no new third-party FFT deps if avoidable.\n   b. Correlation sanity: with Width=200% and large detune, assert MeterTap/engine \u03c1 drops (wide); with Width=0 assert \u03c1 \u2248 1 (mono); folded-to-mono sum L+R has no null below f_cross (sub-crossover energy retained). Settle past reported latency before measuring.\n   c. Follow existing test runner entry patterns (TestMain discovers or links this TU).\n2. CMakeLists.txt only this task edits in phase E:\n   - juce_add_binary_data (or equivalent) embedding Resources/Presets/{TightLead,WideLead,HugeSolo,MonoSafeSubtle,LiveTracking}.xml into a BinaryData target linked by the plugin (and tests if needed).\n   - Register tests/CorrectnessTests.cpp on the existing test executable / add_test path.\n   - Do not remove VST3/CLAP/LV2/Standalone, unpin JUCE, or drop prior DSP/GUI sources.\n\nDo not edit RT-safety/pluginval scripts or docs (e.3\u2013e.5). Do not rewrite EngineTests body beyond CMake registration if already present.",
+    "plan_template": {
+      "project_name": "shred-width",
+      "summary": "Task run: Pitch-accuracy FFT and correlation-sanity tests, preset BinaryData embedding, CMakeLists",
+      "phases": [
+        {
+          "name": "E",
+          "objective": "Phase-E sole owner of CMakeLists.txt. Add full-path correctness tests and embed factory presets via juce_add_binary_data. Depends on e.1 preset XML files existing.\n\nBefore editing, inspect:\n- Resources/Presets/*.xml from e.1\n- tests/TestMain.cpp, tests/DSPPrimitiveTests.cpp, tests/EngineTests.cpp harness style\n- CMakeLists.txt from prior phases (plugin target, ShredWidthTests / add_test, juce_add_binary_data patterns)\n- Source/DSP/ShredWidthEngine.h, PitchShifter, MeterTap public APIs\n- .abracapocus/ShredWidth_Build_Spec.md \u00a712 (BinaryData), \u00a714 items 7\u20138 (pitch accuracy, correlation sanity)\n- Sibling juce_add_binary_data usage under /home/mike/dev/mike/music/plugins/\n\nImplement:\n1. tests/CorrectnessTests.cpp:\n   a. Pitch accuracy: drive +\u0394C path (PitchShifter alone or engine configured so one side is measurable) with a pure tone at known f (e.g. 1000 Hz @ 48 kHz); FFT the wet/shifted output; assert spectral peak lies within tolerance of f * 2^(\u0394C/1200). Document FFT size, hop/window, and cents tolerance. Prefer self-contained radix-2 or simple DFT helper \u2014 no new third-party FFT deps if avoidable.\n   b. Correlation sanity: with Width=200% and large detune, assert MeterTap/engine \u03c1 drops (wide); with Width=0 assert \u03c1 \u2248 1 (mono); folded-to-mono sum L+R has no null below f_cross (sub-crossover energy retained). Settle past reported latency before measuring.\n   c. Follow existing test runner entry patterns (TestMain discovers or links this TU).\n2. CMakeLists.txt only this task edits in phase E:\n   - juce_add_binary_data (or equivalent) embedding Resources/Presets/{TightLead,WideLead,HugeSolo,MonoSafeSubtle,LiveTracking}.xml into a BinaryData target linked by the plugin (and tests if needed).\n   - Register tests/CorrectnessTests.cpp on the existing test executable / add_test path.\n   - Do not remove VST3/CLAP/LV2/Standalone, unpin JUCE, or drop prior DSP/GUI sources.\n\nDo not edit RT-safety/pluginval scripts or docs (e.3\u2013e.5). Do not rewrite EngineTests body beyond CMake registration if already present.",
+          "status": "completed",
+          "tasks": [
+            {
+              "task": {
+                "task_id": "e.2",
+                "title": "Pitch-accuracy FFT and correlation-sanity tests, preset BinaryData embedding, CMakeLists",
+                "description": "Phase-E sole owner of CMakeLists.txt. Add full-path correctness tests and embed factory presets via juce_add_binary_data. Depends on e.1 preset XML files existing.\n\nBefore editing, inspect:\n- Resources/Presets/*.xml from e.1\n- tests/TestMain.cpp, tests/DSPPrimitiveTests.cpp, tests/EngineTests.cpp harness style\n- CMakeLists.txt from prior phases (plugin target, ShredWidthTests / add_test, juce_add_binary_data patterns)\n- Source/DSP/ShredWidthEngine.h, PitchShifter, MeterTap public APIs\n- .abracapocus/ShredWidth_Build_Spec.md \u00a712 (BinaryData), \u00a714 items 7\u20138 (pitch accuracy, correlation sanity)\n- Sibling juce_add_binary_data usage under /home/mike/dev/mike/music/plugins/\n\nImplement:\n1. tests/CorrectnessTests.cpp:\n   a. Pitch accuracy: drive +\u0394C path (PitchShifter alone or engine configured so one side is measurable) with a pure tone at known f (e.g. 1000 Hz @ 48 kHz); FFT the wet/shifted output; assert spectral peak lies within tolerance of f * 2^(\u0394C/1200). Document FFT size, hop/window, and cents tolerance. Prefer self-contained radix-2 or simple DFT helper \u2014 no new third-party FFT deps if avoidable.\n   b. Correlation sanity: with Width=200% and large detune, assert MeterTap/engine \u03c1 drops (wide); with Width=0 assert \u03c1 \u2248 1 (mono); folded-to-mono sum L+R has no null below f_cross (sub-crossover energy retained). Settle past reported latency before measuring.\n   c. Follow existing test runner entry patterns (TestMain discovers or links this TU).\n2. CMakeLists.txt only this task edits in phase E:\n   - juce_add_binary_data (or equivalent) embedding Resources/Presets/{TightLead,WideLead,HugeSolo,MonoSafeSubtle,LiveTracking}.xml into a BinaryData target linked by the plugin (and tests if needed).\n   - Register tests/CorrectnessTests.cpp on the existing test executable / add_test path.\n   - Do not remove VST3/CLAP/LV2/Standalone, unpin JUCE, or drop prior DSP/GUI sources.\n\nDo not edit RT-safety/pluginval scripts or docs (e.3\u2013e.5). Do not rewrite EngineTests body beyond CMake registration if already present.",
+                "phase": "E",
+                "dependencies": [
+                  "e.1"
+                ],
+                "exclusivity_category": null,
+                "max_in_category": null,
+                "status": "completed",
+                "acceptance_criteria": [
+                  "tests/CorrectnessTests.cpp exists and includes a pitch-accuracy check using FFT peak vs f*2^(deltaC/1200) within documented tolerance",
+                  "tests/CorrectnessTests.cpp includes correlation-sanity checks: Width=200% large detune drops rho; Width=0 gives rho near 1; folded mono has no null below f_cross",
+                  "CMakeLists.txt embeds Resources/Presets XML factory bank via juce_add_binary_data (or equivalent BinaryData target) and links it to the plugin",
+                  "CMakeLists.txt registers tests/CorrectnessTests.cpp on the test executable / add_test path",
+                  "CMakeLists.txt still lists prior plugin sources and formats (VST3/CLAP/LV2/Standalone)",
+                  "No file outside the task's allowed_write_paths is created or modified"
+                ],
+                "created_at": "2026-07-27T18:27:48.785313",
+                "selected_backend": "pi_cli",
+                "model": "openrouter/minimax/minimax-m3",
+                "task_timeout_seconds": 900.0,
+                "verification_profile": "focused",
+                "verification_commands": [],
+                "allowed_write_paths": [
+                  "tests/CorrectnessTests.cpp",
+                  "CMakeLists.txt"
+                ],
+                "forbidden_patterns_override": null
+              },
+              "dependencies": [],
+              "status": "completed"
+            }
+          ],
+          "completed": true,
+          "completed_at": "2026-07-27T18:29:01.347677",
+          "human_checkpoint": null
+        }
+      ],
+      "version": "task-e.2",
+      "created_at": "2026-07-27T18:27:48.860681"
+    }
   }
 ]
