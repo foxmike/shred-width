@@ -88,6 +88,20 @@ target_sources(ShredWidth
         Source/GUI/CorrelationMeter.cpp
 )
 
+juce_add_binary_data(ShredWidthPresets
+    SOURCES
+        Resources/Presets/TightLead.xml
+        Resources/Presets/WideLead.xml
+        Resources/Presets/HugeSolo.xml
+        Resources/Presets/MonoSafeSubtle.xml
+        Resources/Presets/LiveTracking.xml
+)
+
+target_link_libraries(ShredWidth
+    PRIVATE
+        ShredWidthPresets
+)
+
 target_compile_definitions(ShredWidth
     PRIVATE
         JUCE_WEB_BROWSER=0
@@ -100,6 +114,7 @@ target_link_libraries(ShredWidth
     PRIVATE
         juce::juce_audio_utils
         juce::juce_dsp
+        ShredWidthPresets
     PUBLIC
         juce::juce_recommended_config_flags
         juce::juce_recommended_lto_flags
@@ -120,6 +135,7 @@ add_executable(ShredWidthTests
     tests/TestMain.cpp
     tests/DSPPrimitiveTests.cpp
     tests/EngineTests.cpp
+    tests/CorrectnessTests.cpp
     Source/DSP/DelayLineFrac.cpp
     Source/DSP/PitchShifter.cpp
     Source/DSP/MonoSafetyCrossover.cpp
@@ -143,6 +159,7 @@ target_link_libraries(ShredWidthTests
     PRIVATE
         juce::juce_audio_utils
         juce::juce_dsp
+        ShredWidthPresets
         juce::juce_recommended_config_flags
         juce::juce_recommended_lto_flags
         juce::juce_recommended_warning_flags
