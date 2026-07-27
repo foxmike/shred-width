@@ -9,9 +9,9 @@
       "task_id": "d.3",
       "title": "CorrelationMeter - atomic rho read, colored bar, mono-cancellation flash",
       "phase": "D",
-      "status": "planned",
+      "status": "completed",
       "backend": "antigravity_cli",
-      "last_run": null,
+      "last_run": "2026-07-27T18:23:15.233700",
       "notes": ""
     }
   ],
@@ -150,6 +150,15 @@
       "reviewer_status": "approved",
       "verifier_status": "passed",
       "timestamp": "2026-07-27T18:21:25.488845"
+    },
+    {
+      "run_id": "e721e343-9b61-4006-a842-d4160496fef6",
+      "task_id": "d.3",
+      "backend": "antigravity_cli",
+      "status": "ok",
+      "reviewer_status": "approved",
+      "verifier_status": "passed",
+      "timestamp": "2026-07-27T18:23:15.233815"
     }
   ],
   "operator_overrides": {},
