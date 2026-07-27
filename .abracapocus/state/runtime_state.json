@@ -9,9 +9,9 @@
       "task_id": "b.2",
       "title": "PitchShifter - dual-head granular buffer, double drift accumulator, 4-point Lagrange, Hann unity-gain crossfade",
       "phase": "B",
-      "status": "planned",
+      "status": "completed",
       "backend": "codex_cli",
-      "last_run": null,
+      "last_run": "2026-07-27T17:38:13.578983",
       "notes": ""
     }
   ],
@@ -60,6 +60,15 @@
       "reviewer_status": "approved",
       "verifier_status": "passed",
       "timestamp": "2026-07-27T17:34:48.702138"
+    },
+    {
+      "run_id": "f4bc3bde-6ec0-4728-bf19-8cf4b8f2634e",
+      "task_id": "b.2",
+      "backend": "codex_cli",
+      "status": "ok",
+      "reviewer_status": "approved",
+      "verifier_status": "passed",
+      "timestamp": "2026-07-27T17:38:13.579087"
     }
   ],
   "operator_overrides": {},
