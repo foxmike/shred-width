@@ -9,9 +9,9 @@
       "task_id": "b.5",
       "title": "TestMain harness and DSP primitive tests - delay, crossover reconstruction, width mono-lows invariant, unity-gain crossfade, CMakeLists registration",
       "phase": "B",
-      "status": "planned",
+      "status": "completed",
       "backend": "pi_cli",
-      "last_run": null,
+      "last_run": "2026-07-27T17:54:16.326029",
       "notes": ""
     }
   ],
@@ -87,6 +87,15 @@
       "reviewer_status": "approved",
       "verifier_status": "passed",
       "timestamp": "2026-07-27T17:45:19.253510"
+    },
+    {
+      "run_id": "110d0760-6c21-4286-8b9a-5444d9f73eed",
+      "task_id": "b.5",
+      "backend": "pi_cli",
+      "status": "ok",
+      "reviewer_status": "approved",
+      "verifier_status": "passed",
+      "timestamp": "2026-07-27T17:54:16.326160"
     }
   ],
   "operator_overrides": {},
