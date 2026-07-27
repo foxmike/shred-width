@@ -529,5 +529,64 @@
       "version": "task-b.5",
       "created_at": "2026-07-27T17:45:19.438654"
     }
+  },
+  {
+    "created_at": "2026-07-27T18:00:41.169085",
+    "project_name": "shred-width",
+    "goal": "Implement Source/DSP/ShredWidthEngine only. Owns the full deterministic per-sample wet path and holds a MeterTap member (depends on c.2 API).\n\nBefore editing, inspect:\n- .abracapocus/ShredWidth_Build_Spec.md \u00a7\u00a73 (signal flow), 4.1 (mono source), 4.6 (channel assembly), 4.8 (dry/wet equal-gain), 4.9 (latency modes/PDC, D4/D5), 7\u20138, 13\n- Public APIs of Source/DSP/PitchShifter, DelayLineFrac, MonoSafetyCrossover, WidthProcessor, MeterTap\n- risk_notes: latency-mode switch repoints pre-allocated buffers (no realloc) + ~10 ms masked crossfade (D5); dry aligned to reported PDC only; delay offsets excluded from latency (D4)\n\nImplement class ShredWidthEngine in Source/DSP/ShredWidthEngine.h + ShredWidthEngine.cpp:\n1. Ownership: two PitchShifters (+deltaC and \u2212deltaC), two DelayLineFrac (\u03c4_L, \u03c4_R), one MonoSafetyCrossover (shared LP once), one WidthProcessor, one dry-align delay (integer samples sized for Studio max reported latency 1024), one MeterTap member.\n2. prepare(sampleRate, maxBlock) / reset(): allocate/prepare all children for Studio worst case; never allocate in process.\n3. Parameter setters (block or sample): setDetuneCents, setDelayMsL/R, setCrossoverHz / setCrossoverCoeffs dirty path, setWidth (0\u20132 factor or 0\u2013200% mapped), setMix (0\u20131 wet), setLatencyMode Studio|Live, setMonoSource Sum|Left (hidden D8 default Sum), optional setBypass handled by caller.\n4. Per-sample / processBlock path:\n   - mono x = 0.5*(L+R) for stereo in, or L for mono in; honor monoSource Sum vs Left\n   - +deltaC / \u2212deltaC PitchShifter on x\n   - \u03c4_L / \u03c4_R DelayLineFrac on shifted outputs\n   - shared LP(x) computed once; HP on each delayed-shifted channel; assemble yL = lp + hpL, yR = lp + hpR\n   - WidthProcessor M/S\n   - equal-gain dry/wet: dry = original input delayed by getReportedLatencySamples() only (not \u03c4); out = (1\u2212mix)\u00b7dry + mix\u00b7wet\n   - push final out L/R into owned MeterTap (decimated path inside MeterTap)\n5. getReportedLatencySamples() returns L/2 for active mode (Studio 1024, Live 256). Delay offsets excluded (D4).\n6. Latency-mode change: repoint/relength pre-allocated pitch buffers / active L without realloc (D5); dry-align length follows new L/2; mask discontinuity with ~10 ms internal crossfade (dry/wet-neutral or equal-gain blend of pre/post mode output).\n7. RT: no heap/locks/logs outside prepare; O(numSamples) process.\n\nDo not edit PluginProcessor, CMakeLists, or tests. Do not reimplement primitive algorithms inline \u2014 compose phase-B classes.",
+    "plan_template": {
+      "project_name": "shred-width",
+      "summary": "Task run: ShredWidthEngine - full per-sample orchestration, shared-LP assembly, dry-align, latency-mode buffer repoint + masked crossfade",
+      "phases": [
+        {
+          "name": "C",
+          "objective": "Implement Source/DSP/ShredWidthEngine only. Owns the full deterministic per-sample wet path and holds a MeterTap member (depends on c.2 API).\n\nBefore editing, inspect:\n- .abracapocus/ShredWidth_Build_Spec.md \u00a7\u00a73 (signal flow), 4.1 (mono source), 4.6 (channel assembly), 4.8 (dry/wet equal-gain), 4.9 (latency modes/PDC, D4/D5), 7\u20138, 13\n- Public APIs of Source/DSP/PitchShifter, DelayLineFrac, MonoSafetyCrossover, WidthProcessor, MeterTap\n- risk_notes: latency-mode switch repoints pre-allocated buffers (no realloc) + ~10 ms masked crossfade (D5); dry aligned to reported PDC only; delay offsets excluded from latency (D4)\n\nImplement class ShredWidthEngine in Source/DSP/ShredWidthEngine.h + ShredWidthEngine.cpp:\n1. Ownership: two PitchShifters (+deltaC and \u2212deltaC), two DelayLineFrac (\u03c4_L, \u03c4_R), one MonoSafetyCrossover (shared LP once), one WidthProcessor, one dry-align delay (integer samples sized for Studio max reported latency 1024), one MeterTap member.\n2. prepare(sampleRate, maxBlock) / reset(): allocate/prepare all children for Studio worst case; never allocate in process.\n3. Parameter setters (block or sample): setDetuneCents, setDelayMsL/R, setCrossoverHz / setCrossoverCoeffs dirty path, setWidth (0\u20132 factor or 0\u2013200% mapped), setMix (0\u20131 wet), setLatencyMode Studio|Live, setMonoSource Sum|Left (hidden D8 default Sum), optional setBypass handled by caller.\n4. Per-sample / processBlock path:\n   - mono x = 0.5*(L+R) for stereo in, or L for mono in; honor monoSource Sum vs Left\n   - +deltaC / \u2212deltaC PitchShifter on x\n   - \u03c4_L / \u03c4_R DelayLineFrac on shifted outputs\n   - shared LP(x) computed once; HP on each delayed-shifted channel; assemble yL = lp + hpL, yR = lp + hpR\n   - WidthProcessor M/S\n   - equal-gain dry/wet: dry = original input delayed by getReportedLatencySamples() only (not \u03c4); out = (1\u2212mix)\u00b7dry + mix\u00b7wet\n   - push final out L/R into owned MeterTap (decimated path inside MeterTap)\n5. getReportedLatencySamples() returns L/2 for active mode (Studio 1024, Live 256). Delay offsets excluded (D4).\n6. Latency-mode change: repoint/relength pre-allocated pitch buffers / active L without realloc (D5); dry-align length follows new L/2; mask discontinuity with ~10 ms internal crossfade (dry/wet-neutral or equal-gain blend of pre/post mode output).\n7. RT: no heap/locks/logs outside prepare; O(numSamples) process.\n\nDo not edit PluginProcessor, CMakeLists, or tests. Do not reimplement primitive algorithms inline \u2014 compose phase-B classes.",
+          "status": "completed",
+          "tasks": [
+            {
+              "task": {
+                "task_id": "c.1",
+                "title": "ShredWidthEngine - full per-sample orchestration, shared-LP assembly, dry-align, latency-mode buffer repoint + masked crossfade",
+                "description": "Implement Source/DSP/ShredWidthEngine only. Owns the full deterministic per-sample wet path and holds a MeterTap member (depends on c.2 API).\n\nBefore editing, inspect:\n- .abracapocus/ShredWidth_Build_Spec.md \u00a7\u00a73 (signal flow), 4.1 (mono source), 4.6 (channel assembly), 4.8 (dry/wet equal-gain), 4.9 (latency modes/PDC, D4/D5), 7\u20138, 13\n- Public APIs of Source/DSP/PitchShifter, DelayLineFrac, MonoSafetyCrossover, WidthProcessor, MeterTap\n- risk_notes: latency-mode switch repoints pre-allocated buffers (no realloc) + ~10 ms masked crossfade (D5); dry aligned to reported PDC only; delay offsets excluded from latency (D4)\n\nImplement class ShredWidthEngine in Source/DSP/ShredWidthEngine.h + ShredWidthEngine.cpp:\n1. Ownership: two PitchShifters (+deltaC and \u2212deltaC), two DelayLineFrac (\u03c4_L, \u03c4_R), one MonoSafetyCrossover (shared LP once), one WidthProcessor, one dry-align delay (integer samples sized for Studio max reported latency 1024), one MeterTap member.\n2. prepare(sampleRate, maxBlock) / reset(): allocate/prepare all children for Studio worst case; never allocate in process.\n3. Parameter setters (block or sample): setDetuneCents, setDelayMsL/R, setCrossoverHz / setCrossoverCoeffs dirty path, setWidth (0\u20132 factor or 0\u2013200% mapped), setMix (0\u20131 wet), setLatencyMode Studio|Live, setMonoSource Sum|Left (hidden D8 default Sum), optional setBypass handled by caller.\n4. Per-sample / processBlock path:\n   - mono x = 0.5*(L+R) for stereo in, or L for mono in; honor monoSource Sum vs Left\n   - +deltaC / \u2212deltaC PitchShifter on x\n   - \u03c4_L / \u03c4_R DelayLineFrac on shifted outputs\n   - shared LP(x) computed once; HP on each delayed-shifted channel; assemble yL = lp + hpL, yR = lp + hpR\n   - WidthProcessor M/S\n   - equal-gain dry/wet: dry = original input delayed by getReportedLatencySamples() only (not \u03c4); out = (1\u2212mix)\u00b7dry + mix\u00b7wet\n   - push final out L/R into owned MeterTap (decimated path inside MeterTap)\n5. getReportedLatencySamples() returns L/2 for active mode (Studio 1024, Live 256). Delay offsets excluded (D4).\n6. Latency-mode change: repoint/relength pre-allocated pitch buffers / active L without realloc (D5); dry-align length follows new L/2; mask discontinuity with ~10 ms internal crossfade (dry/wet-neutral or equal-gain blend of pre/post mode output).\n7. RT: no heap/locks/logs outside prepare; O(numSamples) process.\n\nDo not edit PluginProcessor, CMakeLists, or tests. Do not reimplement primitive algorithms inline \u2014 compose phase-B classes.",
+                "phase": "C",
+                "dependencies": [
+                  "c.2"
+                ],
+                "exclusivity_category": null,
+                "max_in_category": null,
+                "status": "completed",
+                "acceptance_criteria": [
+                  "Source/DSP/ShredWidthEngine.h and Source/DSP/ShredWidthEngine.cpp exist",
+                  "ShredWidthEngine owns two PitchShifters, two DelayLineFracs, one MonoSafetyCrossover, one WidthProcessor, dry-align delay, and MeterTap",
+                  "Per-sample path implements mono source \u2192 \u00b1detune \u2192 Haas delays \u2192 shared-LP + dual-HP assembly \u2192 M/S width \u2192 equal-gain dry/wet against PDC-aligned dry",
+                  "getReportedLatencySamples returns L/2 for Studio (1024) and Live (256) and excludes delay offsets",
+                  "Latency-mode switch does not reallocate; it repoints/relengths pre-allocated storage and applies a ~10 ms masked crossfade",
+                  "prepare/process/reset API present; process pushes final L/R into MeterTap; no allocation outside prepare",
+                  "No file outside the task's allowed_write_paths is created or modified"
+                ],
+                "created_at": "2026-07-27T17:54:17.002965",
+                "selected_backend": "codex_cli",
+                "model": null,
+                "task_timeout_seconds": 1500.0,
+                "verification_profile": "focused",
+                "verification_commands": [],
+                "allowed_write_paths": [
+                  "Source/DSP/ShredWidthEngine.h",
+                  "Source/DSP/ShredWidthEngine.cpp"
+                ],
+                "forbidden_patterns_override": null
+              },
+              "dependencies": [],
+              "status": "completed"
+            }
+          ],
+          "completed": true,
+          "completed_at": "2026-07-27T18:00:40.634823",
+          "human_checkpoint": null
+        }
+      ],
+      "version": "task-c.1",
+      "created_at": "2026-07-27T17:54:17.098445"
+    }
   }
 ]
