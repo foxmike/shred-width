@@ -1,67 +1,5 @@
 [
   {
-    "created_at": "2026-07-27T17:16:13.258888",
-    "project_name": "shred-width",
-    "goal": "Create ParameterIDs.h and the PluginProcessor spine. This task is the sole owner of PluginProcessor in phase A.\n\nBefore editing, inspect:\n- .abracapocus/ShredWidth_Build_Spec.md \u00a7\u00a74.9, 5, 6, 7, 8, 11 (bus layout if present), 13\n- /home/mike/dev/mike/music/plugins/shredeq/Source/ParameterIDs.h\n- /home/mike/dev/mike/music/plugins/shredeq/Source/PluginProcessor.h and createParameterLayout / isBusesLayoutSupported patterns in PluginProcessor.cpp\n- /home/mike/dev/mike/music/plugins/aural-maximizer-pro/Source/PluginProcessor.cpp (NormalisableRange helpers, bus layout)\n- CMakeLists.txt target name ShredWidth from a.1\n\nImplement:\n1. Source/ParameterIDs.h \u2014 namespace ShredWidth::ParameterIDs with schema/layout version constant (parameterLayoutVersion / schemaVersion = 1) and stable never-renumbered string IDs:\n   - detuneAmount (0\u201325 cents, default 7)\n   - delayL (1\u201350 ms, default 12.5)\n   - delayR (1\u201350 ms, default 18.0)\n   - monoXover (80\u2013300 Hz, default 180)\n   - width (0\u2013200 %, default 100)\n   - mix (0\u2013100 % wet, default 40)\n   - latencyMode choice {Studio, Live}, default Studio\n   - outTrim (\u221212\u2026+12 dB, default 0)\n   - bypass bool default false\n   - monoSource choice {Sum, Left}, default Sum (hidden; not for GUI in v1)\n   detuneAmount is one control applied later as +amount L / \u2212amount R \u2014 do not invent dual detune IDs.\n\n2. Source/PluginProcessor.h/.cpp:\n   - Class ShredWidthAudioProcessor : juce::AudioProcessor with APVTS member constructed from createParameterLayout().\n   - createParameterLayout registers all ParameterIDs with correct types/ranges/defaults; monoXover uses NormalisableRange with log skew \u2248 0.35; AudioParameterChoice for latencyMode and monoSource; AudioParameterBool for bypass.\n   - isBusesLayoutSupported: accept {mono in \u2192 stereo out} and {stereo in \u2192 stereo out}; reject all others (including mono\u2192mono \u2014 dry Mix=0 passthrough for mono hosts is a future processBlock policy note, not a supported bus layout).\n   - prepareToPlay: store sampleRate/maxBlock; pre-allocate worst-case Studio buffers owned by the processor spine (or clearly sized member buffers ready for later engine handoff): 2\u00d7 pitch circular buffers length 2048+4 guard, 2\u00d7 delay lines ceil(50ms * maxSampleRate)+guard, 1\u00d7 dry-align delay 1024 samples (stereo channels as needed), meter FIFO ring capacity \u2265 4096 frames. No allocation paths intended for the audio thread beyond this prepare.\n   - setLatencySamples to Studio nominal L/2 = 1024 by default; hook for Live (512/2 = 256) when latencyMode reads Live (may be a simple prepare/read of raw param for now).\n   - processBlock stub: juce::ScopedNoDenormals at top; clear unused outputs; no DSP yet.\n   - Standard JUCE boilerplate: releaseResources, createEditor forward decl, getName, programs, accept/produce MIDI false, getTailLengthSeconds 0, get/setStateInformation stubs that copy APVTS state as XML (a.3 will deepen StateManager integration \u2014 keep thin XML round-trip or delegate placeholders without requiring StateManager symbols if not yet present).\n   - createPluginFilter factory returning new ShredWidthAudioProcessor().\n\nDo not implement StateManager class, full editor UI, or DSP engine classes. Do not edit CMakeLists.txt (a.1 sole owner).",
-    "plan_template": {
-      "project_name": "shred-width",
-      "summary": "Task run: ParameterIDs.h v1 inventory, APVTS layout with skews, bus layout (mono/stereo in -> stereo out), PluginProcessor spine with prepareToPlay allocation and PDC hooks",
-      "phases": [
-        {
-          "name": "A",
-          "objective": "Create ParameterIDs.h and the PluginProcessor spine. This task is the sole owner of PluginProcessor in phase A.\n\nBefore editing, inspect:\n- .abracapocus/ShredWidth_Build_Spec.md \u00a7\u00a74.9, 5, 6, 7, 8, 11 (bus layout if present), 13\n- /home/mike/dev/mike/music/plugins/shredeq/Source/ParameterIDs.h\n- /home/mike/dev/mike/music/plugins/shredeq/Source/PluginProcessor.h and createParameterLayout / isBusesLayoutSupported patterns in PluginProcessor.cpp\n- /home/mike/dev/mike/music/plugins/aural-maximizer-pro/Source/PluginProcessor.cpp (NormalisableRange helpers, bus layout)\n- CMakeLists.txt target name ShredWidth from a.1\n\nImplement:\n1. Source/ParameterIDs.h \u2014 namespace ShredWidth::ParameterIDs with schema/layout version constant (parameterLayoutVersion / schemaVersion = 1) and stable never-renumbered string IDs:\n   - detuneAmount (0\u201325 cents, default 7)\n   - delayL (1\u201350 ms, default 12.5)\n   - delayR (1\u201350 ms, default 18.0)\n   - monoXover (80\u2013300 Hz, default 180)\n   - width (0\u2013200 %, default 100)\n   - mix (0\u2013100 % wet, default 40)\n   - latencyMode choice {Studio, Live}, default Studio\n   - outTrim (\u221212\u2026+12 dB, default 0)\n   - bypass bool default false\n   - monoSource choice {Sum, Left}, default Sum (hidden; not for GUI in v1)\n   detuneAmount is one control applied later as +amount L / \u2212amount R \u2014 do not invent dual detune IDs.\n\n2. Source/PluginProcessor.h/.cpp:\n   - Class ShredWidthAudioProcessor : juce::AudioProcessor with APVTS member constructed from createParameterLayout().\n   - createParameterLayout registers all ParameterIDs with correct types/ranges/defaults; monoXover uses NormalisableRange with log skew \u2248 0.35; AudioParameterChoice for latencyMode and monoSource; AudioParameterBool for bypass.\n   - isBusesLayoutSupported: accept {mono in \u2192 stereo out} and {stereo in \u2192 stereo out}; reject all others (including mono\u2192mono \u2014 dry Mix=0 passthrough for mono hosts is a future processBlock policy note, not a supported bus layout).\n   - prepareToPlay: store sampleRate/maxBlock; pre-allocate worst-case Studio buffers owned by the processor spine (or clearly sized member buffers ready for later engine handoff): 2\u00d7 pitch circular buffers length 2048+4 guard, 2\u00d7 delay lines ceil(50ms * maxSampleRate)+guard, 1\u00d7 dry-align delay 1024 samples (stereo channels as needed), meter FIFO ring capacity \u2265 4096 frames. No allocation paths intended for the audio thread beyond this prepare.\n   - setLatencySamples to Studio nominal L/2 = 1024 by default; hook for Live (512/2 = 256) when latencyMode reads Live (may be a simple prepare/read of raw param for now).\n   - processBlock stub: juce::ScopedNoDenormals at top; clear unused outputs; no DSP yet.\n   - Standard JUCE boilerplate: releaseResources, createEditor forward decl, getName, programs, accept/produce MIDI false, getTailLengthSeconds 0, get/setStateInformation stubs that copy APVTS state as XML (a.3 will deepen StateManager integration \u2014 keep thin XML round-trip or delegate placeholders without requiring StateManager symbols if not yet present).\n   - createPluginFilter factory returning new ShredWidthAudioProcessor().\n\nDo not implement StateManager class, full editor UI, or DSP engine classes. Do not edit CMakeLists.txt (a.1 sole owner).",
-          "status": "completed",
-          "tasks": [
-            {
-              "task": {
-                "task_id": "a.2",
-                "title": "ParameterIDs.h v1 inventory, APVTS layout with skews, bus layout (mono/stereo in -> stereo out), PluginProcessor spine with prepareToPlay allocation and PDC hooks",
-                "description": "Create ParameterIDs.h and the PluginProcessor spine. This task is the sole owner of PluginProcessor in phase A.\n\nBefore editing, inspect:\n- .abracapocus/ShredWidth_Build_Spec.md \u00a7\u00a74.9, 5, 6, 7, 8, 11 (bus layout if present), 13\n- /home/mike/dev/mike/music/plugins/shredeq/Source/ParameterIDs.h\n- /home/mike/dev/mike/music/plugins/shredeq/Source/PluginProcessor.h and createParameterLayout / isBusesLayoutSupported patterns in PluginProcessor.cpp\n- /home/mike/dev/mike/music/plugins/aural-maximizer-pro/Source/PluginProcessor.cpp (NormalisableRange helpers, bus layout)\n- CMakeLists.txt target name ShredWidth from a.1\n\nImplement:\n1. Source/ParameterIDs.h \u2014 namespace ShredWidth::ParameterIDs with schema/layout version constant (parameterLayoutVersion / schemaVersion = 1) and stable never-renumbered string IDs:\n   - detuneAmount (0\u201325 cents, default 7)\n   - delayL (1\u201350 ms, default 12.5)\n   - delayR (1\u201350 ms, default 18.0)\n   - monoXover (80\u2013300 Hz, default 180)\n   - width (0\u2013200 %, default 100)\n   - mix (0\u2013100 % wet, default 40)\n   - latencyMode choice {Studio, Live}, default Studio\n   - outTrim (\u221212\u2026+12 dB, default 0)\n   - bypass bool default false\n   - monoSource choice {Sum, Left}, default Sum (hidden; not for GUI in v1)\n   detuneAmount is one control applied later as +amount L / \u2212amount R \u2014 do not invent dual detune IDs.\n\n2. Source/PluginProcessor.h/.cpp:\n   - Class ShredWidthAudioProcessor : juce::AudioProcessor with APVTS member constructed from createParameterLayout().\n   - createParameterLayout registers all ParameterIDs with correct types/ranges/defaults; monoXover uses NormalisableRange with log skew \u2248 0.35; AudioParameterChoice for latencyMode and monoSource; AudioParameterBool for bypass.\n   - isBusesLayoutSupported: accept {mono in \u2192 stereo out} and {stereo in \u2192 stereo out}; reject all others (including mono\u2192mono \u2014 dry Mix=0 passthrough for mono hosts is a future processBlock policy note, not a supported bus layout).\n   - prepareToPlay: store sampleRate/maxBlock; pre-allocate worst-case Studio buffers owned by the processor spine (or clearly sized member buffers ready for later engine handoff): 2\u00d7 pitch circular buffers length 2048+4 guard, 2\u00d7 delay lines ceil(50ms * maxSampleRate)+guard, 1\u00d7 dry-align delay 1024 samples (stereo channels as needed), meter FIFO ring capacity \u2265 4096 frames. No allocation paths intended for the audio thread beyond this prepare.\n   - setLatencySamples to Studio nominal L/2 = 1024 by default; hook for Live (512/2 = 256) when latencyMode reads Live (may be a simple prepare/read of raw param for now).\n   - processBlock stub: juce::ScopedNoDenormals at top; clear unused outputs; no DSP yet.\n   - Standard JUCE boilerplate: releaseResources, createEditor forward decl, getName, programs, accept/produce MIDI false, getTailLengthSeconds 0, get/setStateInformation stubs that copy APVTS state as XML (a.3 will deepen StateManager integration \u2014 keep thin XML round-trip or delegate placeholders without requiring StateManager symbols if not yet present).\n   - createPluginFilter factory returning new ShredWidthAudioProcessor().\n\nDo not implement StateManager class, full editor UI, or DSP engine classes. Do not edit CMakeLists.txt (a.1 sole owner).",
-                "phase": "A",
-                "dependencies": [
-                  "a.1"
-                ],
-                "exclusivity_category": null,
-                "max_in_category": null,
-                "status": "completed",
-                "acceptance_criteria": [
-                  "Source/ParameterIDs.h exists with stable string IDs: detuneAmount, delayL, delayR, monoXover, width, mix, latencyMode, outTrim, bypass, monoSource",
-                  "Source/ParameterIDs.h defines layout/schema version 1",
-                  "Source/PluginProcessor.cpp createParameterLayout registers all v1 parameters with spec ranges/defaults including monoXover log skew ~0.35",
-                  "isBusesLayoutSupported accepts only mono\u2192stereo and stereo\u2192stereo",
-                  "prepareToPlay allocates Studio worst-case pitch buffers (2048+4), delay lines for 50 ms at max SR, dry-align 1024, and meter FIFO without audio-thread reallocation design",
-                  "processBlock begins with juce::ScopedNoDenormals",
-                  "setLatencySamples / getLatencySamples path reports Studio nominal 1024 by default",
-                  "createPluginFilter exports ShredWidthAudioProcessor",
-                  "No file outside the task's allowed_write_paths is created or modified"
-                ],
-                "created_at": "2026-07-27T17:12:34.475242",
-                "selected_backend": "codex_cli",
-                "model": null,
-                "task_timeout_seconds": 900.0,
-                "verification_profile": "focused",
-                "verification_commands": [],
-                "allowed_write_paths": [
-                  "Source/ParameterIDs.h",
-                  "Source/PluginProcessor.h",
-                  "Source/PluginProcessor.cpp"
-                ],
-                "forbidden_patterns_override": null
-              },
-              "dependencies": [],
-              "status": "completed"
-            }
-          ],
-          "completed": true,
-          "completed_at": "2026-07-27T17:16:13.141894",
-          "human_checkpoint": null
-        }
-      ],
-      "version": "task-a.2",
-      "created_at": "2026-07-27T17:12:34.540871"
-    }
-  },
-  {
     "created_at": "2026-07-27T17:27:00.558865",
     "project_name": "shred-width",
     "goal": "Add StateManager and a minimal PluginEditor skeleton. Depends on a.2 ParameterIDs / processor types.\n\nBefore editing, inspect:\n- /home/mike/dev/mike/music/plugins/shredeq/Source/StateManager.h and StateManager.cpp (A/B slots, schema_version, capture/apply patterns \u2014 simplify; do not copy gain-match machinery unless tiny)\n- Source/PluginProcessor.h/.cpp from a.2 (APVTS accessors, get/setStateInformation hooks)\n- /home/mike/dev/mike/music/plugins/shredeq/Source/PluginEditor.h/.cpp for Timer + editor construction pattern\n- .abracapocus/ShredWidth_Build_Spec.md \u00a75 (parameterLayoutVersion) and \u00a713\n\nImplement:\n1. Source/StateManager.h/.cpp:\n   - Owns schema-versioned state helpers for ShredWidth.\n   - Full APVTS XML serialization helpers used by getStateInformation/setStateInformation: copyState \u2192 ValueTree with parameterLayoutVersion (or schema_version) property; restore replaces APVTS state; reject/ignore newer future versions safely; allow forward migration hook stub when version < current.\n   - A/B slots: captureSlot/applySlot (or captureFrom/applyTo + swap/copy A\u2194B) storing ValueTree snapshots; active slot tracking.\n   - Message-thread only for XML/ValueTree; document RT-unsafe.\n\n2. Wire PluginProcessor getStateInformation/setStateInformation to StateManager (edit only the state methods and private StateManager member in PluginProcessor if required \u2014 keep changes minimal and do not rework APVTS layout or bus/PDC logic from a.2).\n\n3. Source/PluginEditor.h/.cpp skeleton:\n   - ShredWidthAudioProcessorEditor : juce::AudioProcessorEditor, juce::Timer\n   - Constructor takes processor ref; setSize reasonable default (e.g. 800\u00d7480); add juce::ResizableCornerComponent and setResizable with limits; Timer start at 30\u201360 Hz with empty/lightweight timerCallback.\n   - paint/resized stubs (dark background fill, no full control layout yet).\n   - Processor createEditor returns new ShredWidthAudioProcessorEditor(*this); hasEditor true.\n\nDo not implement Goniometer, CorrelationMeter, CustomLookAndFeel, or full rotary layout (phase D). Do not edit CMakeLists.txt unless absolutely unavoidable; a.1 already lists editor/processor sources.",
@@ -1169,6 +1107,62 @@
       ],
       "version": "task-e.4",
       "created_at": "2026-07-27T18:39:10.652710"
+    }
+  },
+  {
+    "created_at": "2026-07-27T18:55:45.967139",
+    "project_name": "shred-width",
+    "goal": "Author release documentation only: CI verification checklist and end-user manual. Wave-1 independent of e.1\u2013e.4.\n\nBefore editing, inspect:\n- .abracapocus/ShredWidth_Build_Spec.md \u00a7\u00a74.9, 5, 10, 12, 14, 16 (latency nominal PDC, monoSource D8, formats, presets, verification items, open-decision defaults)\n- Factory preset names/values from phase goal / \u00a712\n- ParameterIDs inventory (latencyMode automatable but discouraged live; monoSource hidden)\n\nImplement:\n1. docs/verification/shredwidth_verification.md \u2014 checklist mapping \u00a714 CI-runnable items:\n   1 RT-safety (scripts/check_rt_safety.sh + ScopedNoDenormals)\n   2 determinism/null\n   3 bypass null\n   4 Mix=0 passthrough\n   5 mono-lows invariant\n   6 unity-gain crossfade\n   7 pitch accuracy\n   8 correlation sanity\n   9 latency report (1024 Studio / 256 Live)\n   10 pluginval VST3/CLAP strictness 8+ and LV2/Standalone smoke (scripts/run_pluginval.sh)\n   Honest note: ear-pass and full host matrix are manual, not CI-gated.\n   Point operators at ctest/test targets and the two scripts; leave cmake resolution to build_all.sh (not on PATH).\n\n2. docs/shredwidth_manual.md \u2014 user-facing manual covering:\n   - What ShredWidth is (static dual-head micro-pitch detuner + Haas + mono-safe highs width; no LFO)\n   - Nominal (not sample-exact) latency / PDC; Studio vs Live buffer modes\n   - Hidden monoSource (Sum default vs Left); not on main GUI in v1\n   - latencyMode is automatable but live automation is discouraged (buffer repoint + brief masked crossfade)\n   - LV2 host port-metadata / latency refresh caveat\n   - Output Trim default 0 dB; formats VST3/CLAP/LV2/Standalone (no AU)\n   - Factory preset descriptions: Tight Lead, Wide Lead, Huge Solo, Mono-Safe Subtle, Live Tracking with the \u00a712 numeric vignettes\n   - Brief mono-safe design note (shared lows stay centered)\n\nDo not edit CMakeLists, sources, presets, or scripts.",
+    "plan_template": {
+      "project_name": "shred-width",
+      "summary": "Task run: Verification checklist and user manual docs (nominal latency, monoSource, automation caveats, LV2 host notes)",
+      "phases": [
+        {
+          "name": "E",
+          "objective": "Author release documentation only: CI verification checklist and end-user manual. Wave-1 independent of e.1\u2013e.4.\n\nBefore editing, inspect:\n- .abracapocus/ShredWidth_Build_Spec.md \u00a7\u00a74.9, 5, 10, 12, 14, 16 (latency nominal PDC, monoSource D8, formats, presets, verification items, open-decision defaults)\n- Factory preset names/values from phase goal / \u00a712\n- ParameterIDs inventory (latencyMode automatable but discouraged live; monoSource hidden)\n\nImplement:\n1. docs/verification/shredwidth_verification.md \u2014 checklist mapping \u00a714 CI-runnable items:\n   1 RT-safety (scripts/check_rt_safety.sh + ScopedNoDenormals)\n   2 determinism/null\n   3 bypass null\n   4 Mix=0 passthrough\n   5 mono-lows invariant\n   6 unity-gain crossfade\n   7 pitch accuracy\n   8 correlation sanity\n   9 latency report (1024 Studio / 256 Live)\n   10 pluginval VST3/CLAP strictness 8+ and LV2/Standalone smoke (scripts/run_pluginval.sh)\n   Honest note: ear-pass and full host matrix are manual, not CI-gated.\n   Point operators at ctest/test targets and the two scripts; leave cmake resolution to build_all.sh (not on PATH).\n\n2. docs/shredwidth_manual.md \u2014 user-facing manual covering:\n   - What ShredWidth is (static dual-head micro-pitch detuner + Haas + mono-safe highs width; no LFO)\n   - Nominal (not sample-exact) latency / PDC; Studio vs Live buffer modes\n   - Hidden monoSource (Sum default vs Left); not on main GUI in v1\n   - latencyMode is automatable but live automation is discouraged (buffer repoint + brief masked crossfade)\n   - LV2 host port-metadata / latency refresh caveat\n   - Output Trim default 0 dB; formats VST3/CLAP/LV2/Standalone (no AU)\n   - Factory preset descriptions: Tight Lead, Wide Lead, Huge Solo, Mono-Safe Subtle, Live Tracking with the \u00a712 numeric vignettes\n   - Brief mono-safe design note (shared lows stay centered)\n\nDo not edit CMakeLists, sources, presets, or scripts.",
+          "status": "completed",
+          "tasks": [
+            {
+              "task": {
+                "task_id": "e.5",
+                "title": "Verification checklist and user manual docs (nominal latency, monoSource, automation caveats, LV2 host notes)",
+                "description": "Author release documentation only: CI verification checklist and end-user manual. Wave-1 independent of e.1\u2013e.4.\n\nBefore editing, inspect:\n- .abracapocus/ShredWidth_Build_Spec.md \u00a7\u00a74.9, 5, 10, 12, 14, 16 (latency nominal PDC, monoSource D8, formats, presets, verification items, open-decision defaults)\n- Factory preset names/values from phase goal / \u00a712\n- ParameterIDs inventory (latencyMode automatable but discouraged live; monoSource hidden)\n\nImplement:\n1. docs/verification/shredwidth_verification.md \u2014 checklist mapping \u00a714 CI-runnable items:\n   1 RT-safety (scripts/check_rt_safety.sh + ScopedNoDenormals)\n   2 determinism/null\n   3 bypass null\n   4 Mix=0 passthrough\n   5 mono-lows invariant\n   6 unity-gain crossfade\n   7 pitch accuracy\n   8 correlation sanity\n   9 latency report (1024 Studio / 256 Live)\n   10 pluginval VST3/CLAP strictness 8+ and LV2/Standalone smoke (scripts/run_pluginval.sh)\n   Honest note: ear-pass and full host matrix are manual, not CI-gated.\n   Point operators at ctest/test targets and the two scripts; leave cmake resolution to build_all.sh (not on PATH).\n\n2. docs/shredwidth_manual.md \u2014 user-facing manual covering:\n   - What ShredWidth is (static dual-head micro-pitch detuner + Haas + mono-safe highs width; no LFO)\n   - Nominal (not sample-exact) latency / PDC; Studio vs Live buffer modes\n   - Hidden monoSource (Sum default vs Left); not on main GUI in v1\n   - latencyMode is automatable but live automation is discouraged (buffer repoint + brief masked crossfade)\n   - LV2 host port-metadata / latency refresh caveat\n   - Output Trim default 0 dB; formats VST3/CLAP/LV2/Standalone (no AU)\n   - Factory preset descriptions: Tight Lead, Wide Lead, Huge Solo, Mono-Safe Subtle, Live Tracking with the \u00a712 numeric vignettes\n   - Brief mono-safe design note (shared lows stay centered)\n\nDo not edit CMakeLists, sources, presets, or scripts.",
+                "phase": "E",
+                "dependencies": [],
+                "exclusivity_category": null,
+                "max_in_category": null,
+                "status": "completed",
+                "acceptance_criteria": [
+                  "docs/verification/shredwidth_verification.md exists and lists \u00a714 checks 1\u201310 including RT-safety, determinism/null, bypass null, Mix=0, mono-lows, unity-gain crossfade, pitch accuracy, correlation sanity, latency report, pluginval",
+                  "docs/verification/shredwidth_verification.md states ear-pass and full host matrix are manual",
+                  "docs/verification/shredwidth_verification.md references scripts/check_rt_safety.sh and scripts/run_pluginval.sh",
+                  "docs/shredwidth_manual.md exists and documents nominal (not sample-exact) latency and Studio/Live modes",
+                  "docs/shredwidth_manual.md documents hidden monoSource default Sum, latencyMode automation discouraged, LV2 host port-metadata note, and the five factory presets",
+                  "No file outside the task's allowed_write_paths is created or modified"
+                ],
+                "created_at": "2026-07-27T18:54:10.940633",
+                "selected_backend": "pi_cli",
+                "model": "openrouter/deepseek/deepseek-v4-flash",
+                "task_timeout_seconds": 900.0,
+                "verification_profile": "focused",
+                "verification_commands": [],
+                "allowed_write_paths": [
+                  "docs/verification/shredwidth_verification.md",
+                  "docs/shredwidth_manual.md"
+                ],
+                "forbidden_patterns_override": null
+              },
+              "dependencies": [],
+              "status": "completed"
+            }
+          ],
+          "completed": true,
+          "completed_at": "2026-07-27T18:55:45.870282",
+          "human_checkpoint": null
+        }
+      ],
+      "version": "task-e.5",
+      "created_at": "2026-07-27T18:54:11.035454"
     }
   }
 ]
