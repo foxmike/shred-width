@@ -75,6 +75,7 @@ target_sources(ShredWidth
     PRIVATE
         Source/PluginProcessor.cpp
         Source/PluginEditor.cpp
+        Source/StateManager.cpp
 )
 
 target_compile_definitions(ShredWidth

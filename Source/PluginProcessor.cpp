@@ -1,5 +1,5 @@
 #include "PluginProcessor.h"
-
+#include "PluginEditor.h"
 #include "ParameterIDs.h"
 
 #include <atomic>
@@ -141,7 +141,7 @@ void ShredWidthAudioProcessor::updateReportedLatencyFromParameter() {
 }
 
 juce::AudioProcessorEditor *ShredWidthAudioProcessor::createEditor() {
-  return new juce::GenericAudioProcessorEditor(*this);
+  return new ShredWidthAudioProcessorEditor(*this);
 }
 
 bool ShredWidthAudioProcessor::hasEditor() const { return true; }
@@ -170,32 +170,16 @@ void ShredWidthAudioProcessor::changeProgramName(int, const juce::String &) {}
 
 void ShredWidthAudioProcessor::getStateInformation(
     juce::MemoryBlock &destData) {
-  auto state = apvts.copyState();
-  state.setProperty(parameterLayoutVersionProperty,
-                    ShredWidth::ParameterIDs::parameterLayoutVersion, nullptr);
-
-  if (const auto xml = state.createXml())
+  if (const auto xml = stateManager.createComparisonXml(apvts))
     copyXmlToBinary(*xml, destData);
 }
 
 void ShredWidthAudioProcessor::setStateInformation(const void *data,
                                                    int sizeInBytes) {
-  const auto xml = getXmlFromBinary(data, sizeInBytes);
-
-  if (xml == nullptr || !xml->hasTagName(apvts.state.getType()))
-    return;
-
-  auto state = juce::ValueTree::fromXml(*xml);
-  if (!state.isValid())
-    return;
-
-  if (!state.hasProperty(parameterLayoutVersionProperty))
-    state.setProperty(parameterLayoutVersionProperty,
-                      ShredWidth::ParameterIDs::parameterLayoutVersion,
-                      nullptr);
-
-  apvts.replaceState(state);
-  updateReportedLatencyFromParameter();
+  if (const auto xml = getXmlFromBinary(data, sizeInBytes)) {
+    stateManager.restoreComparisonXml(*xml, apvts);
+    updateReportedLatencyFromParameter();
+  }
 }
 
 juce::AudioProcessor *JUCE_CALLTYPE createPluginFilter() {

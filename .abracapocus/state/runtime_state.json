@@ -1,17 +1,17 @@
 {
   "project_name": "shred-width",
-  "plan_version": "task-a.2",
+  "plan_version": "task-a.3",
   "active_phase": "A",
   "default_backend": "codex_cli",
   "routing_mode": "manual",
   "tasks": [
     {
-      "task_id": "a.2",
-      "title": "ParameterIDs.h v1 inventory, APVTS layout with skews, bus layout (mono/stereo in -> stereo out), PluginProcessor spine with prepareToPlay allocation and PDC hooks",
+      "task_id": "a.3",
+      "title": "StateManager (APVTS XML save/restore, layout version, A/B slots) and PluginEditor skeleton",
       "phase": "A",
-      "status": "completed",
-      "backend": "codex_cli",
-      "last_run": "2026-07-27T17:16:13.167415",
+      "status": "planned",
+      "backend": "antigravity_cli",
+      "last_run": null,
       "notes": ""
     }
   ],

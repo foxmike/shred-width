@@ -1,0 +1,13 @@
+{
+  "run_id": "78496cee-cf94-4052-9b45-153690b7a0b3",
+  "task_id": "a.3",
+  "phase": "A",
+  "subtype": "context_completeness_heuristics",
+  "mode": "advisory",
+  "reason_codes": [
+    "advisory_phase_reference_candidate"
+  ],
+  "detail": "Advisory phase reference candidates: D",
+  "blocking": false,
+  "created_at": "2026-07-27T17:16:13.426978"
+}

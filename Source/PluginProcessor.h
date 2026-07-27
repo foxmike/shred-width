@@ -1,6 +1,7 @@
 #pragma once
 
 #include <juce_audio_processors/juce_audio_processors.h>
+#include "StateManager.h"
 
 class ShredWidthAudioProcessor final : public juce::AudioProcessor {
 public:
@@ -35,6 +36,8 @@ public:
   const juce::AudioProcessorValueTreeState &getAPVTS() const noexcept {
     return apvts;
   }
+  StateManager &getStateManager() noexcept { return stateManager; }
+  const StateManager &getStateManager() const noexcept { return stateManager; }
 
 private:
   static juce::AudioProcessorValueTreeState::ParameterLayout
@@ -49,6 +52,7 @@ private:
   static constexpr int meterFifoCapacity = 4096;
 
   juce::AudioProcessorValueTreeState apvts;
+  StateManager stateManager;
 
   // Engine-ready storage. DSP classes will take ownership/use these buffers in
   // a later phase; all variable-sized memory is reserved in prepareToPlay.

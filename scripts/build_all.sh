@@ -52,12 +52,17 @@ main() {
     printf '==> Configuring ShredWidth (preset: %s)\n' "${PRESET}"
     "${cmake_bin}" --preset "${PRESET}"
 
-    printf '==> Building VST3, CLAP, LV2, and Standalone targets\n'
-    "${cmake_bin}" --build --preset "${PRESET}" --target \
-        ShredWidth_VST3 \
-        ShredWidth_CLAP \
-        ShredWidth_LV2 \
+    local targets=(
+        ShredWidth_VST3
+        ShredWidth_LV2
         ShredWidth_Standalone
+    )
+    if [[ -d "${ROOT_DIR}/clap-juce-extensions" ]]; then
+        targets+=(ShredWidth_CLAP)
+    fi
+
+    printf '==> Building targets: %s\n' "${targets[*]}"
+    "${cmake_bin}" --build --preset "${PRESET}" $(printf -- '--target %s ' "${targets[@]}")
 
     printf '==> All ShredWidth format targets built successfully\n'
 }
