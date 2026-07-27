@@ -1,17 +1,17 @@
 {
   "project_name": "shred-width",
-  "plan_version": "task-b.1",
+  "plan_version": "task-b.2",
   "active_phase": "B",
   "default_backend": "codex_cli",
   "routing_mode": "manual",
   "tasks": [
     {
-      "task_id": "b.1",
-      "title": "DelayLineFrac - fractional ms delay, 3rd-order Lagrange read, >=50 ms read-distance smoothing",
+      "task_id": "b.2",
+      "title": "PitchShifter - dual-head granular buffer, double drift accumulator, 4-point Lagrange, Hann unity-gain crossfade",
       "phase": "B",
-      "status": "completed",
-      "backend": "pi_cli",
-      "last_run": "2026-07-27T17:34:48.702041",
+      "status": "planned",
+      "backend": "codex_cli",
+      "last_run": null,
       "notes": ""
     }
   ],
