@@ -39,3 +39,7 @@
 2026-07-27 14:29:00 | INFO | abracapocus.backends.pi_cli | backend=pi_cli retry_count=0
 2026-07-27 14:29:01 | INFO | abracapocus | run=17928e56-276c-451d-9454-75d9a098c1e7 phases=1 verification=passed
 2026-07-27 14:39:09 | INFO | abracapocus.backends.pi_cli | backend=pi_cli retry_count=0
+2026-07-27 14:39:10 | INFO | abracapocus | run=666a9980-7148-4ef1-b26b-67df7e93b124 phases=1 verification=passed
+2026-07-27 14:54:10 | INFO | abracapocus | run=87a02ea1-70dc-4921-b369-5aaaf9146963 phase=E adaptive_gate=blocked reason=task outcome at index 0 is not accepted (unverified)
+2026-07-27 14:54:10 | INFO | abracapocus | run=87a02ea1-70dc-4921-b369-5aaaf9146963 phases=1 verification=passed
+2026-07-27 14:55:45 | INFO | abracapocus.backends.pi_cli | backend=pi_cli retry_count=0
