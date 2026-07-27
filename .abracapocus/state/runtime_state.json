@@ -9,13 +9,23 @@
       "task_id": "a.1",
       "title": "CMakeLists.txt, CMakePresets.json, build_all.sh (CLion-bundled cmake), JUCE submodule pinned to aural-maximizer-pro tag",
       "phase": "A",
-      "status": "planned",
+      "status": "completed",
       "backend": "codex_cli",
-      "last_run": null,
+      "last_run": "2026-07-27T17:12:34.363612",
       "notes": ""
     }
   ],
-  "history": [],
+  "history": [
+    {
+      "run_id": "5ae473d4-de7e-46c6-af6c-708bff0022a6",
+      "task_id": "a.1",
+      "backend": "codex_cli",
+      "status": "ok",
+      "reviewer_status": "approved",
+      "verifier_status": "passed",
+      "timestamp": "2026-07-27T17:12:34.363703"
+    }
+  ],
   "operator_overrides": {},
   "completed_phases": [],
   "remaining_phases": [
